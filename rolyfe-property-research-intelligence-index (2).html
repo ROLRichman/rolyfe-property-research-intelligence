@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="RO’Lyfe Property Research Intelligence™ — property intake, due-diligence workflow, conservative acquisition underwriting, and source verification.">
+<meta name="theme-color" content="#07111b">
+<title>RO’Lyfe Property Research Intelligence™</title>
+<style>
+:root{--bg:#07111b;--panel:#0e1d2b;--panel2:#122638;--line:#274357;--text:#f3f8fc;--muted:#b4c7d6;--cyan:#64e4ed;--green:#7ef0b2;--gold:#ffd27a;--red:#ff9b9b}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:linear-gradient(180deg,#07111b,#091725 55%,#07111b);color:var(--text);font-family:Arial,Helvetica,sans-serif}
+a{color:var(--cyan)}
+button,input,select,textarea{font:inherit}
+button,.button{border:1px solid #3a6379;border-radius:12px;padding:12px 15px;background:#173247;color:var(--text);font-weight:700;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:8px}
+button.primary,.button.primary{background:var(--cyan);color:#06202a;border-color:var(--cyan)}
+button.subtle{background:#102231}
+button.danger{border-color:#8a4b4b}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
+.wrap{width:min(1250px,100%);margin:auto;padding:18px}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:12px 0 20px;border-bottom:1px solid var(--line)}
+.brand{font-weight:900;letter-spacing:.04em;color:var(--green);font-size:18px}
+.toplinks{display:flex;gap:10px;flex-wrap:wrap;font-size:14px}
+.hero{padding:34px 0 26px;display:grid;grid-template-columns:1.5fr .8fr;gap:18px;align-items:stretch}
+.panel,.metric,.section-card{background:rgba(14,29,43,.94);border:1px solid var(--line);border-radius:18px;padding:20px;min-width:0}
+.hero h1{font-size:clamp(30px,5vw,48px);line-height:1.08;margin:10px 0 14px}
+.hero p,.muted{color:var(--muted);line-height:1.6}
+.eyebrow{text-transform:uppercase;letter-spacing:.13em;color:var(--cyan);font-size:12px;font-weight:800}
+.badge{display:inline-block;padding:6px 9px;border-radius:999px;background:#18374a;border:1px solid #31586e;color:#c8faff;font-size:12px;font-weight:700}
+.hero-side{display:grid;gap:12px}
+.metric strong{display:block;font-size:25px;color:var(--green);margin-bottom:6px}
+.metric span{color:var(--muted);font-size:13px;line-height:1.5}
+.nav{display:flex;gap:8px;overflow-x:auto;padding:4px 0 16px}
+.nav a{white-space:nowrap;text-decoration:none;padding:10px 13px;border:1px solid var(--line);border-radius:999px;background:#0d1d2a;font-size:13px}
+.section{padding:14px 0 26px;scroll-margin-top:12px}
+.section-head{display:flex;align-items:end;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-bottom:14px}
+h2{margin:0;font-size:24px}
+h3{margin:0 0 12px;font-size:17px}
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.span-12{grid-column:span 12}.span-8{grid-column:span 8}.span-6{grid-column:span 6}.span-4{grid-column:span 4}
+label{display:block;font-size:13px;color:#c8d9e6;margin:0 0 6px}
+input,select,textarea{width:100%;min-width:0;padding:12px;border-radius:10px;border:1px solid #35546a;background:#081521;color:var(--text)}
+textarea{min-height:88px;resize:vertical}
+.field{margin-bottom:13px}
+.row-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:12px}
+.small{font-size:12px;color:var(--muted);line-height:1.55}
+.callout{padding:13px 15px;border-radius:12px;background:#102b38;border:1px solid #285365;color:#c8e8f1;font-size:13px;line-height:1.6}
+.callout.warn{background:#302716;border-color:#70582d;color:#ffe2a7}
+.result-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:14px}
+.result{padding:13px;border-radius:12px;background:#091722;border:1px solid var(--line)}
+.result span{display:block;color:var(--muted);font-size:12px;margin-bottom:6px}
+.result strong{font-size:19px;overflow-wrap:anywhere}
+.checklist{display:grid;gap:10px}
+.check-item{display:flex;align-items:flex-start;gap:10px;padding:11px;border:1px solid #243e51;border-radius:11px;background:#0a1925}
+.check-item input{width:18px;height:18px;margin:1px 0 0;flex:0 0 auto;accent-color:var(--green)}
+.check-item span{font-size:14px;line-height:1.45}
+.doc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
+.doc{display:block;padding:15px;background:#0a1925;border:1px solid var(--line);border-radius:12px;text-decoration:none}
+.doc strong{display:block;margin-bottom:7px;color:var(--cyan)}
+.doc span{font-size:12px;color:var(--muted);line-height:1.5}
+.status{font-size:13px;color:var(--green);min-height:18px}
+footer{border-top:1px solid var(--line);padding:24px 0 35px;color:var(--muted);font-size:12px;line-height:1.7}
+hr{border:0;border-top:1px solid var(--line);margin:18px 0}
+@media(max-width:800px){.hero{grid-template-columns:1fr}.span-8,.span-6,.span-4{grid-column:span 12}.result-grid{grid-template-columns:1fr}.wrap{padding:13px}.panel,.section-card{padding:16px}}
+@media(max-width:440px){.row-fields{grid-template-columns:1fr}.hero h1{font-size:31px}.topbar{align-items:flex-start}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="topbar">
+  <div>
+    <div class="brand">RO’LYFE INTELLIGENCE</div>
+    <div class="small">PROPERTY RESEARCH • DUE DILIGENCE • UNDERWRITING</div>
+  </div>
+  <nav class="toplinks" aria-label="Main links">
+    <a href="https://rolrichman.github.io/ro-lyfe-auction-capital-machine/">Auction Capital Machine</a>
+    <a href="https://rolrichman.github.io/rolyfe-video-hub/">Vision Hub</a>
+  </nav>
+</header>
+
+<main>
+<section class="hero">
+  <div class="panel">
+    <span class="badge">RESEARCH WORKSPACE · HUMAN-VERIFIED</span>
+    <h1>Property Research<br><span style="color:var(--cyan)">Intelligence™</span></h1>
+    <p>Organize property leads, verify source facts, document title and sale risks, and evaluate conservative acquisition numbers before committing capital.</p>
+    <div class="actions">
+      <a class="button primary" href="#intake">＋ Start Property Intake</a>
+      <a class="button" href="#checklist">Open Due-Diligence Checklist</a>
+    </div>
+  </div>
+  <div class="hero-side">
+    <div class="metric"><strong>01 · Verify</strong><span>Confirm address, parcel ID, property type, jurisdiction, and sale status from primary sources.</span></div>
+    <div class="metric"><strong>02 · Underwrite</strong><span>Use sourced comparable sales and conservative costs. Keep assumptions separate from verified facts.</span></div>
+    <div class="metric"><strong>03 · Decide</strong><span>Record open questions and title/legal risks before making an offer or bidding.</span></div>
+  </div>
+</section>
+
+<nav class="nav" aria-label="Page sections">
+  <a href="#intake">Property Intake</a><a href="#underwriting">Underwriting</a><a href="#checklist">Due Diligence</a><a href="#documents">Research Documents</a><a href="#records">Saved Records</a>
+</nav>
+
+<section class="section" id="intake">
+  <div class="section-head"><div><div class="eyebrow">Step 1</div><h2>Property Intake</h2></div><span class="badge">Local browser workspace</span></div>
+  <div class="grid">
+    <div class="section-card span-8">
+      <form id="propertyForm">
+        <div class="row-fields">
+          <div class="field"><label for="address">Property address *</label><input id="address" name="address" required placeholder="Street, city, state, ZIP"></div>
+          <div class="field"><label for="parcel">Parcel / APN</label><input id="parcel" name="parcel" placeholder="Parcel identification number"></div>
+          <div class="field"><label for="county">County</label><input id="county" name="county" placeholder="County"></div>
+          <div class="field"><label for="state">State</label><select id="state" name="state"><option value="">Select state</option><option>PA</option><option>NJ</option><option>NY</option><option>DE</option><option>MD</option><option>Other</option></select></div>
+          <div class="field"><label for="propertyType">Property type</label><select id="propertyType" name="propertyType"><option>Unknown — verify</option><option>Single-family</option><option>Multi-family</option><option>Condo / townhouse</option><option>Commercial</option><option>Mixed-use</option><option>Vacant land</option><option>Manufactured</option><option>Other</option></select></div>
+          <div class="field"><label for="saleType">Lead / sale type</label><select id="saleType" name="saleType"><option>Off-market lead</option><option>Tax sale</option><option>Sheriff sale</option><option>Foreclosure / REO</option><option>Bank-owned</option><option>Online auction</option><option>Vacant land lead</option><option>MLS listing</option><option>Other</option></select></div>
+          <div class="field"><label for="sourceUrl">Primary listing / sale URL</label><input id="sourceUrl" name="sourceUrl" type="url" placeholder="https://..."></div>
+          <div class="field"><label for="researchDate">Research date</label><input id="researchDate" name="researchDate" type="date"></div>
+          <div class="field"><label for="saleDate">Auction / offer deadline</label><input id="saleDate" name="saleDate" type="date"></div>
+          <div class="field"><label for="status">Research status</label><select id="status" name="status"><option>New lead</option><option>Research in progress</option><option>Needs verification</option><option>Ready for review</option><option>Hold — unresolved risk</option><option>Pass</option></select></div>
+        </div>
+        <div class="field"><label for="notes">Notes, discrepancies, and open questions</label><textarea id="notes" name="notes" placeholder="Record what is verified, what conflicts, and what still needs confirmation."></textarea></div>
+        <div class="actions"><button class="primary" type="submit">Save Property Record</button><button type="button" id="clearForm" class="subtle">Clear Form</button></div>
+        <p id="formStatus" class="status" aria-live="polite"></p>
+      </form>
+    </div>
+    <aside class="section-card span-4">
+      <h3>Research discipline</h3>
+      <div class="checklist">
+        <div class="check-item"><span>✓ Verify exact address and parcel against county or municipal records.</span></div>
+        <div class="check-item"><span>✓ Confirm the sale type, deadline, deposit, fees, and buyer terms from the official source.</span></div>
+        <div class="check-item"><span>✓ Check property type, permitted use, occupancy, access, and zoning independently.</span></div>
+        <div class="check-item"><span>✓ Keep source links and the date each important fact was checked.</span></div>
+      </div>
+      <hr>
+      <p class="small">Records are saved in this browser on this device using local storage. Export a backup regularly. This is not a cloud database and does not sync across devices.</p>
+    </aside>
+  </div>
+</section>
+
+<section class="section" id="underwriting">
+  <div class="section-head"><div><div class="eyebrow">Step 2</div><h2>Conservative Deal Calculator</h2></div><span class="badge">Editable estimates</span></div>
+  <div class="grid">
+    <div class="section-card span-8">
+      <div class="row-fields">
+        <div class="field"><label for="arv">Estimated after-repair value ($)</label><input id="arv" type="number" min="0" step="1000" value="250000"></div>
+        <div class="field"><label for="purchase">Purchase price / bid ($)</label><input id="purchase" type="number" min="0" step="500" value="100000"></div>
+        <div class="field"><label for="rehab">Rehab budget ($)</label><input id="rehab" type="number" min="0" step="500" value="40000"></div>
+        <div class="field"><label for="closing">Closing, auction & transfer costs ($)</label><input id="closing" type="number" min="0" step="100" value="8000"></div>
+        <div class="field"><label for="holding">Holding, utilities & insurance ($)</label><input id="holding" type="number" min="0" step="100" value="6000"></div>
+        <div class="field"><label for="sellingPct">Selling costs (% of exit price)</label><input id="sellingPct" type="number" min="0" max="100" step=".5" value="8"></div>
+        <div class="field"><label for="contingencyPct">Rehab contingency (%)</label><input id="contingencyPct" type="number" min="0" max="100" step="1" value="15"></div>
+        <div class="field"><label for="targetProfit">Target profit ($)</label><input id="targetProfit" type="number" min="0" step="1000" value="30000"></div>
+        <div class="field"><label for="arvConfidence">ARV confidence</label><select id="arvConfidence"><option>Not yet supported</option><option>Low — limited comps</option><option>Medium — comps need review</option><option>High — verified comparable sales</option></select></div>
+      </div>
+      <div class="actions"><button class="primary" id="calculate" type="button">Calculate Deal</button><button type="button" id="exportCalc">Export Calculation CSV</button></div>
+      <p class="small">Planning estimate only. Add financing interest, points, taxes, permits, liens, title defects, eviction, utilities, and other property-specific costs when applicable. No automated market data is being fetched.</p>
+    </div>
+    <div class="section-card span-4">
+      <h3>Underwriting results</h3>
+      <div class="result-grid" style="grid-template-columns:1fr">
+        <div class="result"><span>Estimated total cost incl. contingency & selling</span><strong id="totalCost">$0</strong></div>
+        <div class="result"><span>Estimated net profit / (loss)</span><strong id="netProfit">$0</strong></div>
+        <div class="result"><span>Net margin on estimated exit</span><strong id="margin">0%</strong></div>
+        <div class="result"><span>Illustrative maximum offer for target profit</span><strong id="maxOffer">$0</strong></div>
+      </div>
+      <div id="dealFlag" class="callout warn" style="margin-top:12px">Enter and verify your assumptions. Results are only as reliable as the inputs.</div>
+      <p class="small">The maximum-offer estimate is a simple screening formula, not a lender decision or a substitute for a full acquisition model.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="checklist">
+  <div class="section-head"><div><div class="eyebrow">Step 3</div><h2>Due-Diligence Checklist</h2></div><span class="badge" id="checkProgress">0 / 12 checked</span></div>
+  <div class="grid">
+    <div class="section-card span-6">
+      <h3>Property & market verification</h3>
+      <div class="checklist">
+        <label class="check-item"><input type="checkbox" data-check="address"><span>Exact address, parcel ID, and county confirmed</span></label>
+        <label class="check-item"><input type="checkbox" data-check="type"><span>Property type, legal use, zoning, and access verified</span></label>
+        <label class="check-item"><input type="checkbox" data-check="comps"><span>Comparable sales sourced, dated, and adjusted for differences</span></label>
+        <label class="check-item"><input type="checkbox" data-check="condition"><span>Condition, occupancy, utilities, and rehab scope reviewed</span></label>
+        <label class="check-item"><input type="checkbox" data-check="tax"><span>Taxes, municipal balances, and assessments checked</span></label>
+        <label class="check-item"><input type="checkbox" data-check="flood"><span>Flood, environmental, access, and other site risks reviewed</span></label>
+      </div>
+    </div>
+    <div class="section-card span-6">
+      <h3>Sale, title & capital readiness</h3>
+      <div class="checklist">
+        <label class="check-item"><input type="checkbox" data-check="sale"><span>Official sale status, terms, deadline, deposit, and premium confirmed</span></label>
+        <label class="check-item"><input type="checkbox" data-check="title"><span>Title search and lien / encumbrance review arranged</span></label>
+        <label class="check-item"><input type="checkbox" data-check="redemption"><span>Redemption rights, notice rules, and sale-specific legal process reviewed</span></label>
+        <label class="check-item"><input type="checkbox" data-check="insurance"><span>Insurability, possession, and access plan investigated</span></label>
+        <label class="check-item"><input type="checkbox" data-check="funding"><span>Funding terms, cash requirement, and closing timeline confirmed</span></label>
+        <label class="check-item"><input type="checkbox" data-check="exit"><span>Exit strategy, contingency, and walk-away limit documented</span></label>
+      </div>
+      <div class="actions"><button type="button" id="saveChecks" class="primary">Save Checklist</button><button type="button" id="resetChecks" class="subtle">Reset Checks</button></div>
+      <p id="checkStatus" class="status" aria-live="polite"></p>
+    </div>
+  </div>
+  <p class="callout warn">Auction and tax-sale procedures vary by jurisdiction. Do not assume liens are wiped out, title is clear, possession is immediate, or redemption rights do not apply. Verify the governing rules with official sources and qualified local professionals.</p>
+</section>
+
+<section class="section" id="documents">
+  <div class="section-head"><div><div class="eyebrow">Reference library</div><h2>Research Documents</h2></div></div>
+  <div class="doc-grid">
+    <a class="doc" href="./README.md"><strong>README.md</strong><span>Project overview, purpose, and workflow introduction.</span></a>
+    <a class="doc" href="./DESCRIPTION.md"><strong>DESCRIPTION.md</strong><span>Platform description and scope.</span></a>
+    <a class="doc" href="./PROPERTY_RESEARCH_WORKFLOW.md"><strong>PROPERTY_RESEARCH_WORKFLOW.md</strong><span>Repeatable source-to-decision research steps.</span></a>
+    <a class="doc" href="./DUE_DILIGENCE_CHECKLIST.md"><strong>DUE_DILIGENCE_CHECKLIST.md</strong><span>Detailed due-diligence reference.</span></a>
+    <a class="doc" href="./PROPERTY_INTAKE_TEMPLATE.md"><strong>PROPERTY_INTAKE_TEMPLATE.md</strong><span>Standardized intake fields for each lead.</span></a>
+    <a class="doc" href="./UNDERWRITING_TEMPLATE.md"><strong>UNDERWRITING_TEMPLATE.md</strong><span>Deal assumptions and underwriting worksheet.</span></a>
+    <a class="doc" href="./SALE_TYPE_GLOSSARY.md"><strong>SALE_TYPE_GLOSSARY.md</strong><span>Definitions and distinctions among sale types.</span></a>
+    <a class="doc" href="./SOURCE_DIRECTORY.md"><strong>SOURCE_DIRECTORY.md</strong><span>Research sources to consult and verify.</span></a>
+  </div>
+  <p class="small">These links expect the Markdown files to be in the repository root beside index.html. If a file name or location differs, update the link to match the repository.</p>
+</section>
+
+<section class="section" id="records">
+  <div class="section-head"><div><div class="eyebrow">Local records</div><h2>Saved Property Records</h2></div></div>
+  <div class="section-card">
+    <div class="actions">
+      <button type="button" class="primary" id="exportRecords">Export Records (JSON)</button>
+      <button type="button" id="exportTable">Export Records (CSV)</button>
+      <button type="button" id="importRecords">Import JSON Backup</button>
+      <input type="file" id="importFile" accept=".json,application/json" hidden>
+    </div>
+    <p class="small">Export records before clearing browser data or switching devices. Imported JSON replaces records with matching IDs and adds new ones. Do not store sensitive personal or financial information in this public website.</p>
+    <div id="recordsList" class="checklist" style="margin-top:14px"></div>
+    <p id="recordsStatus" class="status" aria-live="polite"></p>
+  </div>
+</section>
+</main>
+
+<footer>
+  <strong>RO’Lyfe Property Research Intelligence™</strong><br>
+  Research • Verify • Underwrite • Decide<br><br>
+  This tool is an organizational and preliminary screening aid, not legal, tax, title, engineering, appraisal, lending, or investment advice. Data entered here is stored locally in your browser unless you export it. The site does not independently access county records, parcel APIs, MLS feeds, court records, or live comparable-sale databases. Verify material facts at authoritative sources before acting.
+</footer>
+</div>
+
+<script>
+(function(){
+"use strict";
+const $ = id => document.getElementById(id);
+const STORE_KEY = "rolyfe_property_research_records_v1";
+const CHECK_KEY = "rolyfe_property_research_checks_v1";
+let records = loadRecords();
+let lastCalculation = {};
+
+function safeRead(key, fallback){
+  try { const value = localStorage.getItem(key); return value ? JSON.parse(value) : fallback; }
+  catch(e){ return fallback; }
+}
+function loadRecords(){
+  const value = safeRead(STORE_KEY, []);
+  return Array.isArray(value) ? value : [];
+}
+function saveRecords(){
+  try { localStorage.setItem(STORE_KEY, JSON.stringify(records)); return true; }
+  catch(e){ $("recordsStatus").textContent = "Could not save locally. Export your data or check browser storage settings."; return false; }
+}
+function money(n){
+  return new Intl.NumberFormat("en-US",{style:"currency",currency:"USD",maximumFractionDigits:0}).format(Number.isFinite(n)?n:0);
+}
+function val(id){ const n = Number($(id).value); return Number.isFinite(n) && n >= 0 ? n : 0; }
+function escapeHtml(value){
+  return String(value ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+}
+function download(filename, content, type){
+  const blob = new Blob([content],{type:type || "text/plain;charset=utf-8"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a"); a.href=url; a.download=filename; document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),1000);
+}
+function formRecord(){
+  const f = $("propertyForm");
+  const data = Object.fromEntries(new FormData(f).entries());
+  return {...data, id: data.id || (crypto.randomUUID ? crypto.randomUUID() : String(Date.now())+"-"+Math.random().toString(16).slice(2)), updatedAt:new Date().toISOString()};
+}
+function resetForm(){
+  $("propertyForm").reset();
+  $("researchDate").value = new Date().toISOString().slice(0,10);
+  $("formStatus").textContent = "";
+  delete $("propertyForm").dataset.editId;
+}
+$("researchDate").value = new Date().toISOString().slice(0,10);
+$("propertyForm").addEventListener("submit", function(e){
+  e.preventDefault();
+  const record = formRecord();
+  const editId = this.dataset.editId;
+  if(editId){
+    record.id = editId;
+    records = records.map(r => r.id === editId ? record : r);
+  } else {
+    records.unshift(record);
+  }
+  if(saveRecords()){
+    renderRecords();
+    $("formStatus").textContent = editId ? "Property record updated in this browser." : "Property record saved in this browser.";
+    resetForm();
+    $("records").scrollIntoView({behavior:"smooth",block:"start"});
+  }
+});
+$("clearForm").addEventListener("click", resetForm);
+
+function calculate(){
+  const arv=val("arv"), purchase=val("purchase"), rehab=val("rehab"), closing=val("closing"), holding=val("holding");
+  const sellingPct=Math.min(val("sellingPct"),100)/100, contingencyPct=Math.min(val("contingencyPct"),100)/100, target=val("targetProfit");
+  const contingency=rehab*contingencyPct;
+  const selling=arv*sellingPct;
+  const total=purchase+rehab+contingency+closing+holding+selling;
+  const profit=arv-total;
+  const margin=arv>0 ? profit/arv*100 : 0;
+  const maxOffer=arv-selling-rehab-contingency-closing-holding-target;
+  lastCalculation={arv,purchase,rehab,contingencyPct,contingency,closing,holding,sellingPct,selling,target,totalCost:total,netProfit:profit,margin,maxOffer,arvConfidence:$("arvConfidence").value,calculatedAt:new Date().toISOString()};
+  $("totalCost").textContent=money(total);
+  $("netProfit").textContent=(profit<0?"−":"")+money(Math.abs(profit));
+  $("netProfit").style.color=profit>=target?"var(--green)":"var(--red)";
+  $("margin").textContent=arv>0?margin.toFixed(1)+"%":"N/A";
+  $("maxOffer").textContent=money(maxOffer);
+  let message;
+  if(arv<=0) message="Enter an estimated exit value above $0 before interpreting the result.";
+  else if(maxOffer<0) message="The inputs do not support the target profit even at a $0 purchase price. Recheck assumptions or pass.";
+  else if(profit<target) message="Current inputs fall short of the target profit. Compare the bid to the maximum-offer estimate and verify every cost.";
+  else message="Current inputs meet the target profit on paper. Verify comps, title, property condition, financing, and sale terms before relying on the result.";
+  $("dealFlag").textContent=message;
+}
+$("calculate").addEventListener("click",calculate);
+["arv","purchase","rehab","closing","holding","sellingPct","contingencyPct","targetProfit","arvConfidence"].forEach(id=>$(id).addEventListener("input",calculate));
+$("exportCalc").addEventListener("click",()=>{
+  calculate();
+  const csv=[["Field","Value"],...Object.entries(lastCalculation)].map(row=>row.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(",")).join("\r\n");
+  download("rolyfe-underwriting-calculation.csv",csv,"text/csv;charset=utf-8");
+});
+calculate();
+
+const CHECKS=[...document.querySelectorAll("[data-check]")];
+const savedChecks=safeRead(CHECK_KEY,{});
+CHECKS.forEach(c=>{c.checked=!!savedChecks[c.dataset.check];c.addEventListener("change",updateCheckProgress)});
+function updateCheckProgress(){
+  const checked=CHECKS.filter(c=>c.checked).length;
+  $("checkProgress").textContent=checked+" / "+CHECKS.length+" checked";
+}
+updateCheckProgress();
+$("saveChecks").addEventListener("click",()=>{
+  const state={}; CHECKS.forEach(c=>state[c.dataset.check]=c.checked);
+  try{localStorage.setItem(CHECK_KEY,JSON.stringify(state));$("checkStatus").textContent="Checklist saved in this browser."}
+  catch(e){$("checkStatus").textContent="Could not save checklist in browser storage."}
+});
+$("resetChecks").addEventListener("click",()=>{
+  CHECKS.forEach(c=>c.checked=false);
+  try{localStorage.removeItem(CHECK_KEY)}catch(e){}
+  updateCheckProgress();$("checkStatus").textContent="Checklist reset.";
+});
+
+function renderRecords(){
+  const list=$("recordsList");
+  if(!records.length){list.innerHTML='<div class="callout">No property records saved yet. Add a lead in Property Intake to get started.</div>';return}
+  list.innerHTML=records.map(r=>`<article class="check-item" style="display:block">
+    <div style="display:flex;gap:10px;justify-content:space-between;align-items:flex-start;flex-wrap:wrap">
+      <div><strong>${escapeHtml(r.address || "Unnamed property")}</strong><div class="small">${escapeHtml([r.county,r.state,r.parcel].filter(Boolean).join(" · "))}</div></div>
+      <span class="badge">${escapeHtml(r.status || "New lead")}</span>
+    </div>
+    <div class="small" style="margin-top:8px">${escapeHtml(r.saleType || "")} · ${escapeHtml(r.propertyType || "")} · Updated ${escapeHtml((r.updatedAt||"").slice(0,10))}</div>
+    ${r.notes?`<p class="small">${escapeHtml(r.notes)}</p>`:""}
+    ${r.sourceUrl?`<p><a href="${escapeHtml(r.sourceUrl)}" target="_blank" rel="noopener noreferrer">Open recorded source ↗</a></p>`:""}
+    <div class="actions"><button type="button" data-edit="${escapeHtml(r.id)}">Edit</button><button type="button" class="danger" data-delete="${escapeHtml(r.id)}">Delete</button></div>
+  </article>`).join("");
+  list.querySelectorAll("[data-edit]").forEach(btn=>btn.addEventListener("click",()=>editRecord(btn.dataset.edit)));
+  list.querySelectorAll("[data-delete]").forEach(btn=>btn.addEventListener("click",()=>deleteRecord(btn.dataset.delete)));
+}
+function editRecord(id){
+  const record=records.find(r=>r.id===id); if(!record)return;
+  const f=$("propertyForm");
+  Object.keys(record).forEach(k=>{if(f.elements[k])f.elements[k].value=record[k]});
+  f.dataset.editId=id;
+  $("formStatus").textContent="Editing saved record. Save to apply changes.";
+  $("intake").scrollIntoView({behavior:"smooth",block:"start"});
+}
+function deleteRecord(id){
+  const record=records.find(r=>r.id===id);
+  if(!record || !confirm("Delete this property record from this browser?"))return;
+  records=records.filter(r=>r.id!==id);saveRecords();renderRecords();
+  $("recordsStatus").textContent="Property record deleted.";
+}
+$("exportRecords").addEventListener("click",()=>{
+  download("rolyfe-property-records-backup.json",JSON.stringify({exportedAt:new Date().toISOString(),records},null,2),"application/json");
+  $("recordsStatus").textContent="JSON backup export started.";
+});
+function csvCell(v){return '"'+String(v??"").replace(/"/g,'""')+'"'}
+$("exportTable").addEventListener("click",()=>{
+  const keys=["address","parcel","county","state","propertyType","saleType","sourceUrl","researchDate","saleDate","status","notes","updatedAt"];
+  const csv=[keys,...records.map(r=>keys.map(k=>r[k]||""))].map(row=>row.map(csvCell).join(",")).join("\r\n");
+  download("rolyfe-property-records.csv",csv,"text/csv;charset=utf-8");
+  $("recordsStatus").textContent="CSV export started.";
+});
+$("importRecords").addEventListener("click",()=>$("importFile").click());
+$("importFile").addEventListener("change",async function(){
+  const file=this.files && this.files[0];if(!file)return;
+  try{
+    const parsed=JSON.parse(await file.text());
+    const incoming=Array.isArray(parsed)?parsed:parsed.records;
+    if(!Array.isArray(incoming))throw new Error("The file does not contain a records array.");
+    const map=new Map(records.map(r=>[r.id,r]));
+    incoming.forEach((r,i)=>{if(r && typeof r==="object"){const id=r.id||("import-"+Date.now()+"-"+i);map.set(id,{...r,id})}});
+    records=[...map.values()];
+    if(saveRecords()){renderRecords();$("recordsStatus").textContent="JSON backup imported and merged."}
+  }catch(err){$("recordsStatus").textContent="Import failed: "+err.message}
+  this.value="";
+});
+renderRecords();
+})();
+</script>
+</body>
+</html>
