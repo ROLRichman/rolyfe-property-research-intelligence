@@ -4,12 +4,14 @@ on:
   pull_request:
     paths:
       - "index.html"
+      - "shared/**"
       - ".github/workflows/property-research-checks.yml"
   push:
     branches:
       - main
     paths:
       - "index.html"
+      - "shared/**"
       - ".github/workflows/property-research-checks.yml"
 
 permissions:
@@ -40,6 +42,7 @@ jobs:
           print(f"Found {len(scripts)} inline JavaScript block(s).")
           PY
           node --check /tmp/rolyfe-inline-check.js
+          if [ -f shared/property-research-dock.js ]; then node --check shared/property-research-dock.js; fi
       - name: Check map integration markers
         run: |
           python3 - <<'PY'
@@ -52,6 +55,7 @@ jobs:
               'nominatim.openstreetmap.org/search',
               'Google Maps',
               'OpenStreetMap contributors',
+              'id="refreshMap"',
           ]
           missing = [item for item in required if item not in html]
           if missing:
