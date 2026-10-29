@@ -62,7 +62,7 @@ textarea{min-height:88px;resize:vertical}
 .doc strong{display:block;margin-bottom:7px;color:var(--cyan)}
 .doc span{font-size:12px;color:var(--muted);line-height:1.5}
 .status{font-size:13px;color:var(--green);min-height:18px}
-.map-wrap{padding:12px;background:#081521;border:1px solid var(--line);border-radius:14px;overflow:hidden}#propertyMap{height:430px;width:100%;border-radius:10px;background:#132433;z-index:1}.map-tools{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 12px}.map-tools .badge{align-self:center}.map-note{margin-top:10px}.leaflet-popup-content-wrapper,.leaflet-popup-tip{background:#102231;color:var(--text)}.leaflet-popup-content a{color:var(--cyan)}.leaflet-control-attribution{font-size:10px!important}
+.map-wrap{padding:12px;background:#081521;border:1px solid var(--line);border-radius:14px;overflow:hidden}#propertyMap{height:clamp(420px,58vh,680px);width:100%;min-width:0;border-radius:10px;background:#132433;z-index:1}.map-tools{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 12px}.map-tools .badge{align-self:center}.map-note{margin-top:10px}.leaflet-popup-content-wrapper,.leaflet-popup-tip{background:#102231;color:var(--text)}.leaflet-popup-content a{color:var(--cyan)}.leaflet-control-attribution{font-size:10px!important}.leaflet-control-zoom a{width:42px!important;height:42px!important;line-height:42px!important;font-size:22px!important}.map-toolbar-meta{display:flex;gap:8px;align-items:center;flex-wrap:wrap}@media(max-width:800px){#propertyMap{height:clamp(360px,65vh,560px)}}
 footer{border-top:1px solid var(--line);padding:24px 0 35px;color:var(--muted);font-size:12px;line-height:1.7}
 hr{border:0;border-top:1px solid var(--line);margin:18px 0}
 @media(max-width:800px){.hero{grid-template-columns:1fr}.span-8,.span-6,.span-4{grid-column:span 12}.result-grid{grid-template-columns:1fr}.wrap{padding:13px}.panel,.section-card{padding:16px}}
@@ -89,7 +89,8 @@ hr{border:0;border-top:1px solid var(--line);margin:18px 0}
     <h1>Property Research<br><span style="color:var(--cyan)">Intelligence™</span></h1>
     <p>Organize property leads, verify source facts, document title and sale risks, and evaluate conservative acquisition numbers before committing capital.</p>
     <div class="actions">
-      <a class="button primary" href="#intake">＋ Start Property Intake</a>
+      <a class="button primary" href="#map">🗺️ Open Property Map</a>
+      <a class="button" href="#intake">＋ Start Property Intake</a>
       <a class="button" href="#checklist">Open Due-Diligence Checklist</a>
     </div>
   </div>
@@ -101,14 +102,15 @@ hr{border:0;border-top:1px solid var(--line);margin:18px 0}
 </section>
 
 <nav class="nav" aria-label="Page sections">
-  <a href="#map">Property Map</a><a href="#intake">Property Intake</a><a href="#underwriting">Underwriting</a><a href="#checklist">Due Diligence</a><a href="#documents">Research Documents</a><a href="#records">Saved Records</a>
+  <a href="#rolyfeResearchDock">Research Dock</a><a href="#map">Property Map</a><a href="#intake">Property Intake</a><a href="#records">Saved Records</a><a href="#checklist">Due Diligence</a><a href="#underwriting">Underwriting</a><a href="#capital">Capital &amp; Brokerage</a><a href="#documents">Research Documents</a>
 </nav>
 
 <section class="section" id="map">
-  <div class="section-head"><div><div class="eyebrow">Location intelligence</div><h2>Property Map</h2></div><span class="badge" id="mapCount">0 mapped · 0 saved</span></div>
+  <div class="section-head"><div><div class="eyebrow">Location intelligence</div><h2>Property Map</h2><p class="small">Wide desktop canvas · tall mobile view · map zoom controls in the upper-right.</p></div><div class="map-toolbar-meta"><span class="badge" id="mapCount">0 mapped · 0 saved</span><span class="badge" id="mapRefreshed">Refreshed —</span></div></div>
   <div class="section-card">
     <div class="map-tools">
       <button type="button" class="primary" id="fitAllMapped">Fit mapped properties</button>
+      <button type="button" id="refreshMap" class="subtle">↻ Refresh map</button>
       <button type="button" id="recenterMap" class="subtle">Center on Philadelphia</button>
     </div>
     <div class="map-wrap"><div id="propertyMap" role="application" aria-label="Interactive map showing saved property research locations"></div></div>
@@ -154,35 +156,18 @@ hr{border:0;border-top:1px solid var(--line);margin:18px 0}
   </div>
 </section>
 
-<section class="section" id="underwriting">
-  <div class="section-head"><div><div class="eyebrow">Step 2</div><h2>Conservative Deal Calculator</h2></div><span class="badge">Editable estimates</span></div>
-  <div class="grid">
-    <div class="section-card span-8">
-      <div class="row-fields">
-        <div class="field"><label for="arv">Estimated after-repair value ($)</label><input id="arv" type="number" min="0" step="1000" value="250000"></div>
-        <div class="field"><label for="purchase">Purchase price / bid ($)</label><input id="purchase" type="number" min="0" step="500" value="100000"></div>
-        <div class="field"><label for="rehab">Rehab budget ($)</label><input id="rehab" type="number" min="0" step="500" value="40000"></div>
-        <div class="field"><label for="closing">Closing, auction & transfer costs ($)</label><input id="closing" type="number" min="0" step="100" value="8000"></div>
-        <div class="field"><label for="holding">Holding, utilities & insurance ($)</label><input id="holding" type="number" min="0" step="100" value="6000"></div>
-        <div class="field"><label for="sellingPct">Selling costs (% of exit price)</label><input id="sellingPct" type="number" min="0" max="100" step=".5" value="8"></div>
-        <div class="field"><label for="contingencyPct">Rehab contingency (%)</label><input id="contingencyPct" type="number" min="0" max="100" step="1" value="15"></div>
-        <div class="field"><label for="targetProfit">Target profit ($)</label><input id="targetProfit" type="number" min="0" step="1000" value="30000"></div>
-        <div class="field"><label for="arvConfidence">ARV confidence</label><select id="arvConfidence"><option>Not yet supported</option><option>Low — limited comps</option><option>Medium — comps need review</option><option>High — verified comparable sales</option></select></div>
-      </div>
-      <div class="actions"><button class="primary" id="calculate" type="button">Calculate Deal</button><button type="button" id="exportCalc">Export Calculation CSV</button></div>
-      <p class="small">Planning estimate only. Add financing interest, points, taxes, permits, liens, title defects, eviction, utilities, and other property-specific costs when applicable. No automated market data is being fetched.</p>
+<section class="section" id="records">
+  <div class="section-head"><div><div class="eyebrow">Local records</div><h2>Saved Property Records</h2></div></div>
+  <div class="section-card">
+    <div class="actions">
+      <button type="button" class="primary" id="exportRecords">Export Records (JSON)</button>
+      <button type="button" id="exportTable">Export Records (CSV)</button>
+      <button type="button" id="importRecords">Import JSON Backup</button>
+      <input type="file" id="importFile" accept=".json,application/json" hidden>
     </div>
-    <div class="section-card span-4">
-      <h3>Underwriting results</h3>
-      <div class="result-grid" style="grid-template-columns:1fr">
-        <div class="result"><span>Estimated total cost incl. contingency & selling</span><strong id="totalCost">$0</strong></div>
-        <div class="result"><span>Estimated net profit / (loss)</span><strong id="netProfit">$0</strong></div>
-        <div class="result"><span>Net margin on estimated exit</span><strong id="margin">0%</strong></div>
-        <div class="result"><span>Illustrative maximum offer for target profit</span><strong id="maxOffer">$0</strong></div>
-      </div>
-      <div id="dealFlag" class="callout warn" style="margin-top:12px">Enter and verify your assumptions. Results are only as reliable as the inputs.</div>
-      <p class="small">The maximum-offer estimate is a simple screening formula, not a lender decision or a substitute for a full acquisition model.</p>
-    </div>
+    <p class="small">Export records before clearing browser data or switching devices. Imported JSON replaces records with matching IDs and adds new ones. Do not store sensitive personal or financial information in this public website.</p>
+    <div id="recordsList" class="checklist" style="margin-top:14px"></div>
+    <p id="recordsStatus" class="status" aria-live="polite"></p>
   </div>
 </section>
 
@@ -217,6 +202,60 @@ hr{border:0;border-top:1px solid var(--line);margin:18px 0}
   <p class="callout warn">Auction and tax-sale procedures vary by jurisdiction. Do not assume liens are wiped out, title is clear, possession is immediate, or redemption rights do not apply. Verify the governing rules with official sources and qualified local professionals.</p>
 </section>
 
+<section class="section" id="underwriting">
+  <div class="section-head"><div><div class="eyebrow">Step 2</div><h2>Conservative Deal Calculator</h2></div><span class="badge">Editable estimates</span></div>
+  <div class="grid">
+    <div class="section-card span-8">
+      <div class="row-fields">
+        <div class="field"><label for="arv">Estimated after-repair value ($)</label><input id="arv" type="number" min="0" step="1000" value="250000"></div>
+        <div class="field"><label for="purchase">Purchase price / bid ($)</label><input id="purchase" type="number" min="0" step="500" value="100000"></div>
+        <div class="field"><label for="rehab">Rehab budget ($)</label><input id="rehab" type="number" min="0" step="500" value="40000"></div>
+        <div class="field"><label for="closing">Closing, auction & transfer costs ($)</label><input id="closing" type="number" min="0" step="100" value="8000"></div>
+        <div class="field"><label for="holding">Holding, utilities & insurance ($)</label><input id="holding" type="number" min="0" step="100" value="6000"></div>
+        <div class="field"><label for="sellingPct">Selling costs (% of exit price)</label><input id="sellingPct" type="number" min="0" max="100" step=".5" value="8"></div>
+        <div class="field"><label for="contingencyPct">Rehab contingency (%)</label><input id="contingencyPct" type="number" min="0" max="100" step="1" value="15"></div>
+        <div class="field"><label for="targetProfit">Target profit ($)</label><input id="targetProfit" type="number" min="0" step="1000" value="30000"></div>
+        <div class="field"><label for="arvConfidence">ARV confidence</label><select id="arvConfidence"><option>Not yet supported</option><option>Low — limited comps</option><option>Medium — comps need review</option><option>High — verified comparable sales</option></select></div>
+      </div>
+      <div class="actions"><button class="primary" id="calculate" type="button">Calculate Deal</button><button type="button" id="exportCalc">Export Calculation CSV</button></div>
+      <p class="small">Planning estimate only. Add financing interest, points, taxes, permits, liens, title defects, eviction, utilities, and other property-specific costs when applicable. No automated market data is being fetched.</p>
+    </div>
+    <div class="section-card span-4">
+      <h3>Underwriting results</h3>
+      <div class="result-grid" style="grid-template-columns:1fr">
+        <div class="result"><span>Estimated total cost incl. contingency & selling</span><strong id="totalCost">$0</strong></div>
+        <div class="result"><span>Estimated net profit / (loss)</span><strong id="netProfit">$0</strong></div>
+        <div class="result"><span>Net margin on estimated exit</span><strong id="margin">0%</strong></div>
+        <div class="result"><span>Illustrative maximum offer for target profit</span><strong id="maxOffer">$0</strong></div>
+      </div>
+      <div id="dealFlag" class="callout warn" style="margin-top:12px">Enter and verify your assumptions. Results are only as reliable as the inputs.</div>
+      <p class="small">The maximum-offer estimate is a simple screening formula, not a lender decision or a substitute for a full acquisition model.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="capital">
+  <div class="section-head"><div><div class="eyebrow">Step 6</div><h2>Capital &amp; Brokerage Handoff</h2></div><span class="badge">Decision package → next action</span></div>
+  <div class="grid">
+    <div class="section-card span-4">
+      <h3>🏦 Capital routes</h3>
+      <p class="muted">Compare lender and funding-partner routes after the property facts, costs, timeline, and borrower requirements are documented.</p>
+      <a class="button primary" href="https://rolrichman.github.io/rolyfe-funding/" target="_blank" rel="noopener noreferrer">Open Funding &amp; Capital Hub ↗</a>
+    </div>
+    <div class="section-card span-4">
+      <h3>🏗️ Deal and auction execution</h3>
+      <p class="muted">Move the deal package into the acquisition workflow to organize bid terms, rehab, contractor scope, comps, and the capital plan.</p>
+      <a class="button" href="https://rolrichman.github.io/ro-lyfe-auction-capital-machine/" target="_blank" rel="noopener noreferrer">Open Auction Capital Machine ↗</a>
+    </div>
+    <div class="section-card span-4">
+      <h3>📄 Brokerage and closing documents</h3>
+      <p class="muted">Review broker/referral terms, acknowledgments, diligence documents, and closing handoff items in the document workspace.</p>
+      <a class="button" href="https://rolrichman.github.io/rolyfe-contract-documents-hub/" target="_blank" rel="noopener noreferrer">Open Contract Documents Hub ↗</a>
+    </div>
+    <div class="span-12 callout">Recommended handoff packet: verified address and parcel; official sale notice and deadline; source-dated comparable sales; rehab scope and contingency; conservative ARV and maximum-offer estimate; taxes, liens, title and possession questions; funding amount and cash-to-close; exit plan; and open risks. A referral or brokerage workflow is not a lending approval or guarantee of funding. Keep sensitive borrower information out of this public static page and browser-only research record.</div>
+  </div>
+</section>
+
 <section class="section" id="documents">
   <div class="section-head"><div><div class="eyebrow">Reference library</div><h2>Research Documents</h2></div></div>
   <div class="doc-grid">
@@ -232,20 +271,10 @@ hr{border:0;border-top:1px solid var(--line);margin:18px 0}
   <p class="small">These links expect the Markdown files to be in the repository root beside index.html. If a file name or location differs, update the link to match the repository.</p>
 </section>
 
-<section class="section" id="records">
-  <div class="section-head"><div><div class="eyebrow">Local records</div><h2>Saved Property Records</h2></div></div>
-  <div class="section-card">
-    <div class="actions">
-      <button type="button" class="primary" id="exportRecords">Export Records (JSON)</button>
-      <button type="button" id="exportTable">Export Records (CSV)</button>
-      <button type="button" id="importRecords">Import JSON Backup</button>
-      <input type="file" id="importFile" accept=".json,application/json" hidden>
-    </div>
-    <p class="small">Export records before clearing browser data or switching devices. Imported JSON replaces records with matching IDs and adds new ones. Do not store sensitive personal or financial information in this public website.</p>
-    <div id="recordsList" class="checklist" style="margin-top:14px"></div>
-    <p id="recordsStatus" class="status" aria-live="polite"></p>
-  </div>
-</section>
+
+
+
+
 </main>
 
 <footer>
@@ -256,6 +285,7 @@ hr{border:0;border-top:1px solid var(--line);margin:18px 0}
 </div>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script src="https://rolrichman.github.io/rolyfe-property-research-intelligence/shared/property-research-dock.js"></script>
 <script>
 (function(){
 "use strict";
@@ -267,6 +297,7 @@ let lastCalculation = {};
 const MAP_TILE_URL = "https://tile.openstreetmap.org/{z}/{x}/{y}.png";
 let propertyMap = null;
 let propertyLayer = null;
+let propertyTileLayer = null;
 let lastGeocodeAt = 0;
 let mapActionQueue = Promise.resolve();
 
@@ -295,18 +326,21 @@ function initPropertyMap(){
     $("mapStatus").textContent="Map library did not load. Check your connection and refresh the page.";
     return;
   }
-  propertyMap=L.map("propertyMap",{scrollWheelZoom:false}).setView([39.9526,-75.1636],10);
-  L.tileLayer(MAP_TILE_URL,{
+  propertyMap=L.map("propertyMap",{scrollWheelZoom:false,zoomControl:false}).setView([39.9526,-75.1636],10);
+  L.control.zoom({position:"topright"}).addTo(propertyMap);
+  propertyTileLayer=L.tileLayer(MAP_TILE_URL,{
     maxZoom:19,
     attribution:'&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap contributors</a>'
   }).addTo(propertyMap);
   propertyLayer=L.featureGroup().addTo(propertyMap);
+  $("refreshMap").addEventListener("click",refreshPropertyMap);
   $("fitAllMapped").addEventListener("click",fitMappedProperties);
   $("recenterMap").addEventListener("click",()=>{
     if(propertyMap) propertyMap.setView([39.9526,-75.1636],10);
     $("mapStatus").textContent="Map centered on Philadelphia. Use “Locate on map” on a saved property to place its pin.";
   });
   renderMapMarkers();
+  $("mapRefreshed").textContent="Loaded "+new Date().toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"});
   window.setTimeout(()=>propertyMap && propertyMap.invalidateSize(),150);
 }
 function hasCoordinates(record){
@@ -341,6 +375,28 @@ function renderMapMarkers(){
     $("mapStatus").textContent=mapped.length+" property location"+(mapped.length===1?"":"s")+" mapped. Select a pin for the saved record details.";
   }
 }
+function refreshPropertyMap(){
+  if(!propertyMap || !propertyLayer){
+    $("mapStatus").textContent="Map is not ready yet. Check the connection, then refresh the page.";
+    return;
+  }
+  records=loadRecords();
+  renderRecords();
+  renderMapMarkers();
+  propertyMap.invalidateSize({pan:false});
+  if(propertyTileLayer) propertyTileLayer.redraw();
+  const now=new Date();
+  $("mapRefreshed").textContent="Refreshed "+now.toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"});
+  $("mapStatus").textContent="Map refreshed at "+now.toLocaleString()+". Showing "+records.filter(hasCoordinates).length+" saved map pin(s). This refreshes local pins and map tiles; it does not fetch new listings, tax balances, auction dates, or comparable sales.";
+}
+window.rolyfeRefreshPropertyMap=refreshPropertyMap;
+window.addEventListener("storage",function(event){
+  if(event.key===STORE_KEY || event.key===null){
+    records=loadRecords();
+    renderRecords();
+    renderMapMarkers();
+  }
+});
 function fitMappedProperties(){
   if(!propertyMap || !propertyLayer) return;
   if(propertyLayer.getLayers().length===0){
@@ -362,6 +418,7 @@ async function locateRecord(id){
     $("mapStatus").textContent="The map is not available yet. Check the connection and refresh the page.";
     return;
   }
+  $("map").scrollIntoView({behavior:"smooth",block:"start"});
   if(hasCoordinates(record)){
     renderMapMarkers();
     propertyMap.setView([Number(record.latitude),Number(record.longitude)],16);

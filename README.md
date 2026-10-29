@@ -110,3 +110,12 @@ The browser-based Property Map uses Leaflet with an OpenStreetMap tile layer and
 - **Accuracy boundary:** map pins are approximate address matches. Verify location and parcel boundaries against authoritative county/municipal GIS and property records.
 - **Provider boundary:** the public OpenStreetMap tile service and public Nominatim instance have usage restrictions and no production availability guarantee. For wider commercial usage, select a provider whose contract and service limits fit the application, or operate a suitable self-hosted service. Keep attribution and the provider's terms in place when switching providers.
 
+## Shared Property Research Dock
+
+The reusable client-side component lives at shared/property-research-dock.js. It provides a consistent entry point across RO’Lyfe GitHub Pages sites for map navigation, listings/comps, auction and tax-sale portals, official property/tax research, parcel data, flood maps, funding routes, and closing documents. Related sites load it with this script tag:
+
+    <script src="https://rolrichman.github.io/rolyfe-property-research-intelligence/shared/property-research-dock.js"></script>
+
+The dock opens providers or address-targeted web searches; it does not scrape sites or claim to retrieve verified live listing, ownership, lien, tax, or comparable-sales data. Its optional recent-property selector reads the existing rolyfe_property_research_records_v1 browser-local storage key on the rolrichman.github.io origin. This works across pages on that origin in the same browser profile, but it does not sync devices or provide user authentication. Do not place sensitive borrower, tenant, owner, or financial information in these public static pages.
+
+For consistent workflow design, use the sequence Find → Capture → Verify → Underwrite → Plan Capital → Close/Review, with source links and review dates attached to every material fact. See PROPERTY_RESEARCH_STANDARD.md for the shared workflow and field standard.
