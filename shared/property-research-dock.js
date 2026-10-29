@@ -43,6 +43,7 @@
     { id: "homes", label: "Homes.com", group: "Listings & comps", domain: "homes.com", direct: "https://www.homes.com/" },
     { id: "auction", label: "Auction.com", group: "Auctions & tax sales", domain: "auction.com", direct: "https://www.auction.com/" },
     { id: "bid4assets", label: "Bid4Assets", group: "Auctions & tax sales", domain: "bid4assets.com", direct: "https://www.bid4assets.com/" },
+    { id: "phila-sheriff", label: "Philadelphia Sheriff Sales", group: "Auctions & tax sales", domain: "phillysheriff.com", direct: "https://phillysheriff.com/property-listing/" },
     { id: "govease", label: "GovEase tax sales", group: "Auctions & tax sales", domain: "govease.com", direct: "https://www.govease.com/tax-sale-property-auctions" },
     { id: "realauction", label: "RealAuction", group: "Auctions & tax sales", domain: "realauction.com", direct: "https://www.realauction.com/" },
     { id: "lienhub", label: "LienHub", group: "Auctions & tax sales", domain: "lienhub.com", direct: "https://www.google.com/search?q=LienHub+official+tax+sale+portal" },
