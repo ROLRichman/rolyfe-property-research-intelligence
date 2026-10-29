@@ -6,6 +6,7 @@
 <meta name="description" content="RO’Lyfe Property Research Intelligence™ — property intake, due-diligence workflow, conservative acquisition underwriting, and source verification.">
 <meta name="theme-color" content="#07111b">
 <title>RO’Lyfe Property Research Intelligence™</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
 <style>
 :root{--bg:#07111b;--panel:#0e1d2b;--panel2:#122638;--line:#274357;--text:#f3f8fc;--muted:#b4c7d6;--cyan:#64e4ed;--green:#7ef0b2;--gold:#ffd27a;--red:#ff9b9b}
 *{box-sizing:border-box}
@@ -61,6 +62,7 @@ textarea{min-height:88px;resize:vertical}
 .doc strong{display:block;margin-bottom:7px;color:var(--cyan)}
 .doc span{font-size:12px;color:var(--muted);line-height:1.5}
 .status{font-size:13px;color:var(--green);min-height:18px}
+.map-wrap{padding:12px;background:#081521;border:1px solid var(--line);border-radius:14px;overflow:hidden}#propertyMap{height:430px;width:100%;border-radius:10px;background:#132433;z-index:1}.map-tools{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 12px}.map-tools .badge{align-self:center}.map-note{margin-top:10px}.leaflet-popup-content-wrapper,.leaflet-popup-tip{background:#102231;color:var(--text)}.leaflet-popup-content a{color:var(--cyan)}.leaflet-control-attribution{font-size:10px!important}
 footer{border-top:1px solid var(--line);padding:24px 0 35px;color:var(--muted);font-size:12px;line-height:1.7}
 hr{border:0;border-top:1px solid var(--line);margin:18px 0}
 @media(max-width:800px){.hero{grid-template-columns:1fr}.span-8,.span-6,.span-4{grid-column:span 12}.result-grid{grid-template-columns:1fr}.wrap{padding:13px}.panel,.section-card{padding:16px}}
@@ -99,14 +101,28 @@ hr{border:0;border-top:1px solid var(--line);margin:18px 0}
 </section>
 
 <nav class="nav" aria-label="Page sections">
-  <a href="#intake">Property Intake</a><a href="#underwriting">Underwriting</a><a href="#checklist">Due Diligence</a><a href="#documents">Research Documents</a><a href="#records">Saved Records</a>
+  <a href="#map">Property Map</a><a href="#intake">Property Intake</a><a href="#underwriting">Underwriting</a><a href="#checklist">Due Diligence</a><a href="#documents">Research Documents</a><a href="#records">Saved Records</a>
 </nav>
+
+<section class="section" id="map">
+  <div class="section-head"><div><div class="eyebrow">Location intelligence</div><h2>Property Map</h2></div><span class="badge" id="mapCount">0 mapped · 0 saved</span></div>
+  <div class="section-card">
+    <div class="map-tools">
+      <button type="button" class="primary" id="fitAllMapped">Fit mapped properties</button>
+      <button type="button" id="recenterMap" class="subtle">Center on Philadelphia</button>
+    </div>
+    <div class="map-wrap"><div id="propertyMap" role="application" aria-label="Interactive map showing saved property research locations"></div></div>
+    <p id="mapStatus" class="status" aria-live="polite">Map starting. Save a property, then choose “Locate on map” on its saved record to add a pin.</p>
+    <p class="small map-note">Address pins are approximate geocoding matches, not surveyed locations, parcel outlines, ownership verification, comps, or live listing data. When you choose “Locate on map,” the property address is sent to OpenStreetMap’s public Nominatim search service and the returned coordinates are saved in this browser. No automatic geocoding or autocomplete runs in the background. See the <a href="https://operations.osmfoundation.org/policies/nominatim/" target="_blank" rel="noopener noreferrer">Nominatim usage policy</a>. This prototype uses public OpenStreetMap tiles with attribution; before broad commercial traffic, configure an appropriate tile provider or self-hosted service in accordance with its terms.</p>
+  </div>
+</section>
 
 <section class="section" id="intake">
   <div class="section-head"><div><div class="eyebrow">Step 1</div><h2>Property Intake</h2></div><span class="badge">Local browser workspace</span></div>
   <div class="grid">
     <div class="section-card span-8">
       <form id="propertyForm">
+        <input type="hidden" id="latitude" name="latitude" value=""><input type="hidden" id="longitude" name="longitude" value="">
         <div class="row-fields">
           <div class="field"><label for="address">Property address *</label><input id="address" name="address" required placeholder="Street, city, state, ZIP"></div>
           <div class="field"><label for="parcel">Parcel / APN</label><input id="parcel" name="parcel" placeholder="Parcel identification number"></div>
@@ -239,6 +255,7 @@ hr{border:0;border-top:1px solid var(--line);margin:18px 0}
 </footer>
 </div>
 
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 <script>
 (function(){
 "use strict";
@@ -247,6 +264,11 @@ const STORE_KEY = "rolyfe_property_research_records_v1";
 const CHECK_KEY = "rolyfe_property_research_checks_v1";
 let records = loadRecords();
 let lastCalculation = {};
+const MAP_TILE_URL = "https://tile.openstreetmap.org/{z}/{x}/{y}.png";
+let propertyMap = null;
+let propertyLayer = null;
+let lastGeocodeAt = 0;
+let mapActionQueue = Promise.resolve();
 
 function safeRead(key, fallback){
   try { const value = localStorage.getItem(key); return value ? JSON.parse(value) : fallback; }
@@ -266,6 +288,121 @@ function money(n){
 function val(id){ const n = Number($(id).value); return Number.isFinite(n) && n >= 0 ? n : 0; }
 function escapeHtml(value){
   return String(value ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+}
+function initPropertyMap(){
+  if(!document.getElementById("propertyMap")) return;
+  if(!window.L){
+    $("mapStatus").textContent="Map library did not load. Check your connection and refresh the page.";
+    return;
+  }
+  propertyMap=L.map("propertyMap",{scrollWheelZoom:false}).setView([39.9526,-75.1636],10);
+  L.tileLayer(MAP_TILE_URL,{
+    maxZoom:19,
+    attribution:'&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap contributors</a>'
+  }).addTo(propertyMap);
+  propertyLayer=L.featureGroup().addTo(propertyMap);
+  $("fitAllMapped").addEventListener("click",fitMappedProperties);
+  $("recenterMap").addEventListener("click",()=>{
+    if(propertyMap) propertyMap.setView([39.9526,-75.1636],10);
+    $("mapStatus").textContent="Map centered on Philadelphia. Use “Locate on map” on a saved property to place its pin.";
+  });
+  renderMapMarkers();
+  window.setTimeout(()=>propertyMap && propertyMap.invalidateSize(),150);
+}
+function hasCoordinates(record){
+  return record && record.latitude!=="" && record.longitude!=="" &&
+    record.latitude!==undefined && record.longitude!==undefined &&
+    Number.isFinite(Number(record.latitude)) && Number.isFinite(Number(record.longitude)) &&
+    Number(record.latitude)>=-90 && Number(record.latitude)<=90 &&
+    Number(record.longitude)>=-180 && Number(record.longitude)<=180;
+}
+function renderMapMarkers(){
+  if(!propertyMap || !propertyLayer) return;
+  propertyLayer.clearLayers();
+  const mapped=records.filter(hasCoordinates);
+  mapped.forEach(record=>{
+    const marker=L.marker([Number(record.latitude),Number(record.longitude)]);
+    const address=escapeHtml(record.address || "Unnamed property");
+    const details=[
+      record.county ? escapeHtml(record.county) : "",
+      record.state ? escapeHtml(record.state) : "",
+      record.saleType ? escapeHtml(record.saleType) : "",
+      record.status ? escapeHtml(record.status) : ""
+    ].filter(Boolean).join(" · ");
+    const source=record.sourceUrl && /^https?:\/\//i.test(record.sourceUrl)
+      ? '<br><a href="'+escapeHtml(record.sourceUrl)+'" target="_blank" rel="noopener noreferrer">Open recorded source</a>' : "";
+    marker.bindPopup("<strong>"+address+"</strong><br>"+details+source);
+    marker.addTo(propertyLayer);
+  });
+  $("mapCount").textContent=mapped.length+" mapped · "+records.length+" saved";
+  if(mapped.length===0){
+    $("mapStatus").textContent="No properties mapped yet. Use “Locate on map” on any saved property record to place a pin.";
+  } else {
+    $("mapStatus").textContent=mapped.length+" property location"+(mapped.length===1?"":"s")+" mapped. Select a pin for the saved record details.";
+  }
+}
+function fitMappedProperties(){
+  if(!propertyMap || !propertyLayer) return;
+  if(propertyLayer.getLayers().length===0){
+    $("mapStatus").textContent="There are no mapped properties yet. Open a saved record below and choose “Locate on map”.";
+    return;
+  }
+  propertyMap.fitBounds(propertyLayer.getBounds().pad(0.15),{maxZoom:14});
+}
+function queueLocateRecord(id){
+  mapActionQueue=mapActionQueue.then(()=>locateRecord(id)).catch(error=>{
+    $("mapStatus").textContent="Map action failed: "+(error && error.message ? error.message : "unknown error");
+  });
+  return mapActionQueue;
+}
+async function locateRecord(id){
+  const record=records.find(item=>item.id===id);
+  if(!record) return;
+  if(!propertyMap){
+    $("mapStatus").textContent="The map is not available yet. Check the connection and refresh the page.";
+    return;
+  }
+  if(hasCoordinates(record)){
+    renderMapMarkers();
+    propertyMap.setView([Number(record.latitude),Number(record.longitude)],16);
+    $("mapStatus").textContent="Showing saved map pin for "+(record.address||"this property")+". The pin is an approximate address match.";
+    return;
+  }
+  if(!record.address || !record.address.trim()){
+    $("mapStatus").textContent="This record has no street address to locate.";
+    return;
+  }
+  const wait=Math.max(0,1100-(Date.now()-lastGeocodeAt));
+  if(wait) await new Promise(resolve=>window.setTimeout(resolve,wait));
+  lastGeocodeAt=Date.now();
+  $("mapStatus").textContent="Locating address… one address lookup is sent to OpenStreetMap at a time.";
+  try{
+    const url="https://nominatim.openstreetmap.org/search?format=jsonv2&limit=1&q="+encodeURIComponent(record.address.trim());
+    const response=await fetch(url,{headers:{Accept:"application/json"},referrerPolicy:"strict-origin-when-cross-origin"});
+    if(!response.ok) throw new Error("Address lookup returned HTTP "+response.status+". Try again later or enter coordinates from a trusted source.");
+    const matches=await response.json();
+    if(!Array.isArray(matches) || !matches.length){
+      $("mapStatus").textContent="No map match found for "+record.address+". Check the address or use an authoritative parcel/GIS source.";
+      return;
+    }
+    const lat=Number(matches[0].lat), lon=Number(matches[0].lon);
+    if(!Number.isFinite(lat)||!Number.isFinite(lon)||lat < -90||lat > 90||lon < -180||lon > 180) throw new Error("The lookup did not return valid coordinates.");
+    record.latitude=lat;
+    record.longitude=lon;
+    record.geoSource="OpenStreetMap Nominatim";
+    record.geoCheckedAt=new Date().toISOString();
+    if(!saveRecords()) throw new Error("Coordinates found, but the browser could not save the property record.");
+    if($("propertyForm").dataset.editId===id){
+      $("latitude").value=String(lat);
+      $("longitude").value=String(lon);
+    }
+    renderRecords();
+    renderMapMarkers();
+    propertyMap.setView([lat,lon],16);
+    $("mapStatus").textContent="Approximate address pin added for "+record.address+". Confirm the location against county parcel/GIS records before relying on it.";
+  }catch(error){
+    $("mapStatus").textContent="Could not locate this address: "+(error && error.message ? error.message : "network error")+". You can still open the address in Google Maps using the saved record.";
+  }
 }
 function download(filename, content, type){
   const blob = new Blob([content],{type:type || "text/plain;charset=utf-8"});
@@ -297,6 +434,7 @@ $("propertyForm").addEventListener("submit", function(e){
   }
   if(saveRecords()){
     renderRecords();
+    renderMapMarkers();
     $("formStatus").textContent = editId ? "Property record updated in this browser." : "Property record saved in this browser.";
     resetForm();
     $("records").scrollIntoView({behavior:"smooth",block:"start"});
@@ -365,10 +503,11 @@ function renderRecords(){
     <div class="small" style="margin-top:8px">${escapeHtml(r.saleType || "")} · ${escapeHtml(r.propertyType || "")} · Updated ${escapeHtml((r.updatedAt||"").slice(0,10))}</div>
     ${r.notes?`<p class="small">${escapeHtml(r.notes)}</p>`:""}
     ${r.sourceUrl?`<p><a href="${escapeHtml(r.sourceUrl)}" target="_blank" rel="noopener noreferrer">Open recorded source ↗</a></p>`:""}
-    <div class="actions"><button type="button" data-edit="${escapeHtml(r.id)}">Edit</button><button type="button" class="danger" data-delete="${escapeHtml(r.id)}">Delete</button></div>
+    <div class="actions"><button type="button" data-edit="${escapeHtml(r.id)}">Edit</button><button type="button" data-map="${escapeHtml(r.id)}">${hasCoordinates(r)?"Show on map":"Locate on map"}</button><button type="button" class="danger" data-delete="${escapeHtml(r.id)}">Delete</button></div>
   </article>`).join("");
   list.querySelectorAll("[data-edit]").forEach(btn=>btn.addEventListener("click",()=>editRecord(btn.dataset.edit)));
   list.querySelectorAll("[data-delete]").forEach(btn=>btn.addEventListener("click",()=>deleteRecord(btn.dataset.delete)));
+  list.querySelectorAll("[data-map]").forEach(btn=>btn.addEventListener("click",()=>queueLocateRecord(btn.dataset.map)));
 }
 function editRecord(id){
   const record=records.find(r=>r.id===id); if(!record)return;
@@ -381,7 +520,7 @@ function editRecord(id){
 function deleteRecord(id){
   const record=records.find(r=>r.id===id);
   if(!record || !confirm("Delete this property record from this browser?"))return;
-  records=records.filter(r=>r.id!==id);saveRecords();renderRecords();
+  records=records.filter(r=>r.id!==id);saveRecords();renderRecords();renderMapMarkers();
   $("recordsStatus").textContent="Property record deleted.";
 }
 $("exportRecords").addEventListener("click",()=>{
@@ -405,11 +544,13 @@ $("importFile").addEventListener("change",async function(){
     const map=new Map(records.map(r=>[r.id,r]));
     incoming.forEach((r,i)=>{if(r && typeof r==="object"){const id=r.id||("import-"+Date.now()+"-"+i);map.set(id,{...r,id})}});
     records=[...map.values()];
-    if(saveRecords()){renderRecords();$("recordsStatus").textContent="JSON backup imported and merged."}
+    if(saveRecords()){renderRecords();renderMapMarkers();$("recordsStatus").textContent="JSON backup imported and merged."}
   }catch(err){$("recordsStatus").textContent="Import failed: "+err.message}
   this.value="";
 });
+initPropertyMap();
 renderRecords();
+renderMapMarkers();
 })();
 </script>
 </body>
