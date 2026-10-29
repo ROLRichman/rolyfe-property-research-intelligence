@@ -99,3 +99,14 @@ rolyfe-property-research-intelligence/
 ## Disclaimer
 
 This repository supports research and preliminary analysis. It does not provide legal, tax, title, appraisal, engineering, lending, or investment advice. Verify all material facts with official records and qualified professionals. Auction rules, redemption periods, lien effects, and closing requirements vary by jurisdiction and sale type.
+
+## Interactive property map (v1)
+
+The browser-based Property Map uses Leaflet with an OpenStreetMap tile layer and allows a user to locate an individual saved property from its record card. It does not require a Google Maps JavaScript API key for this initial prototype.
+
+- **User-initiated lookup only:** selecting **Locate on map** sends that record's street address to the public OpenStreetMap Nominatim search endpoint. The application does not run background lookups or address autocomplete, and requests are serialized with at least a 1.1-second interval.
+- **Local coordinate storage:** a successful address match is stored with the property record in this browser. Coordinates are not shared between devices and the lookup does not verify a parcel boundary.
+- **Google Maps shortcut:** each saved record with an address can open a Google Maps search page. That is a consumer map link, not a Google Maps API integration.
+- **Accuracy boundary:** map pins are approximate address matches. Verify location and parcel boundaries against authoritative county/municipal GIS and property records.
+- **Provider boundary:** the public OpenStreetMap tile service and public Nominatim instance have usage restrictions and no production availability guarantee. For wider commercial usage, select a provider whose contract and service limits fit the application, or operate a suitable self-hosted service. Keep attribution and the provider's terms in place when switching providers.
+
