@@ -62,7 +62,7 @@ textarea{min-height:88px;resize:vertical}
 .doc strong{display:block;margin-bottom:7px;color:var(--cyan)}
 .doc span{font-size:12px;color:var(--muted);line-height:1.5}
 .status{font-size:13px;color:var(--green);min-height:18px}
-.map-wrap{padding:12px;background:#081521;border:1px solid var(--line);border-radius:14px;overflow:hidden}#propertyMap{height:clamp(420px,58vh,680px);width:100%;min-width:0;border-radius:10px;background:#132433;z-index:1}.map-tools{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 12px}.map-tools .badge{align-self:center}.map-note{margin-top:10px}.leaflet-popup-content-wrapper,.leaflet-popup-tip{background:#102231;color:var(--text)}.leaflet-popup-content a{color:var(--cyan)}.leaflet-control-attribution{font-size:10px!important}.leaflet-control-zoom a{width:42px!important;height:42px!important;line-height:42px!important;font-size:22px!important}.map-toolbar-meta{display:flex;gap:8px;align-items:center;flex-wrap:wrap}@media(max-width:800px){#propertyMap{height:clamp(360px,65vh,560px)}}
+.map-wrap{padding:12px;background:#081521;border:1px solid var(--line);border-radius:14px;overflow:hidden}#propertyMap{height:var(--property-map-height,580px);width:100%;min-width:0;border-radius:10px;background:#132433;z-index:1}.map-tools{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 12px}.map-tools .badge{align-self:center}.map-height-control{display:grid;grid-template-columns:1fr auto;gap:8px 14px;align-items:center;margin:0 0 14px;padding:12px;border:1px solid var(--line);border-radius:12px;background:#0a1925}.map-height-control label{font-weight:700;color:var(--text)}.map-height-control output{font-size:13px;color:var(--cyan);font-variant-numeric:tabular-nums}.map-height-control input[type=range]{grid-column:1/-1;width:100%;padding:0;margin:0;accent-color:var(--cyan);cursor:pointer;min-height:28px;background:transparent}.map-height-scale{grid-column:1/-1;display:flex;justify-content:space-between;gap:10px;color:var(--muted);font-size:11px}.map-note{margin-top:10px}.leaflet-popup-content-wrapper,.leaflet-popup-tip{background:#102231;color:var(--text)}.leaflet-popup-content a{color:var(--cyan)}.leaflet-control-attribution{font-size:10px!important}.leaflet-control-zoom a{width:42px!important;height:42px!important;line-height:42px!important;font-size:22px!important}.map-toolbar-meta{display:flex;gap:8px;align-items:center;flex-wrap:wrap}@media(max-width:800px){#propertyMap{height:clamp(360px,65vh,560px)}}
 footer{border-top:1px solid var(--line);padding:24px 0 35px;color:var(--muted);font-size:12px;line-height:1.7}
 hr{border:0;border-top:1px solid var(--line);margin:18px 0}
 @media(max-width:800px){.hero{grid-template-columns:1fr}.span-8,.span-6,.span-4{grid-column:span 12}.result-grid{grid-template-columns:1fr}.wrap{padding:13px}.panel,.section-card{padding:16px}}
@@ -112,6 +112,12 @@ hr{border:0;border-top:1px solid var(--line);margin:18px 0}
       <button type="button" class="primary" id="fitAllMapped">Fit mapped properties</button>
       <button type="button" id="refreshMap" class="subtle">↻ Refresh map</button>
       <button type="button" id="recenterMap" class="subtle">Center on Philadelphia</button>
+    </div>
+    <div class="map-height-control">
+      <label for="mapHeightSlider">Adjust map height</label>
+      <output id="mapHeightValue" for="mapHeightSlider">580 px</output>
+      <input id="mapHeightSlider" type="range" min="280" max="900" step="20" value="580" aria-label="Map height in pixels">
+      <div class="map-height-scale"><span>Compact · 280 px</span><span>Tall · 900 px</span></div>
     </div>
     <div class="map-wrap"><div id="propertyMap" role="application" aria-label="Interactive map showing saved property research locations"></div></div>
     <p id="mapStatus" class="status" aria-live="polite">Map starting. Save a property, then choose “Locate on map” on its saved record to add a pin.</p>
@@ -319,6 +325,29 @@ function money(n){
 function val(id){ const n = Number($(id).value); return Number.isFinite(n) && n >= 0 ? n : 0; }
 function escapeHtml(value){
   return String(value ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+}
+function initMapHeightControl(){
+  const slider=$("mapHeightSlider");
+  const output=$("mapHeightValue");
+  if(!slider || !output) return;
+  const key="rolyfe_property_map_height_v1";
+  let saved=580;
+  try{
+    const stored=Number(localStorage.getItem(key));
+    if(Number.isFinite(stored) && stored>=280 && stored<=900) saved=Math.round(stored/20)*20;
+  }catch(_){}
+  const applyHeight=(value)=>{
+    const height=Math.max(280,Math.min(900,Math.round(Number(value)/20)*20));
+    document.documentElement.style.setProperty("--property-map-height",height+"px");
+    slider.value=String(height);
+    output.value=height+" px";
+    output.textContent=height+" px";
+    try{localStorage.setItem(key,String(height));}catch(_){}
+    if(propertyMap) window.setTimeout(()=>propertyMap && propertyMap.invalidateSize({pan:false}),80);
+  };
+  slider.value=String(saved);
+  applyHeight(saved);
+  slider.addEventListener("input",()=>applyHeight(slider.value));
 }
 function initPropertyMap(){
   if(!document.getElementById("propertyMap")) return;
@@ -605,6 +634,7 @@ $("importFile").addEventListener("change",async function(){
   }catch(err){$("recordsStatus").textContent="Import failed: "+err.message}
   this.value="";
 });
+initMapHeightControl();
 initPropertyMap();
 renderRecords();
 renderMapMarkers();
