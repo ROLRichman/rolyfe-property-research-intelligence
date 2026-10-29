@@ -1,0 +1,60 @@
+name: Property Research Checks
+
+on:
+  pull_request:
+    paths:
+      - "index.html"
+      - ".github/workflows/property-research-checks.yml"
+  push:
+    branches:
+      - main
+    paths:
+      - "index.html"
+      - ".github/workflows/property-research-checks.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  validate-page:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Check embedded JavaScript syntax
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import re
+          from pathlib import Path
+
+          html = Path("index.html").read_text(encoding="utf-8")
+          scripts = re.findall(r'<script(?![^>]*\\bsrc=)[^>]*>(.*?)</script>', html, re.I | re.S)
+          if not scripts:
+              raise SystemExit("No inline JavaScript block found.")
+          Path("/tmp/rolyfe-inline-check.js").write_text("\\n".join(scripts), encoding="utf-8")
+          print(f"Found {len(scripts)} inline JavaScript block(s).")
+          PY
+          node --check /tmp/rolyfe-inline-check.js
+      - name: Check map integration markers
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          html = Path("index.html").read_text(encoding="utf-8")
+          required = [
+              'id="propertyMap"',
+              'id="mapStatus"',
+              'nominatim.openstreetmap.org/search',
+              'Google Maps',
+              'OpenStreetMap contributors',
+          ]
+          missing = [item for item in required if item not in html]
+          if missing:
+              raise SystemExit("Missing required map feature markers: " + ", ".join(missing))
+          print("Map feature markers are present.")
+          PY
