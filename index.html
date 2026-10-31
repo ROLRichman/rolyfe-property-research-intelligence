@@ -67,6 +67,27 @@ footer{border-top:1px solid var(--line);padding:24px 0 35px;color:var(--muted);f
 hr{border:0;border-top:1px solid var(--line);margin:18px 0}
 @media(max-width:800px){.hero{grid-template-columns:1fr}.span-8,.span-6,.span-4{grid-column:span 12}.result-grid{grid-template-columns:1fr}.wrap{padding:13px}.panel,.section-card{padding:16px}}
 @media(max-width:440px){.row-fields{grid-template-columns:1fr}.hero h1{font-size:31px}.topbar{align-items:flex-start}}
+
+.map-weather-panel{margin:14px 0;padding:14px;border:1px solid var(--line);border-radius:14px;background:#0a1925;color:var(--text)}
+.map-weather-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;margin-bottom:10px}
+.map-weather-head strong,.map-nearby-tools strong{font-size:14px}
+.map-weather-head p,.map-nearby-tools p{margin:4px 0 0;color:var(--muted);font-size:11px;line-height:1.45}
+.map-weather-refresh,.map-weather-card button{border:1px solid #315c76;border-radius:8px;padding:8px 10px;background:#123047;color:#eaf8ff;font-size:11px;font-weight:800;cursor:pointer}
+.map-weather-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}
+.map-weather-card{min-width:0;padding:10px;border:1px solid var(--line);border-radius:10px;background:#0c2030}
+.map-weather-card label,.map-nearby-tools label{display:grid;gap:5px;font-size:10px;color:#a9bdcf;font-weight:800}
+.map-weather-card select,.map-nearby-tools select{width:100%;min-width:0;padding:9px;background:#071522;color:#f0f7fd;border:1px solid #31516b;border-radius:8px;font-size:11px}
+.map-weather-card button{width:100%;margin-top:7px}
+.map-weather-result{min-height:76px;margin-top:8px;font-size:11px;line-height:1.45;color:#bdcad8}
+.map-weather-result strong{display:block;color:#fff;font-size:24px;line-height:1.2;margin:3px 0}
+.map-weather-result small{display:block;color:#91a8bc;font-size:9px}
+.map-nearby-tools{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(130px,.7fr) minmax(160px,.8fr) auto;align-items:end;gap:9px;margin-top:12px;padding-top:11px;border-top:1px solid var(--line)}
+.map-nearby-results{margin-top:9px;font-size:11px;color:#b8c9d9;line-height:1.5}
+.map-nearby-results ul{margin:7px 0 0;padding-left:19px;display:grid;gap:5px}
+.map-nearby-results button{margin-left:6px;border:1px solid #31516b;border-radius:7px;background:#102a3d;color:#dff6ff;padding:4px 7px;font-size:9px}
+.map-weather-source{margin:10px 0 0;color:#8ea4b8;font-size:9px;line-height:1.45}
+@media(max-width:800px){.map-weather-grid{grid-template-columns:1fr}.map-nearby-tools{grid-template-columns:1fr 1fr}.map-nearby-tools>div{grid-column:1/-1}.map-nearby-tools button{width:100%}}
+@media(min-width:801px) and (max-width:1100px){.map-weather-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.map-weather-card:last-child{grid-column:1/-1}}
 </style>
 </head>
 <body>
@@ -119,6 +140,26 @@ hr{border:0;border-top:1px solid var(--line);margin:18px 0}
       <input id="mapHeightSlider" type="range" min="280" max="900" step="20" value="580" aria-label="Map height in pixels">
       <div class="map-height-scale"><span>Compact · 280 px</span><span>Tall · 900 px</span></div>
     </div>
+
+    <section class="map-weather-panel" aria-label="Three-location weather comparison">
+      <div class="map-weather-head">
+        <div><strong>☁ Weather comparison · 3 locations</strong><p>Choose any U.S. state or territory, Caribbean destination, or country. All three selected locations stay visible together.</p></div>
+        <button type="button" class="map-weather-refresh" id="refreshAllWeather">↻ Refresh all 3</button>
+      </div>
+      <div class="map-weather-grid">
+        <article class="map-weather-card"><label for="weatherLocation1">Location 1</label><select id="weatherLocation1" aria-label="Choose weather location one"></select><button type="button" data-weather-load="1">Load weather</button><div class="map-weather-result" id="weatherResult1" aria-live="polite">Waiting for a location.</div></article>
+        <article class="map-weather-card"><label for="weatherLocation2">Location 2</label><select id="weatherLocation2" aria-label="Choose weather location two"></select><button type="button" data-weather-load="2">Load weather</button><div class="map-weather-result" id="weatherResult2" aria-live="polite">Waiting for a location.</div></article>
+        <article class="map-weather-card"><label for="weatherLocation3">Location 3</label><select id="weatherLocation3" aria-label="Choose weather location three"></select><button type="button" data-weather-load="3">Load weather</button><div class="map-weather-result" id="weatherResult3" aria-live="polite">Waiting for a location.</div></article>
+      </div>
+      <div class="map-nearby-tools">
+        <div><strong>🍽 Nearby places</strong><p>Search OpenStreetMap places around one of the three weather locations.</p></div>
+        <label>Search around<select id="nearbyWeatherSlot"><option value="1">Location 1</option><option value="2">Location 2</option><option value="3">Location 3</option></select></label>
+        <label>Category<select id="nearbyPlaceCategory"><option value="all">All useful places</option><option value="food">Restaurants &amp; cafés</option><option value="grocery">Grocery stores</option><option value="medical">Medical &amp; pharmacies</option><option value="banks">Banks &amp; ATMs</option><option value="schools">Schools</option><option value="fuel">Fuel stations</option></select></label>
+        <button type="button" id="findNearbyPlaces" class="map-weather-refresh">Find nearby places</button>
+      </div>
+      <div id="nearbyPlacesResults" class="map-nearby-results" aria-live="polite">Choose a loaded location and tap Find nearby places.</div>
+      <p class="map-weather-source">Weather: Open-Meteo · Map and nearby place data: OpenStreetMap. U.S. list includes 50 states plus Washington, DC and Puerto Rico (52 jurisdictions, not 52 states). State selections use a representative city; these are not statewide weather averages. Nearby place results depend on OpenStreetMap coverage and Overpass availability.</p>
+    </section>
     <div class="map-wrap"><div id="propertyMap" role="application" aria-label="Interactive map showing saved property research locations"></div></div>
     <p id="mapStatus" class="status" aria-live="polite">Map starting. Save a property, then choose “Locate on map” on its saved record to add a pin.</p>
     <p class="small map-note">Address pins are approximate geocoding matches, not surveyed locations, parcel outlines, ownership verification, comps, or live listing data. When you choose “Locate on map,” the property address is sent to OpenStreetMap’s public Nominatim search service and the returned coordinates are saved in this browser. No automatic geocoding or autocomplete runs in the background. See the <a href="https://operations.osmfoundation.org/policies/nominatim/" target="_blank" rel="noopener noreferrer">Nominatim usage policy</a>. This prototype uses public OpenStreetMap tiles with attribution; before broad commercial traffic, configure an appropriate tile provider or self-hosted service in accordance with its terms.</p>
@@ -304,6 +345,9 @@ const MAP_TILE_URL = "https://tile.openstreetmap.org/{z}/{x}/{y}.png";
 let propertyMap = null;
 let propertyLayer = null;
 let propertyTileLayer = null;
+let weatherLayer = null;
+let nearbyLayer = null;
+let weatherResults = [null,null,null];
 let lastGeocodeAt = 0;
 let mapActionQueue = Promise.resolve();
 
@@ -325,6 +369,136 @@ function money(n){
 function val(id){ const n = Number($(id).value); return Number.isFinite(n) && n >= 0 ? n : 0; }
 function escapeHtml(value){
   return String(value ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+}
+
+const US_WEATHER_LOCATIONS = [
+ ["us-AL","Alabama","Montgomery"],["us-AK","Alaska","Juneau"],["us-AZ","Arizona","Phoenix"],["us-AR","Arkansas","Little Rock"],["us-CA","California","Sacramento"],["us-CO","Colorado","Denver"],["us-CT","Connecticut","Hartford"],["us-DE","Delaware","Dover"],["us-FL","Florida","Tallahassee"],["us-GA","Georgia","Atlanta"],["us-HI","Hawaii","Honolulu"],["us-ID","Idaho","Boise"],["us-IL","Illinois","Springfield"],["us-IN","Indiana","Indianapolis"],["us-IA","Iowa","Des Moines"],["us-KS","Kansas","Topeka"],["us-KY","Kentucky","Frankfort"],["us-LA","Louisiana","Baton Rouge"],["us-ME","Maine","Augusta"],["us-MD","Maryland","Annapolis"],["us-MA","Massachusetts","Boston"],["us-MI","Michigan","Lansing"],["us-MN","Minnesota","Saint Paul"],["us-MS","Mississippi","Jackson"],["us-MO","Missouri","Jefferson City"],["us-MT","Montana","Helena"],["us-NE","Nebraska","Lincoln"],["us-NV","Nevada","Carson City"],["us-NH","New Hampshire","Concord"],["us-NJ","New Jersey","Trenton"],["us-NM","New Mexico","Santa Fe"],["us-NY","New York","Albany"],["us-NC","North Carolina","Raleigh"],["us-ND","North Dakota","Bismarck"],["us-OH","Ohio","Columbus"],["us-OK","Oklahoma","Oklahoma City"],["us-OR","Oregon","Salem"],["us-PA","Pennsylvania","Harrisburg"],["us-RI","Rhode Island","Providence"],["us-SC","South Carolina","Columbia"],["us-SD","South Dakota","Pierre"],["us-TN","Tennessee","Nashville"],["us-TX","Texas","Austin"],["us-UT","Utah","Salt Lake City"],["us-VT","Vermont","Montpelier"],["us-VA","Virginia","Richmond"],["us-WA","Washington","Olympia"],["us-WV","West Virginia","Charleston"],["us-WI","Wisconsin","Madison"],["us-WY","Wyoming","Cheyenne"]
+].map(x=>({id:x[0],group:"U.S. states & jurisdictions",label:x[1]+" · "+x[2],city:x[2],admin1:x[1],country:"United States"}));
+US_WEATHER_LOCATIONS.push({id:"us-DC",group:"U.S. states & jurisdictions",label:"Washington, DC · Washington",city:"Washington",admin1:"District of Columbia",country:"United States"});
+US_WEATHER_LOCATIONS.push({id:"us-PR",group:"U.S. states & jurisdictions",label:"Puerto Rico · San Juan",city:"San Juan",admin1:"Puerto Rico",country:"Puerto Rico"});
+const CARIBBEAN_WEATHER_LOCATIONS = [
+ ["ag","Antigua and Barbuda","Saint John's"],["aw","Aruba","Oranjestad"],["bs","Bahamas","Nassau"],["bb","Barbados","Bridgetown"],["bz","Belize","Belize City"],["vg","British Virgin Islands","Road Town"],["ky","Cayman Islands","George Town"],["cu","Cuba","Havana"],["cw","Curaçao","Willemstad"],["dm","Dominica","Roseau"],["do","Dominican Republic","Santo Domingo"],["gd","Grenada","Saint George's"],["gp","Guadeloupe","Basse-Terre"],["gy","Guyana","Georgetown"],["ht","Haiti","Port-au-Prince"],["jm","Jamaica","Kingston"],["mq","Martinique","Fort-de-France"],["ms","Montserrat","Brades"],["pr","Puerto Rico","San Juan"],["kn","Saint Kitts and Nevis","Basseterre"],["lc","Saint Lucia","Castries"],["mf","Saint Martin","Marigot"],["vc","Saint Vincent and the Grenadines","Kingstown"],["sx","Sint Maarten","Philipsburg"],["sr","Suriname","Paramaribo"],["tt","Trinidad and Tobago","Port of Spain"],["tc","Turks and Caicos Islands","Cockburn Town"],["vi","U.S. Virgin Islands","Charlotte Amalie"]
+].map(x=>({id:"car-"+x[0],group:"Caribbean & nearby islands",label:x[1]+" · "+x[2],city:x[2],admin1:"",country:x[1]}));
+const WORLD_WEATHER_LOCATIONS = [
+ ["ca","Canada","Ottawa"],["mx","Mexico","Mexico City"],["cr","Costa Rica","San José"],["pa","Panama","Panama City"],["br","Brazil","Brasília"],["co","Colombia","Bogotá"],["ar","Argentina","Buenos Aires"],["cl","Chile","Santiago"],["pe","Peru","Lima"],["ec","Ecuador","Quito"],["gb","United Kingdom","London"],["ie","Ireland","Dublin"],["fr","France","Paris"],["de","Germany","Berlin"],["es","Spain","Madrid"],["pt","Portugal","Lisbon"],["it","Italy","Rome"],["nl","Netherlands","Amsterdam"],["be","Belgium","Brussels"],["ch","Switzerland","Bern"],["at","Austria","Vienna"],["se","Sweden","Stockholm"],["no","Norway","Oslo"],["dk","Denmark","Copenhagen"],["fi","Finland","Helsinki"],["pl","Poland","Warsaw"],["gr","Greece","Athens"],["tr","Türkiye","Ankara"],["ae","United Arab Emirates","Abu Dhabi"],["sa","Saudi Arabia","Riyadh"],["eg","Egypt","Cairo"],["za","South Africa","Pretoria"],["ng","Nigeria","Abuja"],["ke","Kenya","Nairobi"],["in","India","New Delhi"],["cn","China","Beijing"],["jp","Japan","Tokyo"],["kr","South Korea","Seoul"],["au","Australia","Canberra"],["nz","New Zealand","Wellington"],["sg","Singapore","Singapore"],["th","Thailand","Bangkok"],["ph","Philippines","Manila"]
+].map(x=>({id:"world-"+x[0],group:"Countries worldwide",label:x[1]+" · "+x[2],city:x[2],admin1:"",country:x[1]}));
+const WEATHER_CATALOG=[...US_WEATHER_LOCATIONS,...CARIBBEAN_WEATHER_LOCATIONS,...WORLD_WEATHER_LOCATIONS];
+const DEFAULT_WEATHER_LOCATIONS=["us-PA","us-NY","us-FL"];
+function initLocationWeather(){
+  const slots=[1,2,3];
+  slots.forEach(slot=>{
+    const select=$("weatherLocation"+slot);
+    if(!select)return;
+    const groups=["U.S. states & jurisdictions","Caribbean & nearby islands","Countries worldwide"];
+    select.innerHTML=groups.map(group=>{
+      const options=WEATHER_CATALOG.filter(item=>item.group===group).map(item=>"<option value='"+escapeHtml(item.id)+"'>"+escapeHtml(item.label)+"</option>").join("");
+      return "<optgroup label='"+escapeHtml(group)+"'>"+options+"</optgroup>";
+    }).join("");
+    select.value=DEFAULT_WEATHER_LOCATIONS[slot-1];
+    select.addEventListener("change",()=>loadWeatherSlot(slot));
+  });
+  document.querySelectorAll("[data-weather-load]").forEach(button=>button.addEventListener("click",()=>loadWeatherSlot(Number(button.dataset.weatherLoad))));
+  $("refreshAllWeather")?.addEventListener("click",()=>Promise.all(slots.map(loadWeatherSlot)));
+  $("findNearbyPlaces")?.addEventListener("click",findNearbyPlaces);
+  slots.forEach(slot=>loadWeatherSlot(slot));
+}
+function weatherCodeLabel(code){
+  const labels={0:"Clear sky",1:"Mainly clear",2:"Partly cloudy",3:"Overcast",45:"Fog",48:"Rime fog",51:"Light drizzle",53:"Drizzle",55:"Dense drizzle",56:"Freezing drizzle",57:"Heavy freezing drizzle",61:"Light rain",63:"Rain",65:"Heavy rain",66:"Freezing rain",67:"Heavy freezing rain",71:"Light snow",73:"Snow",75:"Heavy snow",77:"Snow grains",80:"Rain showers",81:"Showers",82:"Heavy showers",85:"Snow showers",86:"Heavy snow showers",95:"Thunderstorm",96:"Thunderstorm with hail",99:"Severe thunderstorm"};
+  return labels[Number(code)]||"Weather code "+code;
+}
+function getWeatherLocation(id){return WEATHER_CATALOG.find(item=>item.id===id);}
+function geocodeWeatherCity(item){
+  return fetch("https://geocoding-api.open-meteo.com/v1/search?name="+encodeURIComponent(item.city)+"&count=12&language=en&format=json",{headers:{Accept:"application/json"}})
+    .then(response=>{if(!response.ok)throw new Error("Open-Meteo location search returned HTTP "+response.status);return response.json();})
+    .then(data=>{
+      const hits=Array.isArray(data.results)?data.results:[];
+      const countryHits=hits.filter(hit=>String(hit.country||"").toLowerCase()===item.country.toLowerCase());
+      const exact=countryHits.find(hit=>!item.admin1||String(hit.admin1||"").toLowerCase().includes(item.admin1.toLowerCase()))||countryHits[0]||hits[0];
+      if(!exact)throw new Error("Location not found. Try another destination from the list.");
+      return exact;
+    });
+}
+async function loadWeatherSlot(slot){
+  const select=$("weatherLocation"+slot),box=$("weatherResult"+slot);
+  if(!select||!box)return;
+  const item=getWeatherLocation(select.value);
+  if(!item)return;
+  box.textContent="Finding "+item.label+"…";
+  try{
+    const place=await geocodeWeatherCity(item);
+    const lat=Number(place.latitude),lon=Number(place.longitude);
+    if(!Number.isFinite(lat)||!Number.isFinite(lon))throw new Error("The location service returned invalid coordinates.");
+    const url="https://api.open-meteo.com/v1/forecast?latitude="+lat+"&longitude="+lon+"&current=temperature_2m,apparent_temperature,relative_humidity_2m,wind_speed_10m,weather_code&temperature_unit=fahrenheit&wind_speed_unit=mph&timezone=auto";
+    const response=await fetch(url,{headers:{Accept:"application/json"}});
+    if(!response.ok)throw new Error("Open-Meteo weather returned HTTP "+response.status);
+    const data=await response.json(),current=data.current;
+    if(!current)throw new Error("No current weather was returned for this destination.");
+    const result={slot,item,name:place.name||item.city,admin1:place.admin1||item.admin1||"",country:place.country||item.country,lat,lon,temp:current.temperature_2m,feels:current.apparent_temperature,humidity:current.relative_humidity_2m,wind:current.wind_speed_10m,code:current.weather_code,time:current.time,timezone:data.timezone};
+    weatherResults[slot-1]=result;
+    box.innerHTML="<strong>"+escapeHtml(Math.round(Number(result.temp))+"°F")+"</strong><b>"+escapeHtml(weatherCodeLabel(result.code))+"</b><small>Feels "+escapeHtml(Math.round(Number(result.feels))+"°F")+" · Wind "+escapeHtml(Math.round(Number(result.wind))+" mph")+" · Humidity "+escapeHtml(String(result.humidity)+"%")+"</small><small>"+escapeHtml([result.name,result.admin1,result.country].filter(Boolean).join(" · "))+"</small><small>Updated "+escapeHtml(result.time||"provider timestamp unavailable")+" · Open-Meteo</small>";
+    renderWeatherMarkers();
+    if($("mapStatus"))$("mapStatus").textContent="Weather loaded for "+item.label+" · Open-Meteo current conditions.";
+  }catch(error){
+    weatherResults[slot-1]=null;
+    box.textContent="Weather unavailable: "+(error&&error.message?error.message:"Check the connection and try again.");
+    renderWeatherMarkers();
+  }
+}
+function renderWeatherMarkers(){
+  if(!propertyMap||!weatherLayer)return;
+  weatherLayer.clearLayers();
+  weatherResults.filter(Boolean).forEach(result=>{
+    const popup="<strong>"+escapeHtml(result.name+", "+result.country)+"</strong><br>"+escapeHtml(Math.round(Number(result.temp))+"°F · "+weatherCodeLabel(result.code))+"<br>Feels "+escapeHtml(Math.round(Number(result.feels))+"°F")+" · Wind "+escapeHtml(Math.round(Number(result.wind))+" mph");
+    L.circleMarker([result.lat,result.lon],{radius:8,color:"#092033",weight:2,fillColor:"#51d9f2",fillOpacity:.95}).bindPopup(popup).addTo(weatherLayer);
+  });
+}
+function haversineMiles(lat1,lon1,lat2,lon2){
+  const rad=x=>x*Math.PI/180,R=3958.8,dLat=rad(lat2-lat1),dLon=rad(lon2-lon1);
+  const a=Math.sin(dLat/2)**2+Math.cos(rad(lat1))*Math.cos(rad(lat2))*Math.sin(dLon/2)**2;
+  return 2*R*Math.asin(Math.sqrt(a));
+}
+async function findNearbyPlaces(){
+  const slot=Number($("nearbyWeatherSlot")?.value||1),result=weatherResults[slot-1],host=$("nearbyPlacesResults");
+  if(!host)return;
+  if(!result){host.textContent="Load weather for Location "+slot+" first, then search nearby places.";return;}
+  const category=$("nearbyPlaceCategory")?.value||"all";
+  const filters={
+    all:'node(around:5000,LAT,LON)[amenity~"restaurant|cafe|fast_food|hospital|clinic|pharmacy|bank|atm|school|fuel"];way(around:5000,LAT,LON)[amenity~"restaurant|cafe|fast_food|hospital|clinic|pharmacy|bank|atm|school|fuel"];node(around:5000,LAT,LON)[shop~"supermarket|convenience"];way(around:5000,LAT,LON)[shop~"supermarket|convenience"];',
+    food:'node(around:5000,LAT,LON)[amenity~"restaurant|cafe|fast_food"];way(around:5000,LAT,LON)[amenity~"restaurant|cafe|fast_food"];',
+    grocery:'node(around:5000,LAT,LON)[shop~"supermarket|convenience"];way(around:5000,LAT,LON)[shop~"supermarket|convenience"];',
+    medical:'node(around:5000,LAT,LON)[amenity~"hospital|clinic|pharmacy"];way(around:5000,LAT,LON)[amenity~"hospital|clinic|pharmacy"];',
+    banks:'node(around:5000,LAT,LON)[amenity~"bank|atm"];way(around:5000,LAT,LON)[amenity~"bank|atm"];',
+    schools:'node(around:5000,LAT,LON)[amenity=school];way(around:5000,LAT,LON)[amenity=school];',
+    fuel:'node(around:5000,LAT,LON)[amenity=fuel];way(around:5000,LAT,LON)[amenity=fuel];'
+  };
+  host.textContent="Searching OpenStreetMap within about 5 km of "+result.name+"…";
+  const filter=(filters[category]||filters.all).replaceAll("LAT",String(result.lat)).replaceAll("LON",String(result.lon));
+  const query="[out:json][timeout:25];("+filter+");out center tags 30;";
+  try{
+    const response=await fetch("https://overpass-api.de/api/interpreter",{method:"POST",headers:{"Content-Type":"application/x-www-form-urlencoded;charset=UTF-8","Accept":"application/json"},body:"data="+encodeURIComponent(query)});
+    if(!response.ok)throw new Error("OpenStreetMap nearby service returned HTTP "+response.status+". Try again later.");
+    const data=await response.json(),items=(data.elements||[]).map(element=>{
+      const tags=element.tags||{},center=element.center||element;
+      const lat=Number(center.lat),lon=Number(center.lon);
+      if(!Number.isFinite(lat)||!Number.isFinite(lon))return null;
+      return {name:tags.name||tags.brand||tags.operator||"Unnamed place",kind:tags.amenity||tags.shop||tags.tourism||"Place",lat,lon,distance:haversineMiles(result.lat,result.lon,lat,lon)};
+    }).filter(Boolean).sort((a,b)=>a.distance-b.distance).slice(0,15);
+    nearbyLayer?.clearLayers();
+    if(propertyMap&&nearbyLayer)items.forEach(item=>L.marker([item.lat,item.lon]).bindPopup("<strong>"+escapeHtml(item.name)+"</strong><br>"+escapeHtml(item.kind)).addTo(nearbyLayer));
+    host.textContent="";
+    if(!items.length){host.textContent="No nearby places matched this category in the available OpenStreetMap data. Try another category or a larger town.";return;}
+    const summary=document.createElement("strong");summary.textContent=items.length+" nearby places found · "+result.name+" · OpenStreetMap";host.appendChild(summary);
+    const list=document.createElement("ul");
+    items.forEach(item=>{
+      const li=document.createElement("li"),label=document.createElement("span");
+      label.textContent=item.name+" · "+item.kind+" · "+item.distance.toFixed(1)+" mi";
+      const button=document.createElement("button");button.type="button";button.textContent="Map pin";
+      button.addEventListener("click",()=>{if(propertyMap){propertyMap.setView([item.lat,item.lon],16);nearbyLayer.eachLayer(layer=>{if(layer.getLatLng&&layer.getLatLng().lat===item.lat&&layer.getLatLng().lng===item.lon)layer.openPopup();});}});
+      li.append(label,button);list.appendChild(li);
+    });
+    host.appendChild(list);
+    if($("mapStatus"))$("mapStatus").textContent="Nearby results: "+items.length+" OpenStreetMap places within about 5 km of "+result.name+".";
+  }catch(error){host.textContent="Nearby places unavailable: "+(error&&error.message?error.message:"Check the connection and try again.")+" OpenStreetMap Overpass can be busy; retry later.";}
 }
 function initMapHeightControl(){
   const slider=$("mapHeightSlider");
@@ -362,6 +536,8 @@ function initPropertyMap(){
     attribution:'&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap contributors</a>'
   }).addTo(propertyMap);
   propertyLayer=L.featureGroup().addTo(propertyMap);
+  weatherLayer=L.layerGroup().addTo(propertyMap);
+  nearbyLayer=L.layerGroup().addTo(propertyMap);
   $("refreshMap").addEventListener("click",refreshPropertyMap);
   $("fitAllMapped").addEventListener("click",fitMappedProperties);
   $("recenterMap").addEventListener("click",()=>{
@@ -636,6 +812,8 @@ $("importFile").addEventListener("change",async function(){
 });
 initMapHeightControl();
 initPropertyMap();
+initLocationWeather();
+window.addEventListener("resize",()=>{if(propertyMap)propertyMap.invalidateSize({pan:false});});
 renderRecords();
 renderMapMarkers();
 })();
