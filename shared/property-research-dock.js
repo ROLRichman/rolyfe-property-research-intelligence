@@ -52,7 +52,8 @@
     { id: "regrid", label: "Regrid parcels", group: "Location & parcel", domain: "regrid.com", direct: "https://app.regrid.com/reports/parcels" },
     { id: "official", label: "Official county / tax records", group: "Location & parcel", domain: null, direct: null },
     { id: "phila", label: "Philadelphia Property App", group: "Location & parcel", domain: null, direct: "https://property.phila.gov/" },
-    { id: "fema", label: "FEMA flood maps", group: "Location & parcel", domain: "msc.fema.gov", direct: "https://msc.fema.gov/portal/search" }
+    { id: "fema", label: "FEMA flood maps", group: "Location & parcel", domain: "msc.fema.gov", direct: "https://msc.fema.gov/portal/search" },
+    { id: "icontainers", label: "iContainers freight quotes", group: "Freight & logistics", domain: "icontainers.com", direct: "https://www.icontainers.com/" }
   ];
 
   var style = document.createElement("style");
@@ -72,7 +73,7 @@
   var isPrimary = location.pathname.indexOf("rolyfe-property-research-intelligence") !== -1;
   var saved = readSavedRecords();
   var firstAddress = saved.length ? displayAddress(saved[0]) : "";
-  var groups = ["Listings & comps", "Auctions & tax sales", "Investor leads", "Location & parcel"];
+  var groups = ["Listings & comps", "Auctions & tax sales", "Investor leads", "Location & parcel", "Freight & logistics"];
   var options = '<option value="">Select a saved property…</option>';
   saved.forEach(function (r, i) {
     options += '<option value="' + i + '">' + escapeHtml(displayAddress(r) || "Saved property " + (i + 1)) + '</option>';
@@ -98,7 +99,7 @@
   dock.innerHTML =
     '<div class="rolpr-head"><div><div class="rolpr-kicker">Shared research workspace · Find → Verify → Underwrite → Fund</div>' +
     '<div class="rolpr-title">RO’Lyfe Property Research Dock</div>' +
-    '<div class="rolpr-subtitle">One launchpad for listings, comps, auctions, tax liens, parcel records, flood risk, and capital handoff.</div></div>' +
+    '<div class="rolpr-subtitle">One launchpad for listings, comps, auctions, tax liens, parcel records, flood risk, capital handoff, and freight.</div></div>' +
     '<div class="rolpr-actions"><a class="rolpr-btn primary" href="' + PROPERTY_MAP_URL + '" data-action="map">Open Property Map ↗</a>' +
     '<a class="rolpr-btn" href="' + PROPERTY_URL + '#intake">Property Intake ↗</a></div></div>' +
     '<details class="rolpr-content"' + (isPrimary ? " open" : "") + '><summary class="rolpr-summary">Open research tools · saved leads from this browser profile</summary>' +
@@ -110,7 +111,7 @@
     '<div class="rolpr-journey"><a class="rolpr-btn" href="' + AUCTION_URL + '">Auction Capital Machine ↗</a>' +
     '<a class="rolpr-btn" href="' + FUNDING_URL + '">Funding & capital ↗</a><a class="rolpr-btn" href="' + DOCS_URL + '">Contracts & documents ↗</a>' +
     '<a class="rolpr-btn" href="' + COMMAND_URL + '">Command Hub ↗</a></div>' +
-    '<div class="rolpr-foot">Source buttons open a provider or an address-targeted web search; they do not scrape or import listing, ownership, tax-lien, or comparable-sale data. Verify material facts against primary records. Records use browser local storage on the rolrichman.github.io origin, so they do not sync to another browser/device and should not contain sensitive personal or financial information. For Philadelphia, start with the <a href="https://property.phila.gov/" target="_blank" rel="noopener noreferrer">official Property App</a>. For tax sales, verify the official county sale notice and terms before bidding.</div></details>';
+    '<div class="rolpr-foot">Source buttons open a provider or an address-targeted web search; they do not scrape or import listing, ownership, tax-lien, or comparable-sale data. Verify material facts against primary records. Records use browser local storage on the rolrichman.github.io origin, so they do not sync to another browser/device and should not contain sensitive personal or financial information. For Philadelphia, start with the <a href="https://property.phila.gov/" target="_blank" rel="noopener noreferrer">official Property App</a>. For tax sales, verify the official county sale notice and terms before bidding. The iContainers shortcut opens your provider site; automated quotes require separate authorized API access.</div></details>';
 
   var header = document.querySelector("header");
   if (header && header.parentNode) header.insertAdjacentElement("afterend", dock);
