@@ -62,7 +62,7 @@
     { id: "official", label: "Official county / tax records", group: "Location & parcel", domain: null, direct: null },
     { id: "phila", label: "Philadelphia Property App", group: "Location & parcel", domain: null, direct: "https://property.phila.gov/" },
     { id: "fema", label: "FEMA flood maps", group: "Location & parcel", domain: "msc.fema.gov", direct: "https://msc.fema.gov/portal/search" },
-    { id: "icontainers", label: "iContainers freight quotes", group: "Freight & logistics", domain: "icontainers.com", direct: "https://www.icontainers.com/" }
+    { id: "icontainers", label: "iContainers freight quotes", group: "Freight & logistics", domain: "icontainers.com", direct: "https://my.icontainers.com/sign-in" }
   ];
 
   var style = document.createElement("style");
