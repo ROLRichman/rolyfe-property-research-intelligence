@@ -12,6 +12,15 @@
   var FUNDING_URL = "https://rolrichman.github.io/rolyfe-funding/";
   var DOCS_URL = "https://rolrichman.github.io/rolyfe-contract-documents-hub/";
   var COMMAND_URL = "https://rolrichman.github.io/rolyfe-command-center/";
+  var RELOCATION_URL = "https://rolrichman.github.io/rolyfe-relocation-intelligence/";
+  var ACQUISITION_URL = "https://rolrichman.github.io/rolyfe-acquisition-engine/";
+  var CLOSERS_URL = "https://rolrichman.github.io/RO-Lyfe-Closers-OS/";
+  var BUYER_URL = "https://rolrichman.github.io/RO-Lyfe-Buyer-Network-OS/";
+  var OVERAGE_URL = "https://rolrichman.github.io/ROLyfe-Overage-Calculator/";
+  var VISION_URL = "https://rolrichman.github.io/rolyfe-video-hub/";
+  var SEVEN_FIGURES_URL = "https://www.7figurescredit.com/?a_aid=ROLFunding";
+  var NCC_URL = "https://nationalcorporatecredit.com/";
+  var DDT_URL = "https://ddtwealth.com/";
   var STORAGE_KEY = "rolyfe_property_research_records_v1";
 
   function escapeHtml(value) {
@@ -108,9 +117,14 @@
     '<select id="rolpr-saved" aria-label="Choose a saved property">' + options + '</select>' +
     '<button class="rolpr-btn primary" type="button" id="rolpr-search-all">Search all sources ↗</button></div>' +
     '<div class="rolpr-sourcegroups">' + sourceGroups + '</div></div>' +
-    '<div class="rolpr-journey"><a class="rolpr-btn" href="' + AUCTION_URL + '">Auction Capital Machine ↗</a>' +
-    '<a class="rolpr-btn" href="' + FUNDING_URL + '">Funding & capital ↗</a><a class="rolpr-btn" href="' + DOCS_URL + '">Contracts & documents ↗</a>' +
-    '<a class="rolpr-btn" href="' + COMMAND_URL + '">Command Hub ↗</a></div>' +
+    '<div class="rolpr-journey"><a class="rolpr-btn" href="' + PROPERTY_URL + '">Property Intelligence ↗</a>' +
+    '<a class="rolpr-btn" href="' + AUCTION_URL + '">Auction Capital Machine ↗</a><a class="rolpr-btn" href="' + FUNDING_URL + '">Funding &amp; Link Hub ↗</a>' +
+    '<a class="rolpr-btn" href="' + RELOCATION_URL + '">Relocation Intelligence ↗</a><a class="rolpr-btn" href="' + ACQUISITION_URL + '">Acquisition Engine ↗</a>' +
+    '<a class="rolpr-btn" href="' + DOCS_URL + '">Contracts &amp; documents ↗</a><a class="rolpr-btn" href="' + CLOSERS_URL + '">Closers OS ↗</a>' +
+    '<a class="rolpr-btn" href="' + BUYER_URL + '">Buyer Network ↗</a><a class="rolpr-btn" href="' + OVERAGE_URL + '">Overage Calculator ↗</a>' +
+    '<a class="rolpr-btn" href="' + VISION_URL + '">Vision Hub ↗</a><a class="rolpr-btn" href="' + COMMAND_URL + '">Command Hub ↗</a>' +
+    '<a class="rolpr-btn" href="' + SEVEN_FIGURES_URL + '">7 Figures Credit ↗</a><a class="rolpr-btn" href="' + NCC_URL + '">National Corporate Credit ↗</a>' +
+    '<a class="rolpr-btn" href="' + DDT_URL + '">DDT Wealth ↗</a></div>' +
     '<div class="rolpr-foot">Source buttons open a provider or an address-targeted web search; they do not scrape or import listing, ownership, tax-lien, or comparable-sale data. Verify material facts against primary records. Records use browser local storage on the rolrichman.github.io origin, so they do not sync to another browser/device and should not contain sensitive personal or financial information. For Philadelphia, start with the <a href="https://property.phila.gov/" target="_blank" rel="noopener noreferrer">official Property App</a>. For tax sales, verify the official county sale notice and terms before bidding. The iContainers shortcut opens your provider site; automated quotes require separate authorized API access.</div></details>';
 
   var header = document.querySelector("header");
