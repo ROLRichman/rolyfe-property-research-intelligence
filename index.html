@@ -719,6 +719,7 @@ function refreshPropertyMap(){
   $("mapStatus").textContent="Map refreshed at "+now.toLocaleString()+". Showing "+records.filter(hasCoordinates).length+" saved map pin(s). This refreshes local pins and map tiles; it does not fetch new listings, tax balances, auction dates, or comparable sales.";
 }
 window.rolyfeRefreshPropertyMap=refreshPropertyMap;
+window.rolyfeFocusPropertyMap=function(lat,lon){if(propertyMap&&Number.isFinite(Number(lat))&&Number.isFinite(Number(lon))){propertyMap.invalidateSize({pan:false});propertyMap.setView([Number(lat),Number(lon)],16,{animate:false});}};
 window.addEventListener("storage",function(event){
   if(event.key===STORE_KEY || event.key===null){
     records=loadRecords();
@@ -979,12 +980,13 @@ button.addEventListener("click",async()=>{
   if(!data.found){host.textContent=data.message||"No parcel matched. Check the address and try again.";return;}
   if(data.parcelNumber&&document.getElementById("parcel"))document.getElementById("parcel").value=data.parcelNumber;
   if(data.county&&document.getElementById("county"))document.getElementById("county").value=data.county;
-  if(data.state&&document.getElementById("state"))document.getElementById("state").value=data.state;
+  if(data.state&&document.getElementById("state")){const stateSelect=document.getElementById("state");if(!Array.from(stateSelect.options).some(option=>option.value===data.state||option.text===data.state)){const option=document.createElement("option");option.value=data.state;option.textContent=data.state;stateSelect.appendChild(option);}stateSelect.value=data.state;}
   if(data.latitude!==null&&data.latitude!==undefined&&document.getElementById("latitude"))document.getElementById("latitude").value=data.latitude;
   if(data.longitude!==null&&data.longitude!==undefined&&document.getElementById("longitude"))document.getElementById("longitude").value=data.longitude;
   const fields=[["Parcel ID",data.parcelNumber],["Owner (source field)",data.owner],["Property use",data.propertyUse],["Zoning",data.zoning],["Assessed value",money(data.assessedValue)],["Annual tax",money(data.annualTax)],["Last sale price",money(data.lastSalePrice)],["Last sale date",data.lastSaleDate],["Year built",data.yearBuilt],["Acreage",data.acreage],["Flood zone",data.floodZone],["County",data.county]];
-  host.innerHTML="<strong>Regrid parcel match · "+safe(data.match)+"</strong><div class='regrid-grid'>"+fields.map(([label,value])=>"<div class='regrid-item'><small>"+safe(label)+"</small><b>"+safe(value)+"</b></div>").join("")+"</div><p>"+safe(data.note)+"</p>"+(data.countySourceUrl?"<a href='"+safe(data.countySourceUrl)+"' target='_blank' rel='noopener noreferrer'>Open county source ↗</a>":"");
-  if(typeof window.rolyfeRefreshPropertyMap==="function")window.rolyfeRefreshPropertyMap();
+  const countyUrl=typeof data.countySourceUrl==="string"&&/^https:\/\//i.test(data.countySourceUrl)?data.countySourceUrl:"";
+  host.innerHTML="<strong>Regrid parcel match · "+safe(data.match)+"</strong><div class='regrid-grid'>"+fields.map(([label,value])=>"<div class='regrid-item'><small>"+safe(label)+"</small><b>"+safe(value)+"</b></div>").join("")+"</div><p>"+safe(data.note)+"</p>"+(countyUrl?"<a href='"+safe(countyUrl)+"' target='_blank' rel='noopener noreferrer'>Open county source ↗</a>":"");
+  if(typeof window.rolyfeFocusPropertyMap==="function"&&data.latitude!==null&&data.longitude!==null)window.rolyfeFocusPropertyMap(data.latitude,data.longitude);
  }catch(error){host.textContent="Regrid lookup could not complete: "+(error&&error.message?error.message:"network or provider error")+". If the response says Regrid is not configured, the REGRID_API_KEY secret must be added to the Supabase Edge Function. This button does not run automatically.";
  }finally{button.disabled=false;button.textContent="🧭 Look up parcel";}
 });
