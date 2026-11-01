@@ -201,6 +201,11 @@ body.rol-theme-2,body.rol-theme-3,body.rol-theme-4,body.rol-theme-5{background:l
 .rol-agent-quick button{flex:0 0 auto;font-size:10px;padding:7px 9px}
 .rol-agent-entry{display:flex;gap:7px;padding:10px;border-top:1px solid var(--line)}.rol-agent-entry input{flex:1;min-width:0}.rol-agent-entry button{padding:10px 13px}
 @media(max-width:600px){.rol-agent-launch{right:12px;bottom:12px}.rol-agent-panel{right:8px;bottom:8px;width:calc(100vw - 16px);height:calc(100dvh - 16px);max-height:calc(100dvh - 16px)}}
+</style><style id="rol-translate-style">
+#google_translate_element{display:inline-flex;align-items:center;min-height:34px;padding:4px 8px;border:1px solid rgba(100,228,237,.25);border-radius:9px;background:rgba(14,29,43,.82);font-size:11px}
+#google_translate_element .goog-te-gadget{font-size:0!important;color:transparent!important}
+#google_translate_element .goog-te-combo{max-width:190px;margin:0!important;padding:7px 8px;border-radius:7px;border:1px solid #35546a;background:#081521;color:#f3f8fc;font-size:12px}
+.goog-te-banner-frame.skiptranslate{display:none!important}body{top:0!important}
 </style></head>
 <body>
 <div class="wrap">
@@ -215,6 +220,7 @@ body.rol-theme-2,body.rol-theme-3,body.rol-theme-4,body.rol-theme-5{background:l
     <a class="nav-action" href="https://rolrichman.github.io/ro-lyfe-auction-capital-machine/?embed=property" target="_blank" rel="noopener noreferrer">Auction Capital Machine ↗</a>
     <a class="nav-action nav-quiet" href="https://rolrichman.github.io/rolyfe-video-hub/" target="_blank" rel="noopener noreferrer">Vision Hub ↗</a>
   </nav>
+  <div id="google_translate_element" aria-label="Translate this page"></div>
 </header>
 
 <nav class="workflow-rail" aria-label="Sticky property workflow">
@@ -1109,5 +1115,8 @@ catch(err){waiting.textContent="The agent connection is not ready: "+(err&&err.m
 finally{send.disabled=false;send.textContent="Send";messages.scrollTop=messages.scrollHeight;}
 });
 })();
-</script></body>
+</script><script id="rol-google-translate">
+function googleTranslateElementInit(){if(window.google&&google.translate){new google.translate.TranslateElement({pageLanguage:"en",includedLanguages:"en,ht,fr,es,zh-CN,zh-TW",autoDisplay:false,layout:google.translate.TranslateElement.InlineLayout.SIMPLE},"google_translate_element");}}
+</script>
+<script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" async></script></body>
 </html>
