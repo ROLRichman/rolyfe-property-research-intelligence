@@ -89,6 +89,46 @@ hr{border:0;border-top:1px solid var(--line);margin:18px 0}
 @media(max-width:800px){.map-weather-grid{grid-template-columns:1fr}.map-nearby-tools{grid-template-columns:1fr 1fr}.map-nearby-tools>div{grid-column:1/-1}.map-nearby-tools button{width:100%}}
 @media(min-width:801px) and (max-width:1100px){.map-weather-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.map-weather-card:last-child{grid-column:1/-1}}
 </style>
+
+<style id="rolyfe-property-intelligence-polish">
+body{background:radial-gradient(ellipse at 8% 0%,rgba(255,145,64,.105),transparent 28%),radial-gradient(ellipse at 92% 14%,rgba(255,173,90,.055),transparent 25%),linear-gradient(180deg,#07111b 0%,#0b1926 48%,#07111b 100%)}
+.toplinks{gap:8px}
+.toplinks a.nav-action,.nav a{display:inline-flex;align-items:center;justify-content:center;padding:8px 11px;border:1px solid rgba(236,151,83,.34);border-radius:10px;background:linear-gradient(135deg,rgba(255,153,77,.12),rgba(18,38,56,.72));color:#f4e6d8;font-weight:700;transition:background .18s ease,border-color .18s ease,transform .18s ease}
+.toplinks a.nav-action:hover,.nav a:hover{background:linear-gradient(135deg,rgba(255,153,77,.24),rgba(18,38,56,.92));border-color:rgba(255,171,104,.72);transform:translateY(-1px)}
+.toplinks a.nav-quiet{background:rgba(18,38,56,.45);border-color:rgba(100,228,237,.25)}
+.nav{gap:8px}
+.badge#mapCount{border-color:rgba(236,151,83,.42);background:rgba(255,153,77,.09);color:#ffd0a8}
+.button.primary{background:linear-gradient(120deg,#e58c4b,#f0b16e);border-color:#efae73;color:#21150e;box-shadow:0 4px 16px rgba(229,140,75,.13)}
+.button.primary:hover{filter:brightness(1.06);box-shadow:0 6px 20px rgba(229,140,75,.2)}
+.section-fold{border:1px solid rgba(236,151,83,.25);border-radius:16px;background:linear-gradient(145deg,rgba(255,151,76,.055),rgba(14,29,43,.9));overflow:hidden}
+.section-fold>summary{list-style:none;cursor:pointer;padding:16px 18px;margin:0;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.section-fold>summary::-webkit-details-marker{display:none}
+.section-fold>summary:after{content:"＋";font-size:20px;color:#f0aa70;margin-left:8px}
+.section-fold[open]>summary:after{content:"−"}
+.section-fold .fold-body{padding:0 14px 14px}
+.section-fold .fold-summary h2{margin:3px 0}
+.section-fold .fold-summary .small{display:block;margin-top:4px}
+.funding-intro{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.6fr);gap:18px;align-items:center;margin-bottom:14px}
+.funding-intro>div:first-child{padding:4px 8px}
+.funding-promo-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.funding-promo-grid>div{padding:12px;border:1px solid rgba(236,151,83,.22);border-radius:11px;background:rgba(255,153,77,.045)}
+.funding-promo-grid strong,.funding-promo-grid span{display:block}
+.funding-promo-grid strong{color:#ffd0a8;font-size:13px;margin-bottom:4px}
+.funding-promo-grid span{color:var(--muted);font-size:11px;line-height:1.5}
+.funding-heading{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}
+.usecase-chips{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px}
+.usecase-chips span{border:1px solid rgba(236,151,83,.23);background:rgba(255,153,77,.055);border-radius:999px;padding:6px 10px;font-size:11px;color:#f3d6bf}
+.funding-link-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:14px}
+.funding-link-grid .section-card{display:flex;flex-direction:column;align-items:flex-start;gap:8px}
+.funding-link-grid .section-card h3{margin:0}
+.funding-link-grid .section-card p{margin:0 0 4px;color:var(--muted);font-size:12px}
+.funding-links{display:flex;flex-wrap:wrap;gap:7px}
+.funding-links a{display:inline-flex;padding:7px 9px;border:1px solid rgba(236,151,83,.3);border-radius:8px;background:rgba(255,153,77,.07);font-size:11px;color:#ffd0a8}
+.embedded-engine-card{padding:8px;overflow:hidden}
+#auctionPropertyEngineFrame{display:block;width:100%;height:1700px;border:0;border-radius:12px;background:#070b16}
+@media(max-width:850px){.funding-intro{grid-template-columns:1fr}.funding-link-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:560px){.toplinks{width:100%;justify-content:flex-start}.toplinks a.nav-action{font-size:11px;padding:7px 9px}.funding-link-grid,.funding-promo-grid{grid-template-columns:1fr}.funding-heading .button{width:100%}#auctionPropertyEngineFrame{height:1900px}.section-fold>summary{padding:13px;align-items:flex-start}.section-fold .fold-summary h2{font-size:20px}}
+</style>
 </head>
 <body>
 <div class="wrap">
@@ -98,8 +138,10 @@ hr{border:0;border-top:1px solid var(--line);margin:18px 0}
     <div class="small">PROPERTY RESEARCH • DUE DILIGENCE • UNDERWRITING</div>
   </div>
   <nav class="toplinks" aria-label="Main links">
-    <a href="https://rolrichman.github.io/ro-lyfe-auction-capital-machine/">Auction Capital Machine</a>
-    <a href="https://rolrichman.github.io/rolyfe-video-hub/">Vision Hub</a>
+    <a class="nav-action" href="#auction-operations">Auction &amp; Deal Tools</a>
+    <a class="nav-action" href="#funding-hub">Funding &amp; Link Hub</a>
+    <a class="nav-action" href="https://rolrichman.github.io/ro-lyfe-auction-capital-machine/?embed=property" target="_blank" rel="noopener noreferrer">Auction Capital Machine ↗</a>
+    <a class="nav-action nav-quiet" href="https://rolrichman.github.io/rolyfe-video-hub/" target="_blank" rel="noopener noreferrer">Vision Hub ↗</a>
   </nav>
 </header>
 
@@ -123,7 +165,7 @@ hr{border:0;border-top:1px solid var(--line);margin:18px 0}
 </section>
 
 <nav class="nav" aria-label="Page sections">
-  <a href="#rolyfeResearchDock">Research Dock</a><a href="#map">Property Map</a><a href="#intake">Property Intake</a><a href="#records">Saved Records</a><a href="#checklist">Due Diligence</a><a href="#underwriting">Underwriting</a><a href="#capital">Capital &amp; Brokerage</a><a href="#documents">Research Documents</a>
+  <a href="#rolyfeResearchDock">Research Dock</a><a href="#map">Property Map</a><a href="#intake">Property Intake</a><a href="#records">Saved Records</a><a href="#checklist">Due Diligence</a><a href="#underwriting">Underwriting</a><a href="#auction-operations">Auction &amp; Deal Tools</a><a href="#funding-hub">Funding &amp; Link Hub</a><a href="#capital">Capital &amp; Brokerage</a><a href="#documents">Research Documents</a>
 </nav>
 
 <section class="section" id="map">
@@ -219,7 +261,9 @@ hr{border:0;border-top:1px solid var(--line);margin:18px 0}
 </section>
 
 <section class="section" id="checklist">
-  <div class="section-head"><div><div class="eyebrow">Step 3</div><h2>Due-Diligence Checklist</h2></div><span class="badge" id="checkProgress">0 / 12 checked</span></div>
+  <details class="section-fold">
+    <summary class="section-head fold-summary"><div><div class="eyebrow">Step 3 · Expand when ready</div><h2>Due-Diligence Checklist</h2><span class="small">12 verification points · saved on this device</span></div><span class="badge" id="checkProgress">0 / 12 checked</span></summary>
+    <div class="fold-body">
   <div class="grid">
     <div class="section-card span-6">
       <h3>Property & market verification</h3>
@@ -247,6 +291,41 @@ hr{border:0;border-top:1px solid var(--line);margin:18px 0}
     </div>
   </div>
   <p class="callout warn">Auction and tax-sale procedures vary by jurisdiction. Do not assume liens are wiped out, title is clear, possession is immediate, or redemption rights do not apply. Verify the governing rules with official sources and qualified local professionals.</p>
+    </div>
+  </details>
+</section>
+
+
+<section class="section" id="funding-hub">
+  <div class="section-head"><div><div class="eyebrow">RO’Lyfe Execution System</div><h2>💰 Funding &amp; Link Hub</h2><p class="small">Calculate → Qualify → Package → Book → Submit → Fund.</p></div><span class="badge">Partner pathways · no funding guarantee</span></div>
+  <div class="section-card funding-intro">
+    <div><strong>ROOT OF LYFE</strong><p>Helping business owners and professionals explore funding pathways to start, grow and scale. Funding decisions, promotional terms, rates, fees and timelines are controlled by the applicable provider.</p><p><a href="mailto:richman@rootoflyfe.com">richman@rootoflyfe.com</a></p></div>
+    <div class="funding-promo-grid">
+      <div><strong>Start-up funding</strong><span>Partner-advertised programs may offer $50K–$500K+ with promotional 0% introductory terms, subject to eligibility and offer details.</span></div>
+      <div><strong>Revenue financing</strong><span>Partner-advertised potential up to $5M; availability and timing are not guaranteed.</span></div>
+      <div><strong>Real estate financing</strong><span>Programs advertised across $100K–$50M; lender, collateral and borrower criteria apply.</span></div>
+      <div><strong>SBA financing</strong><span>Program pathways advertised from $500K to $5M+; SBA and lender rules apply.</span></div>
+    </div>
+  </div>
+  <div class="section-card">
+    <div class="funding-heading"><div><h3>📚 15+ Funding Calculators / Use Cases</h3><p class="small">Open the Funding &amp; Execution Hub for its master calculator, loan-specific assumptions, documents, booking and submission workflow.</p></div><a class="button primary" href="https://rolrichman.github.io/rolyfe-funding/" target="_blank" rel="noopener noreferrer">Open Funding Calculators &amp; Execution Hub ↗</a></div>
+    <div class="usecase-chips"><span>Business Term</span><span>SBA 7(a)</span><span>SBA 504</span><span>Real Estate LOC</span><span>HELOC</span><span>DSCR</span><span>Fix &amp; Flip</span><span>Bridge</span><span>Private Money</span><span>Working Capital</span><span>MCA</span><span>Equipment</span><span>Invoice Factoring</span><span>Franchise</span><span>Credit Repair</span><span>Debt Consolidation</span></div>
+  </div>
+  <div class="funding-link-grid">
+    <article class="section-card"><span class="eyebrow">Business funding</span><h3>Americas Funding Experts</h3><p>Business funding referral portal.</p><a class="button primary" href="https://my.americasfundingexperts.com/?id=1820217000190862001" target="_blank" rel="noopener noreferrer">Open Partner Portal ↗</a></article>
+    <article class="section-card"><span class="eyebrow">Business funding</span><h3>MyPartner</h3><p>Business financing and referral partner pathways, including Spanish-language pages.</p><div class="funding-links"><a href="https://go.mypartner.io/business-financing/?ref=001Qk00000MkqgTIAR" target="_blank" rel="noopener noreferrer">Business Financing ↗</a><a href="https://go.mypartner.io/business-financing/?ref=001Qk00000MkqgTIAR&amp;lang=es" target="_blank" rel="noopener noreferrer">Financiamiento en Español ↗</a><a href="https://go.mypartner.io/referral-partner/?ref=001Qk00000MkqgTIAR" target="_blank" rel="noopener noreferrer">Referral Partner ↗</a><a href="https://go.mypartner.io/referral-partner/?ref=001Qk00000MkqgTIAR&amp;lang=es" target="_blank" rel="noopener noreferrer">Socio de Referidos ↗</a></div></article>
+    <article class="section-card"><span class="eyebrow">Credit &amp; fundability</span><h3>7 Figures Credit</h3><p>Credit-building and business-credit pathway.</p><a class="button primary" href="https://www.7figurescredit.com/?a_aid=ROLFunding" target="_blank" rel="noopener noreferrer">Open 7 Figures Credit ↗</a></article>
+    <article class="section-card"><span class="eyebrow">Funding marketplace</span><h3>Get Your Biz Loan</h3><p>Two partner landing pages.</p><div class="funding-links"><a href="https://getyourbizloan.io/lp1?pu=recqKxJNkvD70xMqi" target="_blank" rel="noopener noreferrer">Business Funding LP1 ↗</a><a href="https://getyourbizloan.io/lp2?pu=recqKxJNkvD70xMqi" target="_blank" rel="noopener noreferrer">Business Funding LP2 ↗</a></div></article>
+    <article class="section-card"><span class="eyebrow">Underwriting</span><h3>DDT Wealth</h3><p>Underwriter resource website.</p><a class="button" href="https://ddtwealth.com/" target="_blank" rel="noopener noreferrer">Open DDT Wealth ↗</a></article>
+    <article class="section-card"><span class="eyebrow">Corporate credit</span><h3>National Corporate Credit</h3><p>Corporate credit and funding partner resource.</p><a class="button" href="https://nationalcorporatecredit.com/" target="_blank" rel="noopener noreferrer">Open NCC ↗</a></article>
+    <article class="section-card"><span class="eyebrow">Real estate capital</span><h3>Kiavi</h3><p>Broker origination portal. Confirm current program criteria.</p><a class="button" href="https://app.kiavi.com/my/loans/origination" target="_blank" rel="noopener noreferrer">Open Kiavi Broker Portal ↗</a></article>
+    <article class="section-card"><span class="eyebrow">Private capital</span><h3>COGO Capital &amp; Private Money Exchange</h3><p>Property and private-capital resources. Program terms are lender-dependent.</p><div class="funding-links"><a href="https://www.cogocapital.com/" target="_blank" rel="noopener noreferrer">COGO Capital ↗</a><a href="https://www.borrowersviewcentral.com/portal/applynew?id=LCS" target="_blank" rel="noopener noreferrer">COGO Application ↗</a><a href="https://privatemoneyexchange.com/aff-page/richman/" target="_blank" rel="noopener noreferrer">Private Money Exchange ↗</a></div></article>
+    <article class="section-card"><span class="eyebrow">Partner platform</span><h3>BLN Software</h3><p>Business and underwriting workflow portal.</p><a class="button" href="https://rootoflyfe.blnsoftware.com/" target="_blank" rel="noopener noreferrer">Open BLN Portal ↗</a></article>
+    <article class="section-card"><span class="eyebrow">Credit resources</span><h3>Credit monitoring &amp; building</h3><div class="funding-links"><a href="https://www.creditscoreiq.com/lander/bus?offercode=435404PA" target="_blank" rel="noopener noreferrer">CreditScoreIQ ↗</a><a href="https://www.myscoreiq.com/get-fico-preferred.aspx?offercode=432142NZ" target="_blank" rel="noopener noreferrer">MyScoreIQ ↗</a><a href="https://www.identityiq.com/sc-securepreferred.aspx?offercode=431297MR" target="_blank" rel="noopener noreferrer">IdentityIQ ↗</a><a href="https://www.creditbuilderiq.com/lander/bus?offercode=437502WT" target="_blank" rel="noopener noreferrer">CreditBuilderIQ ↗</a><a href="https://funnel.asapcreditrepairusa.com/fast-results?affId=RichardsonLegagneur28158" target="_blank" rel="noopener noreferrer">ASAP Credit Repair ↗</a></div></article>
+    <article class="section-card"><span class="eyebrow">Referral / lead intake</span><h3>RO’Lyfe Intake &amp; Quick Docs</h3><p>Use the secure provider forms for intake and documents. Do not place sensitive borrower data in the public property record.</p><div class="funding-links"><a href="https://form.jotform.com/253154859148062" target="_blank" rel="noopener noreferrer">Funding Intake ↗</a><a href="https://form.jotform.com/252063354378055" target="_blank" rel="noopener noreferrer">Quick Docs ↗</a></div></article>
+    <article class="section-card"><span class="eyebrow">Appointments</span><h3>Book a Strategy Session</h3><p>Schedule a conversation about the deal and funding pathway.</p><a class="button" href="https://richman-rootoflyfe.zohobookings.com/#/4699692000000050014" target="_blank" rel="noopener noreferrer">Book a Call ↗</a></article>
+  </div>
+  <p class="callout">Some destinations may use referral or affiliate tracking. If a provider pays compensation, that relationship should be disclosed to the customer where required. No loan, approval, credit improvement, rate, or funding timeline is guaranteed by RO’Lyfe.</p>
 </section>
 
 <section class="section" id="underwriting">
@@ -279,6 +358,13 @@ hr{border:0;border-top:1px solid var(--line);margin:18px 0}
       <p class="small">The maximum-offer estimate is a simple screening formula, not a lender decision or a substitute for a full acquisition model.</p>
     </div>
   </div>
+</section>
+
+
+<section class="section" id="auction-operations">
+  <div class="section-head"><div><div class="eyebrow">Acquisition execution</div><h2>🏗️ Auction &amp; Deal Tools</h2><p class="small">Non-trading property modules from Auction Capital Machine: deal analysis, contractors, rehab, tax liens, tax-yield research and additional property calculators.</p></div><a class="button" href="https://rolrichman.github.io/ro-lyfe-auction-capital-machine/?embed=property" target="_blank" rel="noopener noreferrer">Open Deal Tools Separately ↗</a></div>
+  <div class="section-card embedded-engine-card"><iframe id="auctionPropertyEngineFrame" title="RO’Lyfe Auction Capital Machine property and deal tools, trading excluded" loading="lazy" src="https://rolrichman.github.io/ro-lyfe-auction-capital-machine/?embed=property" referrerpolicy="strict-origin-when-cross-origin"></iframe></div>
+  <p class="small">The embedded workspace excludes the trading chart, scanner and market-only panels. Your main property map, intake, saved records, due-diligence checklist and underwriting remain on this page.</p>
 </section>
 
 <section class="section" id="capital">
@@ -818,5 +904,20 @@ renderRecords();
 renderMapMarkers();
 })();
 </script>
+
+<script id="rol-property-embedded-engine-resize">
+(function(){
+ const frame=document.getElementById("auctionPropertyEngineFrame");
+ if(!frame)return;
+ window.addEventListener("message",function(event){
+  if(event.origin!=="https://rolrichman.github.io"||event.source!==frame.contentWindow)return;
+  const data=event.data||{};
+  if(data.type==="rol-property-engine-height"&&Number.isFinite(Number(data.height))){
+   frame.style.height=Math.max(900,Math.min(12000,Number(data.height)))+"px";
+  }
+ });
+})();
+</script>
+
 </body>
 </html>
