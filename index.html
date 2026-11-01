@@ -129,6 +129,22 @@ body{background:radial-gradient(ellipse at 8% 0%,rgba(255,145,64,.105),transpare
 @media(max-width:850px){.funding-intro{grid-template-columns:1fr}.funding-link-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:560px){.toplinks{width:100%;justify-content:flex-start}.toplinks a.nav-action{font-size:11px;padding:7px 9px}.funding-link-grid,.funding-promo-grid{grid-template-columns:1fr}.funding-heading .button{width:100%}#auctionPropertyEngineFrame{height:1900px}.section-fold>summary{padding:13px;align-items:flex-start}.section-fold .fold-summary h2{font-size:20px}}
 </style>
+
+<style id="rolyfe-regrid-map-upgrade">
+.regrid-action-field{align-content:start}
+.regrid-action-field .button{width:100%;min-height:43px}
+.regrid-result{grid-column:1/-1;padding:12px;border:1px solid rgba(236,151,83,.28);border-radius:11px;background:rgba(255,153,77,.055);color:var(--muted);font-size:12px;line-height:1.55}
+.regrid-result strong{color:#ffd0a8}
+.regrid-result .regrid-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin-top:9px}
+.regrid-result .regrid-item{padding:8px;border:1px solid rgba(236,151,83,.16);border-radius:8px;background:rgba(0,0,0,.12)}
+.regrid-result .regrid-item small,.regrid-result .regrid-item b{display:block}
+.regrid-result .regrid-item small{font-size:9px;color:var(--muted)}
+.regrid-result .regrid-item b{font-size:12px;overflow-wrap:anywhere}
+#propertyMap .leaflet-control-zoom a{width:44px!important;height:44px!important;line-height:44px!important;font-size:23px!important;touch-action:manipulation}
+#propertyMap .leaflet-control-container{pointer-events:auto}
+#propertyMap{touch-action:pan-x pan-y}
+@media(max-width:600px){.regrid-result .regrid-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+</style>
 </head>
 <body>
 <div class="wrap">
@@ -165,7 +181,7 @@ body{background:radial-gradient(ellipse at 8% 0%,rgba(255,145,64,.105),transpare
 </section>
 
 <nav class="nav" aria-label="Page sections">
-  <a href="#rolyfeResearchDock">Research Dock</a><a href="#map">Property Map</a><a href="#intake">Property Intake</a><a href="#records">Saved Records</a><a href="#checklist">Due Diligence</a><a href="#underwriting">Underwriting</a><a href="#auction-operations">Auction &amp; Deal Tools</a><a href="#funding-hub">Funding &amp; Link Hub</a><a href="#capital">Capital &amp; Brokerage</a><a href="#documents">Research Documents</a>
+  <a href="#rolyfeResearchDock">Research Dock</a><a href="#map">Property Map</a><a href="#intake">Property Intake</a><a href="#records">Saved Records</a><a href="#checklist">Due Diligence</a><a href="#underwriting">Underwriting</a><a href="#auction-operations">Auction &amp; Deal Tools</a><a href="#funding-hub">Funding &amp; Link Hub</a><a href="#ecosystem">Connected Engines</a><a href="#capital">Capital &amp; Brokerage</a><a href="#documents">Research Documents</a>
 </nav>
 
 <section class="section" id="map">
@@ -216,7 +232,9 @@ body{background:radial-gradient(ellipse at 8% 0%,rgba(255,145,64,.105),transpare
         <input type="hidden" id="latitude" name="latitude" value=""><input type="hidden" id="longitude" name="longitude" value="">
         <div class="row-fields">
           <div class="field"><label for="address">Property address *</label><input id="address" name="address" required placeholder="Street, city, state, ZIP"></div>
+          <div class="field regrid-action-field"><label>Parcel intelligence · Regrid</label><button type="button" id="regridLookup" class="button primary">🧭 Look up parcel</button><span class="small">Address-based parcel attributes from your connected Regrid Edge Function.</span></div>
           <div class="field"><label for="parcel">Parcel / APN</label><input id="parcel" name="parcel" placeholder="Parcel identification number"></div>
+          <div id="regridResult" class="regrid-result" role="status" aria-live="polite">Regrid lookup has not been run.</div>
           <div class="field"><label for="county">County</label><input id="county" name="county" placeholder="County"></div>
           <div class="field"><label for="state">State</label><select id="state" name="state"><option value="">Select state</option><option>PA</option><option>NJ</option><option>NY</option><option>DE</option><option>MD</option><option>Other</option></select></div>
           <div class="field"><label for="propertyType">Property type</label><select id="propertyType" name="propertyType"><option>Unknown — verify</option><option>Single-family</option><option>Multi-family</option><option>Condo / townhouse</option><option>Commercial</option><option>Mixed-use</option><option>Vacant land</option><option>Manufactured</option><option>Other</option></select></div>
@@ -386,6 +404,22 @@ body{background:radial-gradient(ellipse at 8% 0%,rgba(255,145,64,.105),transpare
       <a class="button" href="https://rolrichman.github.io/rolyfe-contract-documents-hub/" target="_blank" rel="noopener noreferrer">Open Contract Documents Hub ↗</a>
     </div>
     <div class="span-12 callout">Recommended handoff packet: verified address and parcel; official sale notice and deadline; source-dated comparable sales; rehab scope and contingency; conservative ARV and maximum-offer estimate; taxes, liens, title and possession questions; funding amount and cash-to-close; exit plan; and open risks. A referral or brokerage workflow is not a lending approval or guarantee of funding. Keep sensitive borrower information out of this public static page and browser-only research record.</div>
+  </div>
+</section>
+
+
+<section class="section" id="ecosystem">
+  <div class="section-head"><div><div class="eyebrow">Connected RO’Lyfe tools</div><h2>🌐 Related Engines &amp; Directory</h2><p class="small">A clean launch directory for the property, funding, relocation and execution tools connected to this workspace.</p></div></div>
+  <div class="funding-link-grid">
+    <article class="section-card"><h3>🧭 Relocation Intelligence</h3><p>Location, climate, risk, incentives and relocation planning.</p><a class="button" href="https://rolrichman.github.io/rolyfe-relocation-intelligence/" target="_blank" rel="noopener noreferrer">Open Relocation Engine ↗</a></article>
+    <article class="section-card"><h3>🏗️ Acquisition Engine</h3><p>Lead intake, deal screening and acquisition workflow.</p><a class="button" href="https://rolrichman.github.io/rolyfe-acquisition-engine/" target="_blank" rel="noopener noreferrer">Open Acquisition Engine ↗</a></article>
+    <article class="section-card"><h3>📄 Contract Documents Hub</h3><p>Brokerage, contract and transaction documents.</p><a class="button" href="https://rolrichman.github.io/rolyfe-contract-documents-hub/" target="_blank" rel="noopener noreferrer">Open Document Hub ↗</a></article>
+    <article class="section-card"><h3>🤝 Closers OS</h3><p>Deal follow-through and closing coordination.</p><a class="button" href="https://rolrichman.github.io/RO-Lyfe-Closers-OS/" target="_blank" rel="noopener noreferrer">Open Closers OS ↗</a></article>
+    <article class="section-card"><h3>🏠 Buyer Network OS</h3><p>Buyer-side deal routing and disposition connections.</p><a class="button" href="https://rolrichman.github.io/RO-Lyfe-Buyer-Network-OS/" target="_blank" rel="noopener noreferrer">Open Buyer Network ↗</a></article>
+    <article class="section-card"><h3>💵 Overage Calculator</h3><p>Surplus and overage screening workflow.</p><a class="button" href="https://rolrichman.github.io/ROLyfe-Overage-Calculator/" target="_blank" rel="noopener noreferrer">Open Overage Calculator ↗</a></article>
+    <article class="section-card"><h3>🎥 Vision Hub</h3><p>Video library and visual learning resources.</p><a class="button" href="https://rolrichman.github.io/rolyfe-video-hub/" target="_blank" rel="noopener noreferrer">Open Vision Hub ↗</a></article>
+    <article class="section-card"><h3>🌐 Command Center</h3><p>Central RO’Lyfe project directory and command workspace.</p><a class="button" href="https://rolrichman.github.io/rolyfe-command-center/" target="_blank" rel="noopener noreferrer">Open Command Center ↗</a></article>
+    <article class="section-card"><h3>📦 iContainers</h3><p>Freight and shipping quotes through your existing provider account.</p><a class="button" href="https://my.icontainers.com/sign-in" target="_blank" rel="noopener noreferrer">Open iContainers ↗</a></article>
   </div>
 </section>
 
@@ -627,8 +661,10 @@ function initPropertyMap(){
   $("refreshMap").addEventListener("click",refreshPropertyMap);
   $("fitAllMapped").addEventListener("click",fitMappedProperties);
   $("recenterMap").addEventListener("click",()=>{
-    if(propertyMap) propertyMap.setView([39.9526,-75.1636],10);
-    $("mapStatus").textContent="Map centered on Philadelphia. Use “Locate on map” on a saved property to place its pin.";
+    if(!propertyMap)return;
+    propertyMap.invalidateSize({pan:false});
+    window.requestAnimationFrame(()=>{propertyMap.invalidateSize({pan:false});propertyMap.setView([39.9526,-75.1636],11,{animate:false});});
+    $("mapStatus").textContent="Centered on downtown Philadelphia (39.9526, -75.1636), zoom level 11. This is a fixed reference point, not your device location.";
   });
   renderMapMarkers();
   $("mapRefreshed").textContent="Loaded "+new Date().toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"});
@@ -919,5 +955,38 @@ renderMapMarkers();
 })();
 </script>
 
+
+<script id="rol-property-regrid-lookup">
+(function(){
+"use strict";
+const button=document.getElementById("regridLookup"),host=document.getElementById("regridResult");
+if(!button||!host)return;
+const SUPABASE_URL="https://ykmdyfbklvuoseqdjnxy.supabase.co";
+const SUPABASE_ANON="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlrbWR5ZmJrbHZ1b3NlcWRqbnh5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTI3ODk5OTQsImV4cCI6MjEwODM2NTk5NH0._YEZj2GSnPcLGXmwgj98V_JzXdJIhTmOFoAH9BSia2I";
+const safe=value=>String(value===null||value===undefined||value===""?"—":value).replace(/[&<>"']/g,ch=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]));
+const money=value=>value===null||value===undefined||value===""?"—":Number.isFinite(Number(value))?new Intl.NumberFormat("en-US",{style:"currency",currency:"USD",maximumFractionDigits:0}).format(Number(value)):safe(value);
+button.addEventListener("click",async()=>{
+ const address=document.getElementById("address")?.value.trim();
+ if(!address||address.length<8){host.textContent="Enter a complete street address, city and state (ZIP when available) before requesting a Regrid parcel match.";document.getElementById("address")?.focus();return;}
+ button.disabled=true;button.textContent="Looking up parcel…";host.textContent="Requesting a source-specific parcel match from Regrid through the RO’Lyfe Supabase Edge Function. This is an on-demand lookup.";
+ try{
+  const endpoint=SUPABASE_URL+"/functions/v1/regrid-parcel-lookup?address="+encodeURIComponent(address);
+  const response=await fetch(endpoint,{method:"GET",headers:{"apikey":SUPABASE_ANON,"Authorization":"Bearer "+SUPABASE_ANON,"Accept":"application/json"}});
+  const data=await response.json();
+  if(!response.ok||data.error)throw new Error(data.error||"Parcel lookup failed (HTTP "+response.status+").");
+  if(!data.found){host.textContent=data.message||"No parcel matched. Check the address and try again.";return;}
+  if(data.parcelNumber&&document.getElementById("parcel"))document.getElementById("parcel").value=data.parcelNumber;
+  if(data.county&&document.getElementById("county"))document.getElementById("county").value=data.county;
+  if(data.state&&document.getElementById("state"))document.getElementById("state").value=data.state;
+  if(data.latitude!==null&&data.latitude!==undefined&&document.getElementById("latitude"))document.getElementById("latitude").value=data.latitude;
+  if(data.longitude!==null&&data.longitude!==undefined&&document.getElementById("longitude"))document.getElementById("longitude").value=data.longitude;
+  const fields=[["Parcel ID",data.parcelNumber],["Owner (source field)",data.owner],["Property use",data.propertyUse],["Zoning",data.zoning],["Assessed value",money(data.assessedValue)],["Annual tax",money(data.annualTax)],["Last sale price",money(data.lastSalePrice)],["Last sale date",data.lastSaleDate],["Year built",data.yearBuilt],["Acreage",data.acreage],["Flood zone",data.floodZone],["County",data.county]];
+  host.innerHTML="<strong>Regrid parcel match · "+safe(data.match)+"</strong><div class='regrid-grid'>"+fields.map(([label,value])=>"<div class='regrid-item'><small>"+safe(label)+"</small><b>"+safe(value)+"</b></div>").join("")+"</div><p>"+safe(data.note)+"</p>"+(data.countySourceUrl?"<a href='"+safe(data.countySourceUrl)+"' target='_blank' rel='noopener noreferrer'>Open county source ↗</a>":"");
+  if(typeof window.rolyfeRefreshPropertyMap==="function")window.rolyfeRefreshPropertyMap();
+ }catch(error){host.textContent="Regrid lookup could not complete: "+(error&&error.message?error.message:"network or provider error")+". If the response says Regrid is not configured, the REGRID_API_KEY secret must be added to the Supabase Edge Function. This button does not run automatically.";
+ }finally{button.disabled=false;button.textContent="🧭 Look up parcel";}
+});
+})();
+</script>
 </body>
 </html>
