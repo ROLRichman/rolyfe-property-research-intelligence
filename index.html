@@ -475,7 +475,7 @@ body.rol-theme-2,body.rol-theme-3,body.rol-theme-4,body.rol-theme-5{background:l
    <div class="field"><label for="tyMonths">Months held</label><input id="tyMonths" type="number" min="0" step="1" value="12"></div>
    <div class="field"><label for="tyCosts">Costs / fees ($)</label><input id="tyCosts" type="number" min="0" step="10" value="100"></div>
   </div>
-  <div class="result-grid">
+  <div class="actions tax-sample-actions"><button type="button" data-tax-sample="conservative">Sample · Conservative</button><button type="button" data-tax-sample="standard">Sample · Standard</button><button type="button" data-tax-sample="extended">Sample · Extended hold</button></div><p class="small">Each sample loads the figures in the dedicated Tax Yield / OTC workspace.</p><div class="result-grid">
    <div class="result"><span>Estimated interest</span><strong id="tyInterest">$0</strong></div>
    <div class="result"><span>Net estimated return</span><strong id="tyNet">$0</strong></div>
    <div class="result"><span>Net yield on investment</span><strong id="tyYield">0.0%</strong></div>
@@ -589,7 +589,7 @@ let propertyLayer = null;
 let propertyTileLayer = null;
 let weatherLayer = null;
 let nearbyLayer = null;
-let weatherResults = [null,null,null];
+let weatherResults = [null,null,null];\nwindow.rolyfeGetWeatherSlots=()=>weatherResults.slice();
 let lastGeocodeAt = 0;
 let mapActionQueue = Promise.resolve();
 
@@ -1144,5 +1144,71 @@ finally{send.disabled=false;send.textContent="Send";messages.scrollTop=messages.
 </script><script id="rol-google-translate">
 function googleTranslateElementInit(){if(window.google&&google.translate){new google.translate.TranslateElement({pageLanguage:"en",includedLanguages:"en,ht,fr,es,zh-CN,zh-TW",autoDisplay:false,layout:google.translate.TranslateElement.InlineLayout.SIMPLE},"google_translate_element");}}
 </script>
-<script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" async></script></body>
+<script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" async></script><script id="rol-overage-calculator">
+(function(){
+const ids=["ovSale","ovDebt","ovTaxes","ovCosts","ovOther","ovShare"];
+const get=id=>document.getElementById(id);
+const money=n=>new Intl.NumberFormat("en-US",{style:"currency",currency:"USD",maximumFractionDigits:2}).format(n);
+function calc(){
+ const vals=ids.map(id=>Math.max(0,Number(get(id)?.value)||0));
+ const [sale,debt,taxes,costs,other,share]=vals;
+ const grossSurplus=sale-debt-taxes-costs-other,available=Math.max(0,grossSurplus),claim=available*Math.min(100,share)/100;
+ const out=get("ovResult");if(!out)return;
+ out.innerHTML=(grossSurplus>=0?"Illustrative potential surplus: ":"Estimated shortfall: ")+"<strong>"+money(Math.abs(grossSurplus))+"</strong><br>Illustrative claimant share ("+Math.min(100,share).toFixed(1)+"%): "+money(claim)+"<br>Estimated deductions: "+money(debt+taxes+costs+other)+"<br>"+(grossSurplus<0?"Deductions exceed gross proceeds; no surplus is indicated by these assumptions.":"Screening estimate only. Confirm the official distribution and claim priority.");
+}
+get("ovCalculate")?.addEventListener("click",calc);
+ids.forEach(id=>get(id)?.addEventListener("input",calc));
+get("ovReset")?.addEventListener("click",()=>{[250000,150000,12000,8000,0,100].forEach((v,i)=>get(ids[i]).value=String(v));calc();});
+calc();
+})();
+</script><script id="rol-tax-yield-sample-routing">
+(function(){
+const samples={conservative:[5000,6,6,150],standard:[5000,12,12,100],extended:[10000,10,18,350]};
+document.querySelectorAll("[data-tax-sample]").forEach(button=>button.addEventListener("click",()=>{
+ const values=samples[button.dataset.taxSample];if(!values)return;
+ ["tyAmount","tyRate","tyMonths","tyCosts"].forEach((id,i)=>{const input=document.getElementById(id);if(input){input.value=String(values[i]);input.dispatchEvent(new Event("input",{bubbles:true}));}});
+ const params=new URLSearchParams({embed:"property",yield_amount:String(values[0]),yield_rate:String(values[1]),yield_months:String(values[2]),yield_costs:String(values[3])});
+ window.open("https://rolrichman.github.io/ro-lyfe-auction-capital-machine/?"+params.toString()+"#taxYield","_blank","noopener");
+}));
+})();
+</script><script id="rol-device-compass">
+(function(){
+const menu=document.querySelector(".rol-compass-menu");if(!menu||menu.querySelector(".device-compass"))return;
+const widget=document.createElement("section");widget.className="device-compass";widget.innerHTML='<strong>🧭 Live Compass &amp; Midpoint</strong><div class="device-compass-dial"><div class="device-compass-needle" id="deviceCompassNeedle"></div><div class="device-compass-center"></div></div><div class="device-compass-reading" id="deviceCompassReading">Heading unavailable</div><small id="deviceCompassStatus">Enable the phone compass. Your browser may ask for motion permission.</small><div class="compass-actions"><button type="button" id="enableDeviceCompass">Enable compass</button><button type="button" id="findWeatherMidpoint">Find midpoint L1 ↔ L2</button></div><small id="weatherMidpointResult">Load weather for Locations 1 and 2 to calculate their midpoint and direction.</small>';
+menu.appendChild(widget);
+const reading=document.getElementById("deviceCompassReading"),status=document.getElementById("deviceCompassStatus"),needle=document.getElementById("deviceCompassNeedle");
+let active=false;
+const cardinal=d=>["N","NE","E","SE","S","SW","W","NW"][Math.round(d/45)%8];
+function handle(e){
+ let heading=null;
+ if(typeof e.webkitCompassHeading==="number")heading=e.webkitCompassHeading;
+ else if(typeof e.alpha==="number")heading=(360-e.alpha+(Number(screen.orientation?.angle)||0)+360)%360;
+ if(heading===null||!Number.isFinite(heading))return;
+ active=true;needle.style.transform="rotate("+heading+"deg)";reading.textContent=heading.toFixed(0)+"° · "+cardinal(heading);status.textContent=e.absolute?"Device orientation sensor · absolute":"Device orientation sensor · relative heading; calibrate away from magnetic interference.";
+}
+async function enable(){
+ if(!("DeviceOrientationEvent" in window)){status.textContent="This browser or device does not expose a compass sensor.";return;}
+ try{if(typeof DeviceOrientationEvent.requestPermission==="function"){const permission=await DeviceOrientationEvent.requestPermission();if(permission!=="granted")throw new Error("Motion permission was not granted.");}
+ window.addEventListener("deviceorientationabsolute",handle,true);window.addEventListener("deviceorientation",handle,true);
+ status.textContent="Waiting for the device compass sensor…";setTimeout(()=>{if(!active)status.textContent="No compass heading received. Use a supported phone browser and enable motion/orientation access.";},3500);
+ }catch(err){status.textContent=err.message||"Compass permission could not be enabled.";}
+}
+function midpoint(){
+ const slots=window.rolyfeGetWeatherSlots?.()||[],a=slots[0],b=slots[1],out=document.getElementById("weatherMidpointResult");
+ if(!a||!b){out.textContent="Load weather for Location 1 and Location 2 first.";return;}
+ const rad=x=>x*Math.PI/180,deg=x=>x*180/Math.PI;
+ const p1=rad(a.lat),l1=rad(a.lon),p2=rad(b.lat),l2=rad(b.lon),dl=l2-l1;
+ const bx=Math.cos(p2)*Math.cos(dl),by=Math.cos(p2)*Math.sin(dl);
+ const lat=deg(Math.atan2(Math.sin(p1)+Math.sin(p2),Math.sqrt((Math.cos(p1)+bx)**2+by**2)));
+ const lon=deg(l1+Math.atan2(by,Math.cos(p1)+bx));
+ const y=Math.sin(dl)*Math.cos(p2),x=Math.cos(p1)*Math.sin(p2)-Math.sin(p1)*Math.cos(p2)*Math.cos(dl);
+ const bearing=(deg(Math.atan2(y,x))+360)%360;
+ out.textContent="Midpoint: "+lat.toFixed(4)+", "+lon.toFixed(4)+" · Initial bearing from "+a.name+" to "+b.name+": "+bearing.toFixed(0)+"° "+cardinal(bearing)+".";
+ const url="https://www.google.com/maps/dir/?api=1&origin="+encodeURIComponent(a.lat+","+a.lon)+"&destination="+encodeURIComponent(b.lat+","+b.lon)+"&travelmode=driving";
+ const link=document.createElement("a");link.href="https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(lat+","+lon);link.target="_blank";link.rel="noopener noreferrer";link.textContent="Open midpoint in Maps ↗";out.appendChild(document.createElement("br"));out.appendChild(link);
+}
+document.getElementById("enableDeviceCompass").addEventListener("click",enable);
+document.getElementById("findWeatherMidpoint").addEventListener("click",midpoint);
+})();
+</script></body>
 </html>
