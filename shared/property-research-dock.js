@@ -16,7 +16,7 @@
   var ACQUISITION_URL = "https://rolrichman.github.io/rolyfe-acquisition-engine/";
   var CLOSERS_URL = "https://rolrichman.github.io/RO-Lyfe-Closers-OS/";
   var BUYER_URL = "https://rolrichman.github.io/RO-Lyfe-Buyer-Network-OS/";
-  var OVERAGE_URL = "https://rolrichman.github.io/ROLyfe-Overage-Calculator/";
+  var OVERAGE_URL = PROPERTY_URL + "#overage-calculator";
   var VISION_URL = "https://rolrichman.github.io/rolyfe-video-hub/";
   var SEVEN_FIGURES_URL = "https://www.7figurescredit.com/?a_aid=ROLFunding";
   var NCC_URL = "https://nationalcorporatecredit.com/";
