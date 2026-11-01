@@ -189,7 +189,19 @@ body.rol-theme-2,body.rol-theme-3,body.rol-theme-4,body.rol-theme-5{background:l
 .rol-language-note{font-size:10px;color:var(--muted);margin-left:auto}
 @media(max-width:600px){.workflow-rail{margin:0 -13px 10px;justify-content:flex-start;overflow-x:auto;flex-wrap:nowrap}.workflow-rail a{white-space:nowrap}.rol-compass{right:7px;top:auto;bottom:82px}.rol-compass-toggle{padding:10px 12px;font-size:12px}.funding-calculator-menu{grid-template-columns:1fr}#auctionPropertyEngineFrame{height:72vh!important;min-height:560px;max-height:760px}.tax-yield-card .result-grid{grid-template-columns:1fr}}
 </style>
-</head>
+<style id="rol-property-agent-style">
+.rol-agent-launch{position:fixed;right:16px;bottom:16px;z-index:6000;border:1px solid rgba(100,228,237,.55);border-radius:999px;padding:13px 16px;background:linear-gradient(135deg,#15374b,#1c2944);color:#e9fbff;font-weight:900;box-shadow:0 12px 35px #0008}
+.rol-agent-panel{position:fixed;right:14px;bottom:78px;z-index:6001;width:min(390px,calc(100vw - 24px));height:min(590px,calc(100dvh - 105px));display:none;flex-direction:column;overflow:hidden;border:1px solid #3c6277;border-radius:18px;background:rgba(7,17,27,.985);box-shadow:0 25px 75px #000b}
+.rol-agent-panel.open{display:flex}.rol-agent-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:13px 15px;border-bottom:1px solid var(--line);background:linear-gradient(135deg,rgba(229,140,75,.16),rgba(18,38,56,.96))}
+.rol-agent-head strong{display:block;font-size:14px}.rol-agent-head small{color:var(--muted);font-size:10px}
+.rol-agent-messages{flex:1;overflow:auto;padding:13px;display:flex;flex-direction:column;gap:9px}
+.rol-agent-msg{max-width:92%;padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:#102231;font-size:12px;line-height:1.55;white-space:pre-wrap;overflow-wrap:anywhere}
+.rol-agent-msg.user{align-self:flex-end;background:#17364a;border-color:#3d6b84}
+.rol-agent-quick{display:flex;gap:6px;overflow:auto;padding:8px;border-top:1px solid var(--line)}
+.rol-agent-quick button{flex:0 0 auto;font-size:10px;padding:7px 9px}
+.rol-agent-entry{display:flex;gap:7px;padding:10px;border-top:1px solid var(--line)}.rol-agent-entry input{flex:1;min-width:0}.rol-agent-entry button{padding:10px 13px}
+@media(max-width:600px){.rol-agent-launch{right:12px;bottom:12px}.rol-agent-panel{right:8px;bottom:8px;width:calc(100vw - 16px);height:calc(100dvh - 16px);max-height:calc(100dvh - 16px)}}
+</style></head>
 <body>
 <div class="wrap">
 <header class="topbar">
@@ -1074,5 +1086,28 @@ button.addEventListener("click",async()=>{
  const slider=document.getElementById("mapHeightSlider");if(slider){["input","change"].forEach(evt=>slider.addEventListener(evt,()=>{const h=Math.max(280,Math.min(900,Number(slider.value)||580));document.documentElement.style.setProperty("--property-map-height",h+"px");const out=document.getElementById("mapHeightValue");if(out){out.value=h+" px";out.textContent=h+" px";}if(window.propertyMap&&typeof window.propertyMap.invalidateSize==="function")window.propertyMap.invalidateSize({pan:false});}));}
 })();
 </script>
-</body>
+<button class="rol-agent-launch" id="rolAgentLaunch" type="button" aria-expanded="false">✦ RO’Lyfe Agent</button>
+<section class="rol-agent-panel" id="rolAgentPanel" aria-label="RO’Lyfe Property Intelligence Agent">
+ <header class="rol-agent-head"><div><strong>RO’Lyfe Property Agent</strong><small>Research · Due diligence · Underwriting · Funding handoff</small></div><button type="button" id="rolAgentClose" aria-label="Close assistant">✕</button></header>
+ <div class="rol-agent-messages" id="rolAgentMessages" aria-live="polite"><div class="rol-agent-msg">I'm your RO’Lyfe Property Agent. Ask about the page, a property workflow, parcel research, due diligence, conservative underwriting, tax-yield screening or funding preparation. I do not verify title, approve loans or replace official records.</div></div>
+ <div class="rol-agent-quick"><button type="button" data-agent-prompt="Walk me through Property Intake.">Property Intake</button><button type="button" data-agent-prompt="Build a due-diligence plan for this property.">Due Diligence</button><button type="button" data-agent-prompt="Explain my underwriting results and missing costs.">Underwriting</button><button type="button" data-agent-prompt="Prepare a funding handoff checklist.">Funding Handoff</button></div>
+ <form class="rol-agent-entry" id="rolAgentForm"><input id="rolAgentInput" maxlength="1800" placeholder="Ask your property agent…" autocomplete="off" required><button class="primary" type="submit" id="rolAgentSend">Send</button></form>
+</section><script id="rol-property-agent-connection">
+(function(){
+const launch=document.getElementById("rolAgentLaunch"),panel=document.getElementById("rolAgentPanel"),close=document.getElementById("rolAgentClose"),form=document.getElementById("rolAgentForm"),input=document.getElementById("rolAgentInput"),messages=document.getElementById("rolAgentMessages"),send=document.getElementById("rolAgentSend");
+if(!launch||!panel||!form)return;
+const endpoint="https://ykmdyfbklvuoseqdjnxy.supabase.co/functions/v1/rol-page-ai";
+const anon="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlrbWR5ZmJrbHZ1b3NlcWRqbnh5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTI3ODk5OTQsImV4cCI6MjEwODM2NTk5NH0._YEZj2GSnPcLGXmwgj98V_JzXdJIhTmOFoAH9BSia2I";
+function add(text,kind){const node=document.createElement("div");node.className="rol-agent-msg"+(kind==="user"?" user":"");node.textContent=text;messages.appendChild(node);messages.scrollTop=messages.scrollHeight;return node;}
+function open(){panel.classList.add("open");launch.setAttribute("aria-expanded","true");input.focus();}
+function shut(){panel.classList.remove("open");launch.setAttribute("aria-expanded","false");}
+launch.addEventListener("click",()=>panel.classList.contains("open")?shut():open());close.addEventListener("click",shut);
+document.querySelectorAll("[data-agent-prompt]").forEach(b=>b.addEventListener("click",()=>{input.value=b.dataset.agentPrompt;open();input.focus();}));
+form.addEventListener("submit",async e=>{e.preventDefault();const question=input.value.trim();if(!question)return;add(question,"user");input.value="";send.disabled=true;send.textContent="…";const waiting=add("Reviewing the page context…","assistant");
+try{const pageContext="RO’Lyfe Property Research Intelligence. Visible page content: "+document.body.innerText.slice(0,12000);const response=await fetch(endpoint,{method:"POST",headers:{"Content-Type":"application/json","apikey":anon,"Authorization":"Bearer "+anon},body:JSON.stringify({question,pageContext}),signal:AbortSignal.timeout(30000)});const data=await response.json();if(!response.ok)throw new Error(data.error||"Agent request failed (HTTP "+response.status+").");waiting.textContent=data.answer||"The agent returned an empty response.";}
+catch(err){waiting.textContent="The agent connection is not ready: "+(err&&err.message?err.message:"network error")+". The RO’Lyfe AI Edge Function requires OPENAI_API_KEY in the Trading Intelligence Supabase project's Edge Function Secrets. No API key is exposed in this page.";}
+finally{send.disabled=false;send.textContent="Send";messages.scrollTop=messages.scrollHeight;}
+});
+})();
+</script></body>
 </html>
