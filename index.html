@@ -1225,9 +1225,27 @@ document.querySelectorAll("[data-tax-sample]").forEach(button=>button.addEventLi
       }
     // For standard orientation events, only accept Earth-referenced readings.
     // Relative alpha can point anywhere because its zero reference is arbitrary.
-    } else if(event.absolute===true && typeof event.alpha==="number" && Number.isFinite(event.alpha)){
-      heading=360-event.alpha;
-      source="Absolute Earth-referenced orientation";
+    } else if(event.absolute===true &&
+              typeof event.alpha==="number" && Number.isFinite(event.alpha) &&
+              typeof event.beta==="number" && Number.isFinite(event.beta) &&
+              typeof event.gamma==="number" && Number.isFinite(event.gamma)){
+      // Earth-frame heading projection from alpha/beta/gamma.
+      // This compensates when the phone is held upright or tilted.
+      const toRad=Math.PI/180;
+      const alpha=event.alpha*toRad;
+      const beta=event.beta*toRad;
+      const gamma=event.gamma*toRad;
+      const cX=Math.cos(beta),cY=Math.cos(gamma),cZ=Math.cos(alpha);
+      const sX=Math.sin(beta),sY=Math.sin(gamma),sZ=Math.sin(alpha);
+      const vectorX=-cZ*sY-sZ*sX*cY;
+      const vectorY=-sZ*sY+cZ*sX*cY;
+      if(Math.hypot(vectorX,vectorY)>1e-7){
+        heading=Math.atan2(vectorX,vectorY)/toRad;
+      } else {
+        // Degenerate flat position: alpha itself provides the top-edge heading.
+        heading=360-event.alpha;
+      }
+      source="Absolute Earth-referenced orientation (tilt-corrected)";
     } else {
       return;
     }
@@ -1265,7 +1283,7 @@ document.querySelectorAll("[data-tax-sample]").forEach(button=>button.addEventLi
       window.addEventListener("deviceorientation",handleOrientation,true);
       window.addEventListener("deviceorientationabsolute",handleOrientation,true);
       listening=true;
-      status.textContent="Sensor enabled. Waiting for a reliable compass reference…";
+      status.textContent="Sensor enabled. Waiting for a reliable compass reference; tilt correction is active…";
       noReadingTimer=setTimeout(function(){
         if(!haveAbsoluteHeading){
           status.textContent="No absolute compass heading received. This browser may expose only relative motion data; those readings are deliberately not shown as north.";
