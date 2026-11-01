@@ -1043,8 +1043,8 @@ renderMapMarkers();
 "use strict";
 const button=document.getElementById("regridLookup"),host=document.getElementById("regridResult");
 if(!button||!host)return;
-const SUPABASE_URL="https://ykmdyfbklvuoseqdjnxy.supabase.co";
-const SUPABASE_ANON="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlrbWR5ZmJrbHZ1b3NlcWRqbnh5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTI3ODk5OTQsImV4cCI6MjEwODM2NTk5NH0._YEZj2GSnPcLGXmwgj98V_JzXdJIhTmOFoAH9BSia2I";
+const SUPABASE_URL="https://nzduinxmsmmdbonefifi.supabase.co";
+const SUPABASE_ANON="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJuemR1aW54bXNtbWRib25lZmlmaSIsInJvbGUiOiJhbm9uIiwiaWF0IjoxNzkzMjQyOTYzLCJleHAiOjIxMDg4MTg5NjN9.N-2jV4a6wU9315lkVCvhDn7tJJ4ryzDHBeItSRztEh8";
 const safe=value=>String(value===null||value===undefined||value===""?"—":value).replace(/[&<>"']/g,ch=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]));
 const money=value=>value===null||value===undefined||value===""?"—":Number.isFinite(Number(value))?new Intl.NumberFormat("en-US",{style:"currency",currency:"USD",maximumFractionDigits:0}).format(Number(value)):safe(value);
 button.addEventListener("click",async()=>{
