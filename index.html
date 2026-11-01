@@ -125,9 +125,9 @@ body{background:radial-gradient(ellipse at 8% 0%,rgba(255,145,64,.105),transpare
 .funding-links{display:flex;flex-wrap:wrap;gap:7px}
 .funding-links a{display:inline-flex;padding:7px 9px;border:1px solid rgba(236,151,83,.3);border-radius:8px;background:rgba(255,153,77,.07);font-size:11px;color:#ffd0a8}
 .embedded-engine-card{padding:8px;overflow:hidden}
-#auctionPropertyEngineFrame{display:block;width:100%;height:1700px;border:0;border-radius:12px;background:#070b16}
+#auctionPropertyEngineFrame{display:block;width:100%;height:min(78vh,820px);min-height:620px;max-height:820px;border:0;border-radius:12px;background:#070b16;overflow:auto}
 @media(max-width:850px){.funding-intro{grid-template-columns:1fr}.funding-link-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:560px){.toplinks{width:100%;justify-content:flex-start}.toplinks a.nav-action{font-size:11px;padding:7px 9px}.funding-link-grid,.funding-promo-grid{grid-template-columns:1fr}.funding-heading .button{width:100%}#auctionPropertyEngineFrame{height:1900px}.section-fold>summary{padding:13px;align-items:flex-start}.section-fold .fold-summary h2{font-size:20px}}
+@media(max-width:560px){.toplinks{width:100%;justify-content:flex-start}.toplinks a.nav-action{font-size:11px;padding:7px 9px}.funding-link-grid,.funding-promo-grid{grid-template-columns:1fr}.funding-heading .button{width:100%}#auctionPropertyEngineFrame{height:72vh;min-height:560px;max-height:760px}.section-fold>summary{padding:13px;align-items:flex-start}.section-fold .fold-summary h2{font-size:20px}}
 </style>
 
 <style id="rolyfe-regrid-map-upgrade">
@@ -146,6 +146,49 @@ body{background:radial-gradient(ellipse at 8% 0%,rgba(255,145,64,.105),transpare
 @media(max-width:600px){.regrid-result .regrid-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 </style>
 <style id="checklist-funding-handoff-style">.checklist-next-step{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:12px;padding:12px 14px;border:1px solid rgba(236,151,83,.22);border-radius:12px;background:rgba(255,153,77,.045)}.checklist-next-step span{font-size:12px;color:var(--muted)}@media(max-width:560px){.checklist-next-step .button{width:100%}}</style>
+
+<style id="rolyfe-command-ui-upgrade">
+:root{--accent-warm:#f0a46b;--surface-glow:rgba(240,164,107,.12)}
+.workflow-rail{position:sticky;top:0;z-index:1200;display:flex;gap:8px;align-items:center;justify-content:center;flex-wrap:wrap;padding:9px 12px;margin:0 -18px 12px;background:rgba(7,17,27,.94);backdrop-filter:blur(12px);border-bottom:1px solid rgba(240,164,107,.25)}
+.workflow-rail a{display:inline-flex;gap:7px;align-items:center;text-decoration:none;padding:8px 12px;border:1px solid rgba(240,164,107,.32);border-radius:999px;background:rgba(240,164,107,.08);color:#ffe0c6;font-size:12px;font-weight:800}
+.workflow-rail a b{display:grid;place-items:center;width:22px;height:22px;border-radius:50%;background:linear-gradient(135deg,#e58c4b,#f5c18b);color:#24150b}
+.rol-compass{position:fixed;right:12px;top:42%;z-index:5000;display:grid;justify-items:end;gap:8px}
+.rol-compass-toggle{border-radius:999px;padding:12px 14px;background:linear-gradient(145deg,#e58c4b,#f3bd88);color:#21150e;border:1px solid #ffd0a8;box-shadow:0 8px 28px rgba(0,0,0,.35);font-weight:900}
+.rol-compass-menu{display:none;width:min(260px,calc(100vw - 28px));max-height:65vh;overflow:auto;padding:10px;border:1px solid rgba(240,164,107,.4);border-radius:16px;background:rgba(7,17,27,.97);box-shadow:0 18px 50px rgba(0,0,0,.45)}
+.rol-compass.open .rol-compass-menu{display:grid;gap:7px}
+.rol-compass-menu a{padding:10px 12px;border:1px solid rgba(240,164,107,.2);border-radius:10px;background:rgba(240,164,107,.07);color:#ffe0c6;text-decoration:none;font-size:12px;font-weight:700}
+.rol-theme-panel{display:flex;gap:7px;align-items:center;flex-wrap:wrap;padding:10px 12px;margin:10px 0;border:1px solid var(--line);border-radius:13px;background:rgba(14,29,43,.7)}
+.rol-theme-panel button{padding:7px 10px;font-size:11px;border-radius:999px}
+.rol-theme-panel button[aria-pressed=true]{outline:2px solid var(--accent-warm);outline-offset:2px}
+.rol-theme-1{--bg:#07111b;--panel:#0e1d2b;--panel2:#122638;--line:#274357;--cyan:#64e4ed}
+.rol-theme-2{--bg:#11101d;--panel:#201b30;--panel2:#29233d;--line:#51436a;--cyan:#c5a7ff}
+.rol-theme-3{--bg:#0b1714;--panel:#12251e;--panel2:#1b3329;--line:#315b48;--cyan:#8ce0b2}
+.rol-theme-4{--bg:#17120d;--panel:#2a2017;--panel2:#38291d;--line:#705338;--cyan:#ffc27d}
+.rol-theme-5{--bg:#101722;--panel:#19283a;--panel2:#21364c;--line:#3c5a78;--cyan:#8dc8ff}
+body.rol-theme-2,body.rol-theme-3,body.rol-theme-4,body.rol-theme-5{background:linear-gradient(180deg,var(--bg),var(--panel2),var(--bg))}
+.map-height-control input[type=range]{appearance:none;-webkit-appearance:none;display:block;width:100%;height:36px;min-height:36px;padding:0;margin:0;touch-action:pan-x;cursor:grab;background:transparent;accent-color:#f0a46b}
+.map-height-control input[type=range]::-webkit-slider-runnable-track{height:8px;border-radius:99px;background:linear-gradient(90deg,#e58c4b,#f5c18b,#64e4ed);border:1px solid #496174}
+.map-height-control input[type=range]::-moz-range-track{height:8px;border-radius:99px;background:linear-gradient(90deg,#e58c4b,#f5c18b,#64e4ed);border:1px solid #496174}
+.map-height-control input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:24px;height:24px;margin-top:-9px;border-radius:50%;border:3px solid #fff;background:#e58c4b;box-shadow:0 2px 8px #0008}
+.map-height-control input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;border:3px solid #fff;background:#e58c4b;box-shadow:0 2px 8px #0008}
+#auctionPropertyEngineFrame{height:min(78vh,820px)!important;min-height:620px;max-height:820px;overflow:auto;overscroll-behavior:contain}
+.funding-calculator-menu{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:12px}
+.funding-calculator-menu details{border:1px solid rgba(236,151,83,.24);border-radius:11px;background:rgba(255,153,77,.045);overflow:hidden}
+.funding-calculator-menu summary{cursor:pointer;padding:11px 12px;color:#f5d8c1;font-size:12px;font-weight:800;list-style:none}
+.funding-calculator-menu summary::-webkit-details-marker{display:none}
+.funding-calculator-menu summary:after{content:"＋";float:right;color:#f0aa70}
+.funding-calculator-menu details[open] summary:after{content:"−"}
+.funding-calculator-menu .calc-fold-body{padding:0 12px 12px;color:var(--muted);font-size:11px;line-height:1.5}
+.funding-calculator-menu .calc-fold-body a{display:inline-flex;margin-top:7px;padding:7px 9px;border:1px solid rgba(236,151,83,.3);border-radius:8px;color:#ffd0a8;text-decoration:none}
+.tax-yield-card{border:1px solid rgba(236,151,83,.32);border-radius:16px;background:linear-gradient(145deg,rgba(255,153,77,.08),rgba(14,29,43,.96));padding:16px}
+.tax-yield-card .result-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+.tax-yield-card .result strong{color:#ffd0a8}
+.rol-next-step{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:15px 16px;border:1px solid rgba(236,151,83,.5);border-left:5px solid #e58c4b;border-radius:13px;background:linear-gradient(100deg,rgba(229,140,75,.16),rgba(14,29,43,.9));box-shadow:0 8px 26px rgba(229,140,75,.08)}
+.rol-next-step strong{display:block;color:#ffe0c6;font-size:14px;line-height:1.5}
+.rol-next-step p{margin:4px 0 0;color:#d0dce6;font-size:12px;line-height:1.55}
+.rol-language-note{font-size:10px;color:var(--muted);margin-left:auto}
+@media(max-width:600px){.workflow-rail{margin:0 -13px 10px;justify-content:flex-start;overflow-x:auto;flex-wrap:nowrap}.workflow-rail a{white-space:nowrap}.rol-compass{right:7px;top:auto;bottom:82px}.rol-compass-toggle{padding:10px 12px;font-size:12px}.funding-calculator-menu{grid-template-columns:1fr}#auctionPropertyEngineFrame{height:72vh!important;min-height:560px;max-height:760px}.tax-yield-card .result-grid{grid-template-columns:1fr}}
+</style>
 </head>
 <body>
 <div class="wrap">
@@ -162,7 +205,21 @@ body{background:radial-gradient(ellipse at 8% 0%,rgba(255,145,64,.105),transpare
   </nav>
 </header>
 
+<nav class="workflow-rail" aria-label="Sticky property workflow">
+<a href="#intake"><b>1</b> Intake &amp; Verify</a><a href="#underwriting"><b>2</b> Underwrite</a><a href="#checklist"><b>3</b> Due Diligence</a><a href="#tax-yield"><b>4</b> Tax Yield</a><a href="#funding-hub"><b>5</b> Funding</a>
+</nav>
+
 <main>
+
+<div class="rol-theme-panel" aria-label="Page appearance">
+<strong style="font-size:12px;color:var(--muted)">Appearance</strong>
+<button type="button" data-rol-theme="1" aria-pressed="true">01 · Ember</button>
+<button type="button" data-rol-theme="2" aria-pressed="false">02 · Violet</button>
+<button type="button" data-rol-theme="3" aria-pressed="false">03 · Forest</button>
+<button type="button" data-rol-theme="4" aria-pressed="false">04 · Sand</button>
+<button type="button" data-rol-theme="5" aria-pressed="false">05 · Ocean</button>
+<span class="rol-language-note">Language: English · Translation can be enabled separately without changing tools or saved data.</span>
+</div>
 <section class="hero">
   <div class="panel">
     <span class="badge">RESEARCH WORKSPACE · HUMAN-VERIFIED</span>
@@ -330,7 +387,7 @@ body{background:radial-gradient(ellipse at 8% 0%,rgba(255,145,64,.105),transpare
   </div>
   <div class="section-card">
     <div class="funding-heading"><div><h3>📚 15+ Funding Calculators / Use Cases</h3><p class="small">Open the Funding &amp; Execution Hub for its master calculator, loan-specific assumptions, documents, booking and submission workflow.</p></div><a class="button primary" href="https://rolrichman.github.io/rolyfe-funding/" target="_blank" rel="noopener noreferrer">Open Funding Calculators &amp; Execution Hub ↗</a></div>
-    <div class="usecase-chips"><span>Business Term</span><span>SBA 7(a)</span><span>SBA 504</span><span>Real Estate LOC</span><span>HELOC</span><span>DSCR</span><span>Fix &amp; Flip</span><span>Bridge</span><span>Private Money</span><span>Working Capital</span><span>MCA</span><span>Equipment</span><span>Invoice Factoring</span><span>Franchise</span><span>Credit Repair</span><span>Debt Consolidation</span></div>
+    <div class="funding-calculator-menu" aria-label="32 funding calculator dropdowns"><details><summary>01 · Business term</summary><div class="calc-fold-body">Estimate fixed-payment business loan costs and monthly debt service.<br><a href="https://rolrichman.github.io/rolyfe-funding/" target="_blank" rel="noopener noreferrer">Open Funding &amp; Execution Hub ↗</a></div></details><details><summary>02 · SBA 7(a)</summary><div class="calc-fold-body">Screen a term loan with rate, term, fees and estimated monthly payment.<br><a href="https://rolrichman.github.io/rolyfe-funding/" target="_blank" rel="noopener noreferrer">Open Funding &amp; Execution Hub ↗</a></div></details><details><summary>03 · SBA 504</summary><div class="calc-fold-body">Review project cost, first/second lien financing and borrower contribution.<br><a href="https://rolrichman.github.io/rolyfe-funding/" target="_blank" rel="noopener noreferrer">Open Funding &amp; Execution Hub ↗</a></div></details><details><summary>04 · Commercial real estate</summary><div class="calc-fold-body">Estimate commercial property loan payment and cash-to-close.<br><a href="https://rolrichman.github.io/rolyfe-funding/" target="_blank" rel="noopener noreferrer">Open Funding &amp; Execution Hub ↗</a></div></details><details><summary>05 · Business line of credit</summary><div class="calc-fold-body">Estimate draw interest and available working-capital capacity.<br><a href="https://rolrichman.github.io/rolyfe-funding/" target="_blank" rel="noopener noreferrer">Open Funding &amp; Execution Hub ↗</a></div></details><details><summary>06 · HELOC</summary><div class="calc-fold-body">Estimate payment and interest on a home-equity line draw.<br><a href="https://rolrichman.github.io/rolyfe-funding/" target="_blank" rel="noopener noreferrer">Open Funding &amp; Execution Hub ↗</a></div></details><details><summary>07 · DSCR rental</summary><div class="calc-fold-body">Compare rent to monthly principal, interest, taxes, insurance and HOA.<br><a href="https://rolrichman.github.io/rolyfe-funding/" target="_blank" rel="noopener noreferrer">Open Funding &amp; Execution Hub ↗</a></div></details><details><summary>08 · Fix & Flip</summary><div class="calc-fold-body">Estimate purchase, rehab, carry, resale costs and target profit.<br><a href="https://rolrichman.github.io/rolyfe-funding/" target="_blank" rel="noopener noreferrer">Open Funding &amp; Execution Hub ↗</a></div></details><details><summary>09 · Bridge loan</summary><div class="calc-fold-body">Estimate short-term interest, points, fees and payoff balance.<br><a href="https://rolrichman.github.io/rolyfe-funding/" target="_blank" rel="noopener noreferrer">Open Funding &amp; Execution Hub ↗</a></div></details><details><summary>10 · Private money</summary><div class="calc-fold-body">Screen loan amount, points, interest-only payment and term.<br><a href="https://rolrichman.github.io/rolyfe-funding/" target="_blank" rel="noopener noreferrer">Open Funding &amp; Execution Hub ↗</a></div></details><details><summary>11 · Working capital</summary><div class="calc-fold-body">Estimate repayment burden against monthly business cash flow.<br><a href="https://rolrichman.github.io/rolyfe-funding/" target="_blank" rel="noopener noreferrer">Open Funding &amp; Execution Hub ↗</a></div></details><details><summary>12 · Merchant cash advance</summary><div class="calc-fold-body">Compare purchased amount, factor rate and estimated remittance.<br><a href="https://rolrichman.github.io/rolyfe-funding/" target="_blank" rel="noopener noreferrer">Open Funding &amp; Execution Hub ↗</a></div></details><details><summary>13 · Equipment financing</summary><div class="calc-fold-body">Estimate equipment payment, down payment and total financing cost.<br><a href="https://rolrichman.github.io/rolyfe-funding/" target="_blank" rel="noopener noreferrer">Open Funding &amp; Execution Hub ↗</a></div></details><details><summary>14 · Invoice factoring</summary><div class="calc-fold-body">Estimate advance, reserve, fees and net invoice proceeds.<br><a href="https://rolrichman.github.io/rolyfe-funding/" target="_blank" rel="noopener noreferrer">Open Funding &amp; Execution Hub ↗</a></div></details><details><summary>15 · Franchise financing</summary><div class="calc-fold-body">Estimate project budget, owner injection and financing gap.<br><a href="https://rolrichman.github.io/rolyfe-funding/" target="_blank" rel="noopener noreferrer">Open Funding &amp; Execution Hub ↗</a></div></details><details><summary>16 · Startup funding</summary><div class="calc-fold-body">Build a startup capital-use budget and funding gap.<br><a href="https://rolrichman.github.io/rolyfe-funding/" target="_blank" rel="noopener noreferrer">Open Funding &amp; Execution Hub ↗</a></div></details><details><summary>17 · Construction loan</summary><div class="calc-fold-body">Estimate draw-based interest and construction contingency.<br><a href="https://rolrichman.github.io/rolyfe-funding/" target="_blank" rel="noopener noreferrer">Open Funding &amp; Execution Hub ↗</a></div></details><details><summary>18 · Construction-to-permanent</summary><div class="calc-fold-body">Compare construction phase costs with permanent financing.<br><a href="https://rolrichman.github.io/rolyfe-funding/" target="_blank" rel="noopener noreferrer">Open Funding &amp; Execution Hub ↗</a></div></details><details><summary>19 · Rental portfolio</summary><div class="calc-fold-body">Summarize rent, expenses, debt service and portfolio cash flow.<br><a href="https://rolrichman.github.io/rolyfe-funding/" target="_blank" rel="noopener noreferrer">Open Funding &amp; Execution Hub ↗</a></div></details><details><summary>20 · Cash-out refinance</summary><div class="calc-fold-body">Estimate payoff, costs and potential cash proceeds.<br><a href="https://rolrichman.github.io/rolyfe-funding/" target="_blank" rel="noopener noreferrer">Open Funding &amp; Execution Hub ↗</a></div></details><details><summary>21 · Rate-and-term refinance</summary><div class="calc-fold-body">Compare current and proposed payment assumptions.<br><a href="https://rolrichman.github.io/rolyfe-funding/" target="_blank" rel="noopener noreferrer">Open Funding &amp; Execution Hub ↗</a></div></details><details><summary>22 · Land loan</summary><div class="calc-fold-body">Estimate down payment, term, rate and monthly payment.<br><a href="https://rolrichman.github.io/rolyfe-funding/" target="_blank" rel="noopener noreferrer">Open Funding &amp; Execution Hub ↗</a></div></details><details><summary>23 · Asset-based lending</summary><div class="calc-fold-body">Screen eligible collateral value and advance-rate assumptions.<br><a href="https://rolrichman.github.io/rolyfe-funding/" target="_blank" rel="noopener noreferrer">Open Funding &amp; Execution Hub ↗</a></div></details><details><summary>24 · Purchase order financing</summary><div class="calc-fold-body">Estimate supplier funding need and transaction margin.<br><a href="https://rolrichman.github.io/rolyfe-funding/" target="_blank" rel="noopener noreferrer">Open Funding &amp; Execution Hub ↗</a></div></details><details><summary>25 · Revenue-based financing</summary><div class="calc-fold-body">Compare repayment amount with monthly revenue.<br><a href="https://rolrichman.github.io/rolyfe-funding/" target="_blank" rel="noopener noreferrer">Open Funding &amp; Execution Hub ↗</a></div></details><details><summary>26 · SBA Express</summary><div class="calc-fold-body">Screen smaller SBA-backed loan amount and payment assumptions.<br><a href="https://rolrichman.github.io/rolyfe-funding/" target="_blank" rel="noopener noreferrer">Open Funding &amp; Execution Hub ↗</a></div></details><details><summary>27 · SBA microloan</summary><div class="calc-fold-body">Estimate smaller loan payment and use-of-funds budget.<br><a href="https://rolrichman.github.io/rolyfe-funding/" target="_blank" rel="noopener noreferrer">Open Funding &amp; Execution Hub ↗</a></div></details><details><summary>28 · Debt consolidation</summary><div class="calc-fold-body">Compare combined debt payment with proposed consolidation.<br><a href="https://rolrichman.github.io/rolyfe-funding/" target="_blank" rel="noopener noreferrer">Open Funding &amp; Execution Hub ↗</a></div></details><details><summary>29 · Credit improvement</summary><div class="calc-fold-body">Organize credit goals, utilization and dispute follow-up; no score guarantee.<br><a href="https://rolrichman.github.io/rolyfe-funding/" target="_blank" rel="noopener noreferrer">Open Funding &amp; Execution Hub ↗</a></div></details><details><summary>30 · Business credit</summary><div class="calc-fold-body">Track business-credit profile steps and documentation.<br><a href="https://rolrichman.github.io/rolyfe-funding/" target="_blank" rel="noopener noreferrer">Open Funding &amp; Execution Hub ↗</a></div></details><details><summary>31 · Tax lien / redemption yield</summary><div class="calc-fold-body">Estimate simple interest, costs, holding period and net yield.<br><a href="https://rolrichman.github.io/rolyfe-funding/" target="_blank" rel="noopener noreferrer">Open Funding &amp; Execution Hub ↗</a></div></details><details><summary>32 · DSCR refinance</summary><div class="calc-fold-body">Screen rental refinance using NOI, debt service and loan assumptions.<br><a href="https://rolrichman.github.io/rolyfe-funding/" target="_blank" rel="noopener noreferrer">Open Funding &amp; Execution Hub ↗</a></div></details></div>
   </div>
   <div class="funding-link-grid">
     <article class="section-card"><span class="eyebrow">Business funding</span><h3>Americas Funding Experts</h3><p>Business funding referral portal.</p><a class="button primary" href="https://my.americasfundingexperts.com/?id=1820217000190862001" target="_blank" rel="noopener noreferrer">Open Partner Portal ↗</a></article>
@@ -383,6 +440,26 @@ body{background:radial-gradient(ellipse at 8% 0%,rgba(255,145,64,.105),transpare
 </section>
 
 
+
+<section class="section" id="tax-yield">
+ <div class="section-head"><div><div class="eyebrow">Step 4 · Preliminary return screen</div><h2>Tax Lien / Redemption Yield</h2><p class="small">Simple annualized estimate for preliminary screening only; state statutes and certificate terms control actual returns.</p></div><span class="badge">Editable estimate</span></div>
+ <div class="tax-yield-card">
+  <div class="row-fields">
+   <div class="field"><label for="tyAmount">Investment / lien amount ($)</label><input id="tyAmount" type="number" min="0" step="100" value="5000"></div>
+   <div class="field"><label for="tyRate">Annual interest rate (%)</label><input id="tyRate" type="number" min="0" step=".1" value="12"></div>
+   <div class="field"><label for="tyMonths">Months held</label><input id="tyMonths" type="number" min="0" step="1" value="12"></div>
+   <div class="field"><label for="tyCosts">Costs / fees ($)</label><input id="tyCosts" type="number" min="0" step="10" value="100"></div>
+  </div>
+  <div class="result-grid">
+   <div class="result"><span>Estimated interest</span><strong id="tyInterest">$0</strong></div>
+   <div class="result"><span>Net estimated return</span><strong id="tyNet">$0</strong></div>
+   <div class="result"><span>Net yield on investment</span><strong id="tyYield">0.0%</strong></div>
+   <div class="result"><span>Estimated proceeds</span><strong id="tyProceeds">$0</strong></div>
+  </div>
+  <div class="actions"><button class="primary" type="button" id="tyCalculate">Calculate Yield</button><a class="button" href="https://rolrichman.github.io/ro-lyfe-auction-capital-machine/?embed=property#taxYield" target="_blank" rel="noopener noreferrer">Open 06 — Tax Yield &amp; OTC Research Workspace ↗</a></div>
+  <p class="small" id="tyNote">Illustrative simple-interest estimate. It does not model statutory penalties, compounding, redemption rules, bid premiums, tax priority, title, or actual payment timing.</p>
+ </div>
+</section>
 <section class="section" id="auction-operations">
   <div class="section-head"><div><div class="eyebrow">Acquisition execution</div><h2>🏗️ Auction &amp; Deal Tools</h2><p class="small">Non-trading property modules from Auction Capital Machine: deal analysis, contractors, rehab, tax liens, tax-yield research and additional property calculators.</p></div><a class="button" href="https://rolrichman.github.io/ro-lyfe-auction-capital-machine/?embed=property" target="_blank" rel="noopener noreferrer">Open Deal Tools Separately ↗</a></div>
   <div class="section-card embedded-engine-card"><iframe id="auctionPropertyEngineFrame" title="RO’Lyfe Auction Capital Machine property and deal tools, trading excluded" loading="lazy" src="https://rolrichman.github.io/ro-lyfe-auction-capital-machine/?embed=property" referrerpolicy="strict-origin-when-cross-origin"></iframe></div>
@@ -946,19 +1023,7 @@ renderMapMarkers();
 })();
 </script>
 
-<script id="rol-property-embedded-engine-resize">
-(function(){
- const frame=document.getElementById("auctionPropertyEngineFrame");
- if(!frame)return;
- window.addEventListener("message",function(event){
-  if(event.origin!=="https://rolrichman.github.io"||event.source!==frame.contentWindow)return;
-  const data=event.data||{};
-  if(data.type==="rol-property-engine-height"&&Number.isFinite(Number(data.height))){
-   frame.style.height=Math.max(900,Math.min(12000,Number(data.height)))+"px";
-  }
- });
-})();
-</script>
+<!-- Embedded Auction workspace uses a bounded iframe viewport; scroll inside the frame. -->
 
 
 <script id="rol-property-regrid-lookup">
@@ -992,6 +1057,21 @@ button.addEventListener("click",async()=>{
  }catch(error){host.textContent="Regrid lookup could not complete: "+(error&&error.message?error.message:"network or provider error")+". If the response says Regrid is not configured, the REGRID_API_KEY secret must be added to the Supabase Edge Function. This button does not run automatically.";
  }finally{button.disabled=false;button.textContent="🧭 Look up parcel";}
 });
+})();
+</script>
+
+<script id="rol-property-compass-and-tax-tools">
+(function(){
+ const compass=document.createElement("aside");compass.className="rol-compass";compass.innerHTML='<button type="button" class="rol-compass-toggle" aria-expanded="false">🧭 Compass</button><nav class="rol-compass-menu" aria-label="Quick navigation"><a href="#map">🗺 Property Map</a><a href="#intake">01 · Property Intake</a><a href="#records">Saved Records</a><a href="#checklist">03 · Due Diligence</a><a href="#underwriting">02 · Underwriting</a><a href="#tax-yield">Tax Lien / Redemption Yield</a><a href="#auction-operations">Auction &amp; Deal Tools</a><a href="#funding-hub">Funding &amp; Link Hub</a><a href="#capital">Capital &amp; Brokerage</a><a href="#documents">Research Documents</a></nav>';
+ document.body.appendChild(compass);
+ const toggle=compass.querySelector("button");toggle.addEventListener("click",()=>{const open=compass.classList.toggle("open");toggle.setAttribute("aria-expanded",String(open));toggle.textContent=open?"✕ Close Compass":"🧭 Compass";});
+ compass.querySelectorAll("a").forEach(a=>a.addEventListener("click",()=>{compass.classList.remove("open");toggle.setAttribute("aria-expanded","false");toggle.textContent="🧭 Compass";}));
+ document.querySelectorAll("[data-rol-theme]").forEach(btn=>btn.addEventListener("click",()=>{const n=btn.dataset.rolTheme;document.body.classList.remove("rol-theme-2","rol-theme-3","rol-theme-4","rol-theme-5");if(n!=="1")document.body.classList.add("rol-theme-"+n);document.querySelectorAll("[data-rol-theme]").forEach(b=>b.setAttribute("aria-pressed",String(b===btn)));try{localStorage.setItem("rol-property-theme",n)}catch(e){}}));
+ try{const saved=localStorage.getItem("rol-property-theme");if(saved&&saved!=="1"){document.body.classList.add("rol-theme-"+saved);document.querySelectorAll("[data-rol-theme]").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.rolTheme===saved)));}}catch(e){}
+ const money=n=>new Intl.NumberFormat("en-US",{style:"currency",currency:"USD",maximumFractionDigits:2}).format(n);
+ function yieldCalc(){const amount=Math.max(0,Number(document.getElementById("tyAmount")?.value)||0),rate=Math.max(0,Number(document.getElementById("tyRate")?.value)||0),months=Math.max(0,Number(document.getElementById("tyMonths")?.value)||0),costs=Math.max(0,Number(document.getElementById("tyCosts")?.value)||0);const interest=amount*(rate/100)*(months/12),net=interest-costs,yieldPct=amount>0?net/amount*100:0,proceeds=amount+net;document.getElementById("tyInterest").textContent=money(interest);document.getElementById("tyNet").textContent=money(net);document.getElementById("tyYield").textContent=yieldPct.toFixed(2)+"%";document.getElementById("tyProceeds").textContent=money(proceeds);document.getElementById("tyNote").textContent=amount>0?"Simple-interest screening estimate only. Actual statutory return, redemption timing, eligible costs, penalties and proceeds depend on the jurisdiction and certificate terms.":"Enter an investment amount above $0 to calculate a yield."; }
+ const calc=document.getElementById("tyCalculate");if(calc){calc.addEventListener("click",yieldCalc);["tyAmount","tyRate","tyMonths","tyCosts"].forEach(id=>document.getElementById(id)?.addEventListener("input",yieldCalc));yieldCalc();}
+ const slider=document.getElementById("mapHeightSlider");if(slider){["input","change"].forEach(evt=>slider.addEventListener(evt,()=>{const h=Math.max(280,Math.min(900,Number(slider.value)||580));document.documentElement.style.setProperty("--property-map-height",h+"px");const out=document.getElementById("mapHeightValue");if(out){out.value=h+" px";out.textContent=h+" px";}if(window.propertyMap&&typeof window.propertyMap.invalidateSize==="function")window.propertyMap.invalidateSize({pan:false});}));}
 })();
 </script>
 </body>
