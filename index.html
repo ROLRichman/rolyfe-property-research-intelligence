@@ -1250,6 +1250,7 @@ document.querySelectorAll("[data-tax-sample]").forEach(button=>button.addEventLi
     }
     if(listening){
       window.removeEventListener("deviceorientation",handleOrientation,true);
+      window.removeEventListener("deviceorientationabsolute",handleOrientation,true);
       listening=false;
     }
     haveAbsoluteHeading=false;
@@ -1262,6 +1263,7 @@ document.querySelectorAll("[data-tax-sample]").forEach(button=>button.addEventLi
         if(permission!=="granted") throw new Error("Motion/orientation permission was not granted.");
       }
       window.addEventListener("deviceorientation",handleOrientation,true);
+      window.addEventListener("deviceorientationabsolute",handleOrientation,true);
       listening=true;
       status.textContent="Sensor enabled. Waiting for a reliable compass reference…";
       noReadingTimer=setTimeout(function(){
