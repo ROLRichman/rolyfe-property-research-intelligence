@@ -88,6 +88,10 @@ hr{border:0;border-top:1px solid var(--line);margin:18px 0}
 .map-weather-source{margin:10px 0 0;color:#8ea4b8;font-size:9px;line-height:1.45}
 @media(max-width:800px){.map-weather-grid{grid-template-columns:1fr}.map-nearby-tools{grid-template-columns:1fr 1fr}.map-nearby-tools>div{grid-column:1/-1}.map-nearby-tools button{width:100%}}
 @media(min-width:801px) and (max-width:1100px){.map-weather-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.map-weather-card:last-child{grid-column:1/-1}}
+
+/* Mobile containment, compact navigation and qualification UI */
+html,body{max-width:100%;overflow-x:hidden}img,iframe,video,svg{max-width:100%}.wrap,main,.section,.section-card,.panel,.grid,.doc-grid,.funding-link-grid{min-width:0;max-width:100%}.doc,.doc strong,.doc span,.funding-link-grid a,.funding-links a{overflow-wrap:anywhere;word-break:break-word}.doc-grid{grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr))}.top-quick-links{display:flex;gap:7px;flex-wrap:wrap;align-items:center;margin-top:9px}.funding-promo-button{display:block;padding:13px;border:1px solid rgba(236,151,83,.35);border-radius:12px;background:linear-gradient(135deg,rgba(255,153,77,.12),rgba(18,38,56,.7));text-decoration:none;color:var(--text);min-width:0}.funding-promo-button strong,.funding-promo-button span{display:block}.funding-promo-button strong{color:#ffd0a8;margin-bottom:6px}.funding-promo-button span{font-size:11px;line-height:1.5;color:var(--muted)}.funding-promo-button:hover{border-color:#f0a46b;transform:translateY(-1px)}.column-actions{display:flex;gap:7px;flex-wrap:wrap;margin:8px 0}.column-actions button{font-size:11px;padding:7px 9px}.qualification-panel{margin:16px 0;padding:16px;border:1px solid rgba(100,228,237,.28);border-radius:16px;background:linear-gradient(145deg,rgba(100,228,237,.07),rgba(14,29,43,.94))}.qualification-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.qualification-grid .field{margin:0}.qualification-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.faq-list{display:grid;gap:8px;margin-top:12px}.faq-list details{border:1px solid var(--line);border-radius:10px;background:#0a1925;overflow:hidden}.faq-list summary{padding:12px 14px;cursor:pointer;font-size:13px;font-weight:800;color:#eaf8ff}.faq-list details p{padding:0 14px 13px;margin:0;color:var(--muted);font-size:12px;line-height:1.6}.explain-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.explain-grid .callout{min-width:0}.mobile-float-nav{position:fixed;left:10px;bottom:12px;z-index:4900;display:flex;gap:6px}.mobile-float-nav button{padding:7px 10px;min-height:34px;border-radius:999px;font-size:11px;box-shadow:0 4px 18px #0007;background:rgba(10,25,37,.94)}.device-compass-dial{position:relative}.device-compass-dial:before{content:"N";position:absolute;top:2px;left:50%;transform:translateX(-50%);color:#fff;font-weight:900}.device-compass-dial:after{content:"S";position:absolute;bottom:2px;left:50%;transform:translateX(-50%);color:#fff;font-weight:900}.device-compass-reading:after{content:" · E ↗ W ↖";color:var(--cyan);font-weight:900}
+@media(max-width:600px){.wrap{padding:10px}.top-quick-links{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));width:100%}.top-quick-links a{font-size:10px;padding:7px 8px;min-width:0;overflow-wrap:anywhere}.doc-grid{grid-template-columns:1fr}.doc{min-width:0;width:100%}.qualification-grid,.explain-grid{grid-template-columns:1fr}.funding-promo-grid{grid-template-columns:1fr}.workflow-rail{margin-left:-10px;margin-right:-10px}.rol-compass{right:8px;bottom:66px;top:auto}.mobile-float-nav{bottom:10px;left:8px}.mobile-float-nav button{font-size:10px;padding:6px 8px}}
 </style>
 
 <style id="rolyfe-property-intelligence-polish">
@@ -227,7 +231,7 @@ body.rol-theme-2,body.rol-theme-3,body.rol-theme-4,body.rol-theme-5{background:l
     <a class="nav-action" href="https://rolrichman.github.io/ro-lyfe-auction-capital-machine/?embed=property" target="_blank" rel="noopener noreferrer">Auction Capital Machine ↗</a>
     <a class="nav-action nav-quiet" href="https://rolrichman.github.io/rolyfe-video-hub/" target="_blank" rel="noopener noreferrer">Vision Hub ↗</a>
   </nav>
-  <div id="google_translate_element" aria-label="Translate this page"></div>
+  <div class="top-quick-links"><a class="nav-action" href="https://my.americasfundingexperts.com/?id=1820217000190862001" target="_blank" rel="noopener noreferrer">Funding Application ↗</a><a class="nav-action" href="https://go.mypartner.io/business-financing/?ref=001Qk00000MkqgTIAR" target="_blank" rel="noopener noreferrer">Business Financing ↗</a><a class="nav-action" href="https://richman-rootoflyfe.zohobookings.com/#/customer/4699692000000050014" target="_blank" rel="noopener noreferrer">Book a Strategy Call ↗</a><a class="nav-action" href="mailto:richman@rootoflyfe.com">richman@rootoflyfe.com</a></div><div id="google_translate_element" aria-label="Translate this page"></div>
 </header>
 
 <nav class="workflow-rail" aria-label="Sticky property workflow">
@@ -243,7 +247,7 @@ body.rol-theme-2,body.rol-theme-3,body.rol-theme-4,body.rol-theme-5{background:l
 <button type="button" data-rol-theme="3" aria-pressed="false">03 · Forest</button>
 <button type="button" data-rol-theme="4" aria-pressed="false">04 · Sand</button>
 <button type="button" data-rol-theme="5" aria-pressed="false">05 · Ocean</button>
-<span class="rol-language-note">Language: English · Translation can be enabled separately without changing tools or saved data.</span>
+<span class="rol-language-note">Languages: English · Arabic · Korean · Haitian Creole · Spanish · French. Jamaican Patois wording is being prepared separately.</span>
 </div>
 <section class="hero">
   <div class="panel">
@@ -367,7 +371,7 @@ body.rol-theme-2,body.rol-theme-3,body.rol-theme-4,body.rol-theme-5{background:l
     <div class="fold-body">
   <div class="grid">
     <div class="section-card span-6">
-      <h3>Property & market verification</h3>
+      <h3>Property & market verification</h3><div class="column-actions"><button type="button" data-check-all="property">Select all in this column</button><button type="button" data-clear-all="property">Clear column</button></div>
       <div class="checklist">
         <label class="check-item"><input type="checkbox" data-check="address"><span>Exact address, parcel ID, and county confirmed</span></label>
         <label class="check-item"><input type="checkbox" data-check="type"><span>Property type, legal use, zoning, and access verified</span></label>
@@ -378,7 +382,7 @@ body.rol-theme-2,body.rol-theme-3,body.rol-theme-4,body.rol-theme-5{background:l
       </div>
     </div>
     <div class="section-card span-6">
-      <h3>Sale, title & capital readiness</h3>
+      <h3>Sale, title & capital readiness</h3><div class="column-actions"><button type="button" data-check-all="capital">Select all in this column</button><button type="button" data-clear-all="capital">Clear column</button></div>
       <div class="checklist">
         <label class="check-item"><input type="checkbox" data-check="sale"><span>Official sale status, terms, deadline, deposit, and premium confirmed</span></label>
         <label class="check-item"><input type="checkbox" data-check="title"><span>Title search and lien / encumbrance review arranged</span></label>
@@ -387,7 +391,7 @@ body.rol-theme-2,body.rol-theme-3,body.rol-theme-4,body.rol-theme-5{background:l
         <label class="check-item"><input type="checkbox" data-check="funding"><span>Funding terms, cash requirement, and closing timeline confirmed</span></label>
         <label class="check-item"><input type="checkbox" data-check="exit"><span>Exit strategy, contingency, and walk-away limit documented</span></label>
       </div>
-      <div class="actions"><button type="button" id="saveChecks" class="primary">Save Checklist</button><button type="button" id="resetChecks" class="subtle">Reset Checks</button></div>
+      <div class="actions"><button type="button" id="saveChecks" class="primary">Save Checklist</button><button type="button" id="resetChecks" class="subtle">Reset Checks</button><button type="button" id="downloadResearchSnapshot" class="subtle">Download Research Snapshot</button></div>
       <p id="checkStatus" class="status" aria-live="polite"></p>
     </div>
   </div>
@@ -403,11 +407,11 @@ body.rol-theme-2,body.rol-theme-3,body.rol-theme-4,body.rol-theme-5{background:l
   <div class="section-card funding-intro">
     <div><strong>ROOT OF LYFE</strong><p>Helping business owners and professionals explore funding pathways to start, grow and scale. Funding decisions, promotional terms, rates, fees and timelines are controlled by the applicable provider.</p><p><a href="mailto:richman@rootoflyfe.com">richman@rootoflyfe.com</a></p></div>
     <div class="funding-promo-grid">
-      <div><strong>Start-up funding</strong><span>Partner-advertised programs may offer $50K–$500K+ with promotional 0% introductory terms, subject to eligibility and offer details.</span></div>
-      <div><strong>Revenue financing</strong><span>Partner-advertised potential up to $5M, with some programs promoted as fast as under 24 hours; approval, availability and timing are not guaranteed.</span></div>
-      <div><strong>Real estate financing</strong><span>Programs advertised across $100K–$50M; lender, collateral and borrower criteria apply.</span></div>
-      <div><strong>SBA financing</strong><span>Program pathways advertised from $500K to $5M+; SBA and lender rules apply.</span></div>
-      <div><strong>Referral partner</strong><span>Partner promotional claim: $250K+ potential earnings. Compensation depends on the written agreement and qualifying funded referrals; not guaranteed.</span></div>
+      <a class="funding-promo-button" href="https://my.americasfundingexperts.com/f/startup-funding?id=1820217000190862001" target="_blank" rel="noopener noreferrer"><strong>Start-up funding ↗</strong><span>Partner-advertised programs may offer $50K–$500K+ with promotional 0% introductory terms, subject to eligibility and offer details.</span></a>
+      <a class="funding-promo-button" href="https://my.americasfundingexperts.com/f/revenue-based-funding?id=1820217000190862001" target="_blank" rel="noopener noreferrer"><strong>Revenue financing ↗</strong><span>Partner-advertised potential up to $5M, with some programs promoted as fast as under 24 hours; approval, availability and timing are not guaranteed.</span></a>
+      <a class="funding-promo-button" href="https://my.americasfundingexperts.com/f/real-estate?id=1820217000190862001" target="_blank" rel="noopener noreferrer"><strong>Real estate financing ↗</strong><span>Programs advertised across $100K–$50M; lender, collateral and borrower criteria apply.</span></a>
+      <a class="funding-promo-button" href="https://my.americasfundingexperts.com/f/sba?id=1820217000190862001" target="_blank" rel="noopener noreferrer"><strong>SBA financing ↗</strong><span>Program pathways advertised from $500K to $5M+; SBA and lender rules apply.</span></a>
+      <a class="funding-promo-button" href="https://my.americasfundingexperts.com/f/partner?id=1820217000190862001" target="_blank" rel="noopener noreferrer"><strong>Referral partner ↗</strong><span>Partner promotional claim: $250K+ potential earnings. Compensation depends on the written agreement and qualifying funded referrals; not guaranteed.</span></a>
     </div>
   </div>
   <div class="section-card">
@@ -531,8 +535,7 @@ body.rol-theme-2,body.rol-theme-3,body.rol-theme-4,body.rol-theme-5{background:l
   <div class="actions"><a class="button" href="https://www.phila.gov/services/property-lots-housing/property-taxes/" target="_blank" rel="noopener noreferrer">Philadelphia Property Tax Records ↗</a><a class="button" href="https://www.pacourts.us/" target="_blank" rel="noopener noreferrer">Pennsylvania Courts ↗</a></div>
  </div>
 </section>\n<section class="section" id="ecosystem">
-  <div class="section-head"><div><div class="eyebrow">Connected RO’Lyfe tools</div><h2>🌐 Related Engines &amp; Directory</h2><p class="small">A clean launch directory for the property, funding, relocation and execution tools connected to this workspace.</p></div></div>
-  <div class="funding-link-grid">
+  <details class="section-fold"><summary class="section-head fold-summary"><div><div class="eyebrow">Connected RO’Lyfe tools</div><h2>🌐 Related Engines &amp; Directory</h2><span class="small">Open the directory of connected property, funding, relocation and execution platforms.</span></div></summary><div class="fold-body"><div class="funding-link-grid">
     <article class="section-card"><h3>🧭 Relocation Intelligence</h3><p>Location, climate, risk, incentives and relocation planning.</p><a class="button" href="https://rolrichman.github.io/rolyfe-relocation-intelligence/" target="_blank" rel="noopener noreferrer">Open Relocation Engine ↗</a></article>
     <article class="section-card"><h3>🏗️ Acquisition Engine</h3><p>Lead intake, deal screening and acquisition workflow.</p><a class="button" href="https://rolrichman.github.io/rolyfe-acquisition-engine/" target="_blank" rel="noopener noreferrer">Open Acquisition Engine ↗</a></article>
     <article class="section-card"><h3>📄 Contract Documents Hub</h3><p>Brokerage, contract and transaction documents.</p><a class="button" href="https://rolrichman.github.io/rolyfe-contract-documents-hub/" target="_blank" rel="noopener noreferrer">Open Document Hub ↗</a></article>
@@ -542,12 +545,11 @@ body.rol-theme-2,body.rol-theme-3,body.rol-theme-4,body.rol-theme-5{background:l
     <article class="section-card"><h3>🎥 Vision Hub</h3><p>Video library and visual learning resources.</p><a class="button" href="https://rolrichman.github.io/rolyfe-video-hub/" target="_blank" rel="noopener noreferrer">Open Vision Hub ↗</a></article>
     <article class="section-card"><h3>🌐 Command Center</h3><p>Central RO’Lyfe project directory and command workspace.</p><a class="button" href="https://rolrichman.github.io/rolyfe-command-center/" target="_blank" rel="noopener noreferrer">Open Command Center ↗</a></article>
     <article class="section-card"><h3>📦 iContainers</h3><p>Freight and shipping quotes through your existing provider account.</p><a class="button" href="https://my.icontainers.com/sign-in" target="_blank" rel="noopener noreferrer">Open iContainers ↗</a></article>
-  </div>
+  </div></div></details>
 </section>
 
 <section class="section" id="documents">
-  <div class="section-head"><div><div class="eyebrow">Reference library</div><h2>Research Documents</h2></div></div>
-  <div class="doc-grid">
+  <details class="section-fold"><summary class="section-head fold-summary"><div><div class="eyebrow">Reference library</div><h2>Research Documents</h2><span class="small">Open the source documents and templates.</span></div></summary><div class="fold-body"><div class="doc-grid">
     <a class="doc" href="./README.md"><strong>README.md</strong><span>Project overview, purpose, and workflow introduction.</span></a>
     <a class="doc" href="./DESCRIPTION.md"><strong>DESCRIPTION.md</strong><span>Platform description and scope.</span></a>
     <a class="doc" href="./PROPERTY_RESEARCH_WORKFLOW.md"><strong>PROPERTY_RESEARCH_WORKFLOW.md</strong><span>Repeatable source-to-decision research steps.</span></a>
@@ -557,7 +559,7 @@ body.rol-theme-2,body.rol-theme-3,body.rol-theme-4,body.rol-theme-5{background:l
     <a class="doc" href="./SALE_TYPE_GLOSSARY.md"><strong>SALE_TYPE_GLOSSARY.md</strong><span>Definitions and distinctions among sale types.</span></a>
     <a class="doc" href="./SOURCE_DIRECTORY.md"><strong>SOURCE_DIRECTORY.md</strong><span>Research sources to consult and verify.</span></a>
   </div>
-  <p class="small">These links expect the Markdown files to be in the repository root beside index.html. If a file name or location differs, update the link to match the repository.</p>
+  <p class="small">These links open the reference documents in this repository.</p></div></details>
 </section>
 
 
@@ -1143,7 +1145,7 @@ finally{send.disabled=false;send.textContent="Send";messages.scrollTop=messages.
 });
 })();
 </script><script id="rol-google-translate">
-function googleTranslateElementInit(){if(window.google&&google.translate){new google.translate.TranslateElement({pageLanguage:"en",includedLanguages:"en,ht,fr,es,zh-CN,zh-TW",autoDisplay:false,layout:google.translate.TranslateElement.InlineLayout.SIMPLE},"google_translate_element");}}
+function googleTranslateElementInit(){if(window.google&&google.translate){new google.translate.TranslateElement({pageLanguage:"en",includedLanguages:"en,ar,ko,ht,fr,es",autoDisplay:false,layout:google.translate.TranslateElement.InlineLayout.SIMPLE},"google_translate_element");}}
 </script>
 <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" async></script><script id="rol-overage-calculator">
 (function(){
