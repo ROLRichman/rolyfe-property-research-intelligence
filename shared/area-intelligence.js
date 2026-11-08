@@ -79,6 +79,7 @@
     return countyRows.find(function (x) { return x.geoid === geoid; }) || null;
   }
   function selectedZip() { return area.querySelector("#rolpr-area-zip").value.trim(); }
+  function selectedAreaCode() { return area.querySelector("#rolpr-area-code").value.replace(/\D/g, "").slice(0,3); }
   function selectedPlace() { return area.querySelector("#rolpr-area-place").value.trim(); }
   function areaQuery() {
     var parts = [];
@@ -91,7 +92,7 @@
     return parts.join(", ");
   }
   function mapUrl() {
-    var county = selectedCounty(), code = selectedStateCode(), zip = selectedZip(), place = selectedPlace();
+    var county = selectedCounty(), code = selectedStateCode(), zip = selectedZip(), place = selectedPlace(), areaCode = selectedAreaCode();
     var params = new URLSearchParams();
     params.set("area", "1");
     if (code) params.set("state", stateAbbr(code));
@@ -101,6 +102,7 @@
     }
     if (zip) params.set("zip", zip);
     if (place) params.set("place", place);
+    if (areaCode) params.set("npa", areaCode);
     return PROPERTY_URL + "?" + params.toString() + "#map";
   }
   function setField(id, value) {
@@ -294,12 +296,16 @@
   async function mapArea(options) {
     var map = getMap();
     if (!map || !window.L) { openMapFallback(); return false; }
+    var bounds = null, county = selectedCounty(), code = selectedStateCode(), zip = selectedZip(), place = selectedPlace();
+    if (!(options && options.geoid) && !zip && !(options && options.zip) && !place && !(options && options.place)) {
+      status("An area code is not a mapped boundary. Choose a city, county or ZIP first, then map that precise search area.", true);
+      return false;
+    }
     activeMap = map;
     status("Preparing map area…", false);
     clearAreaLayer(map);
     var group = window.L.featureGroup().addTo(map);
     activeAreaLayer = group;
-    var bounds = null, county = selectedCounty(), code = selectedStateCode(), zip = selectedZip(), place = selectedPlace();
     var geoid = options && options.geoid || (county && county.geoid) || "";
     var label = options && options.label || (county ? county.name + ", " + stateName(code) : "");
     var geojson = null;
@@ -342,7 +348,7 @@
     }
   }
   function getRecordForCurrentArea() {
-    var code = selectedStateCode(), county = selectedCounty(), zip = selectedZip(), place = selectedPlace();
+    var code = selectedStateCode(), county = selectedCounty(), zip = selectedZip(), place = selectedPlace(), areaCode = selectedAreaCode();
     if (!county && !zip && !place) return null;
     var type = zip ? "zip" : (county ? "county" : "place");
     var geoid = county ? county.geoid : "";
@@ -351,8 +357,8 @@
     return {
       id: type + "|" + (zip || geoid || place).toLowerCase() + "|" + (code || ""),
       type: type, geoid: geoid, zip: zip, place: place, state: code,
-      stateAbbr: stateAbbr(code), stateName: stateName(code),
-      county: county ? county.name : "", label: label,
+      stateAbbr: stateAbbr(code), stateName: stateName(code), areaCode: areaCode,
+      county: county ? county.name : "", label: label + (areaCode ? " · Area code " + areaCode : ""),
       createdAt: new Date().toISOString()
     };
   }
@@ -465,9 +471,21 @@
     renderWatchlist();
     status("Added the five-county Greater Philadelphia starter search ring: Bucks, Chester, Delaware, Montgomery and Philadelphia. This is a regional search preset, not a claim that these are the hottest investment markets.", false);
   }
-  async function searchProviders() {
-    var query = areaQuery();
-    if (!query) { status("Enter a city/address or choose a state, county or ZIP first.", true); return; }
+  async function researchAreaCode() {
+    var areaCode = selectedAreaCode();
+    if (!/^[2-9]\d{2}$/.test(areaCode)) {
+      status("Enter a three-digit North American area-code format, such as 215 or 267.", true);
+      return;
+    }
+    var context = [selectedPlace(), selectedCounty() && selectedCounty().name, stateName(selectedStateCode())].filter(Boolean).join(" ");
+    var q = "NANPA area code " + areaCode + " geographic area cities counties" + (context ? " " + context : "") + " official";
+    window.open("https://www.google.com/search?q=" + encodeURIComponent(q), "_blank", "noopener,noreferrer");
+    status("Opened an area-code research query for " + areaCode + ". Area codes may overlap and are not exact postal or county boundaries; confirm the specific city or ZIP before mapping homes.", false);
+  }
+  function searchProviders() {
+    var query = areaQuery(), areaCode = selectedAreaCode();
+    if (!query) { status("Enter a city/address or choose a state, county or ZIP first. An area code alone is too broad to locate homes.", true); return; }
+    if (areaCode) query += ", geographic telephone area code " + areaCode + " region (verify exact cities before treating as a property boundary)";
     var old = dock.querySelector("#rolpr-address");
     if (old) old.value = query;
     var url = "https://www.google.com/search?q=" + encodeURIComponent('"' + query + '" homes for sale listings properties Zillow Redfin Realtor Homes.com auction');
@@ -489,7 +507,7 @@
   style.textContent =
     ".rolpr-area-explorer{margin:0 16px 14px;padding:14px;border:1px solid #315268;border-radius:14px;background:linear-gradient(145deg,#0a1a26,#10293a);color:#f2f8fc;box-shadow:0 8px 20px rgba(0,0,0,.14)}" +
     ".rolpr-area-title{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:10px}.rolpr-area-title strong{display:block;font-size:14px;color:#f4fbff}.rolpr-area-title small{display:block;margin-top:4px;color:#b0c8d6;font-size:11px;line-height:1.45}" +
-    ".rolpr-area-grid{display:grid;grid-template-columns:1.25fr .9fr 1.1fr .7fr;gap:9px}.rolpr-area-grid label{display:grid;gap:5px;color:#bfe8ee;font-weight:800;font-size:11px}.rolpr-area-grid input,.rolpr-area-grid select,.rolpr-watch-row select{width:100%;min-width:0;min-height:41px;padding:9px 10px;border:1px solid #36586c;border-radius:9px;background:#061521;color:#eff8ff;font-size:13px}.rolpr-area-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.rolpr-area-actions .rolpr-btn{flex:1 1 140px}.rolpr-area-note{margin:9px 0 0;color:#9eb6c7;font-size:10px;line-height:1.5}.rolpr-area-status{margin-top:9px;padding:8px 10px;border-radius:8px;background:#0b2231;color:#c8edf0;font-size:11px;line-height:1.5}.rolpr-area-status.is-error{background:#321b1b;color:#ffd0c7}" +
+    ".rolpr-area-grid{display:grid;grid-template-columns:1.15fr .8fr 1fr .7fr .65fr;gap:9px}.rolpr-area-grid label{display:grid;gap:5px;color:#bfe8ee;font-weight:800;font-size:11px}.rolpr-area-grid input,.rolpr-area-grid select,.rolpr-watch-row select{width:100%;min-width:0;min-height:41px;padding:9px 10px;border:1px solid #36586c;border-radius:9px;background:#061521;color:#eff8ff;font-size:13px}.rolpr-area-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.rolpr-area-actions .rolpr-btn{flex:1 1 140px}.rolpr-area-note{margin:9px 0 0;color:#9eb6c7;font-size:10px;line-height:1.5}.rolpr-area-status{margin-top:9px;padding:8px 10px;border-radius:8px;background:#0b2231;color:#c8edf0;font-size:11px;line-height:1.5}.rolpr-area-status.is-error{background:#321b1b;color:#ffd0c7}" +
     ".rolpr-watch-row{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:8px;align-items:center;margin-top:10px;padding-top:10px;border-top:1px solid #29495c}.rolpr-watch-label{grid-column:1/-1;color:#b5e9ee;font-size:11px;font-weight:900;letter-spacing:.06em;text-transform:uppercase}" +
     "@media(max-width:760px){.rolpr-area-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.rolpr-area-grid label:first-child{grid-column:1/-1}.rolpr-watch-row{grid-template-columns:minmax(0,1fr) auto}.rolpr-watch-row select{grid-column:1/-1}}" +
     "@media(max-width:430px){.rolpr-area-explorer{margin:0 10px 12px;padding:11px}.rolpr-area-grid{grid-template-columns:1fr}.rolpr-area-grid label:first-child{grid-column:auto}.rolpr-area-actions{display:grid;grid-template-columns:1fr 1fr}.rolpr-area-actions .rolpr-btn{width:100%;min-width:0;padding:9px 6px}.rolpr-watch-row{grid-template-columns:1fr}.rolpr-watch-row select{grid-column:auto}.rolpr-watch-row button{width:100%}}";
@@ -505,15 +523,18 @@
       '<label>State<select id="rolpr-area-state">' + buildStateOptions() + '</select></label>' +
       '<label>County / equivalent<select id="rolpr-area-county" disabled><option value="">Choose a state first</option></select></label>' +
       '<label>ZIP code<input id="rolpr-area-zip" inputmode="numeric" autocomplete="postal-code" maxlength="10" placeholder="19104"></label>' +
+      '<label>Area code<input id="rolpr-area-code" type="text" inputmode="numeric" autocomplete="off" maxlength="3" placeholder="215"></label>' +
     '</div>' +
     '<div class="rolpr-area-actions">' +
       '<button type="button" class="rolpr-btn primary" id="rolpr-area-search">Search homes</button>' +
+      '<button type="button" class="rolpr-btn" id="rolpr-area-code-research">Research area code</button>' +
       '<button type="button" class="rolpr-btn" id="rolpr-area-map">Map selected area</button>' +
       '<button type="button" class="rolpr-btn" id="rolpr-area-use">Use in this workspace</button>' +
       '<button type="button" class="rolpr-btn" id="rolpr-area-save">＋ Save target area</button>' +
     '</div>' +
     '<div class="rolpr-watch-row"><div class="rolpr-watch-label">My Target Areas · your search hot spots</div><select id="rolpr-watchlist" disabled><option value="">No target areas saved yet</option></select><button type="button" class="rolpr-btn primary" id="rolpr-watch-map" disabled>Map watchlist</button><button type="button" class="rolpr-btn" id="rolpr-watch-remove" disabled>Remove</button></div>' +
     '<div id="rolpr-area-status" class="rolpr-area-status" role="status" aria-live="polite">Loading the 2026 U.S. Census county directory for Pennsylvania… ZIP search uses approximate geocoding; saved areas stay in this browser profile.</div>' +
+    '<p class="rolpr-area-note">Area codes describe broad telephone numbering regions. Overlays can cover the same area; an area code is not an exact home-search, county or ZIP boundary. Research it first, then choose a city, county or ZIP for precise mapping.</p>' +
     '<p class="rolpr-area-note">County outlines: U.S. Census Bureau TIGERweb 2026 legal-boundary layer. ZIP lookup: OpenStreetMap Nominatim approximate search point—not an official USPS delivery boundary. “Hot areas” here means areas you save to your own watchlist; RO’Lyfe does not label markets hot without verified market data.</p>';
   var head = dock.querySelector(".rolpr-head");
   if (head) head.insertAdjacentElement("afterend", area);
@@ -523,6 +544,8 @@
     loadCounties(this.value);
   });
   area.querySelector("#rolpr-area-search").addEventListener("click", searchProviders);
+  area.querySelector("#rolpr-area-code-research").addEventListener("click", researchAreaCode);
+  area.querySelector("#rolpr-area-code").addEventListener("input", function () { this.value = this.value.replace(/\D/g, "").slice(0,3); });
   area.querySelector("#rolpr-area-map").addEventListener("click", function () {
     var zip = selectedZip();
     if (zip && !/^\d{5}(?:-\d{4})?$/.test(zip)) {
@@ -542,6 +565,7 @@
     area.querySelector("#rolpr-area-state").value = item.state || "";
     area.querySelector("#rolpr-area-place").value = item.place || "";
     area.querySelector("#rolpr-area-zip").value = item.zip || "";
+    area.querySelector("#rolpr-area-code").value = item.areaCode || "";
     if (item.state) loadCounties(item.state, item.geoid, item.county);
   });
 
@@ -565,6 +589,7 @@
     }
     if (params.get("zip")) area.querySelector("#rolpr-area-zip").value = params.get("zip");
     if (params.get("place")) area.querySelector("#rolpr-area-place").value = params.get("place");
+    if (params.get("npa")) area.querySelector("#rolpr-area-code").value = params.get("npa").replace(/\D/g, "").slice(0,3);
     var tries = 0;
     var timer = window.setInterval(function () {
       tries++;
