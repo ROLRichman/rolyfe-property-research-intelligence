@@ -1237,7 +1237,7 @@ button.addEventListener("click",async()=>{
   const countyUrl=typeof data.countySourceUrl==="string"&&/^https:\/\//i.test(data.countySourceUrl)?data.countySourceUrl:"";
   host.innerHTML="<strong>Regrid parcel match · "+safe(data.match)+"</strong><div class='regrid-grid'>"+fields.map(([label,value])=>"<div class='regrid-item'><small>"+safe(label)+"</small><b>"+safe(value)+"</b></div>").join("")+"</div><p>"+safe(data.note)+"</p>"+(countyUrl?"<a href='"+safe(countyUrl)+"' target='_blank' rel='noopener noreferrer'>Open county source ↗</a>":"");
   if(typeof window.rolyfeFocusPropertyMap==="function"&&data.latitude!==null&&data.longitude!==null)window.rolyfeFocusPropertyMap(data.latitude,data.longitude);
- }catch(error){host.textContent="Regrid lookup could not complete: "+(error&&error.message?error.message:"network or provider error")+". If the response says Regrid is not configured, the REGRID_API_KEY secret must be added to the Supabase Edge Function. This button does not run automatically.";
+ }catch(error){host.textContent="Regrid lookup could not complete: "+(error&&error.message?error.message:"network or provider error")+". If the response says Regrid is not configured, the REGRID_API_KEY secret must be added to the Supabase Edge Function. Automatic lookup runs once when you leave a completed address field. You can retry manually or correct the address and try again.";
  }finally{button.disabled=false;button.textContent="🧭 Look up parcel";}
 });
 const addressInput=document.getElementById("address"),autoLookup=document.getElementById("autoRegridLookup");
