@@ -31,7 +31,7 @@
   function readSavedRecords() {
     try {
       var value = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
-      return Array.isArray(value) ? value.filter(function (r) { var a=String(r && r.address || "").toLowerCase().replace(/[.,]/g,"").replace(/\\s+/g," ").trim(); return r && typeof r === "object" && r.address && a !== "4619 n 5th"; }) : [];
+      return Array.isArray(value) ? value.filter(function (r) { var a=String(r && r.address || "").toLowerCase().replace(/[.,]/g,"").replace(/\s+/g," ").trim(); return r && typeof r === "object" && r.address && a !== "4619 n 5th"; }) : [];
     } catch (_) { return []; }
   }
   function displayAddress(record) {
@@ -175,7 +175,7 @@
   function toggleUniversalAI(force){
     var open=typeof force==="boolean"?force:!aiPanel.classList.contains("open");
     aiPanel.classList.toggle("open",open);
-    if(open){var frame=aiPanel.querySelector("iframe");if(frame&&frame.getAttribute("src")==="about:blank")frame.src=frame.dataset.src;}
+    if(open){var frame=aiPanel.querySelector("iframe");if(frame&&frame.getAttribute("src")==="about:blank")frame.src=frame.dataset.src+"&parentURL="+encodeURIComponent(window.location.href);}
     aiTrigger.setAttribute("aria-expanded",String(open));
   }
   aiTrigger.addEventListener("click",function(event){
@@ -221,7 +221,7 @@
     var record = saved[Number(this.value)];
     if (record) dock.querySelector("#rolpr-address").value = displayAddress(record);
   });
-  dock.insertAdjacentHTML("beforeend", '<details class="rolpr-content"><summary class="rolpr-summary">Quick Access Directory · Jump to a workspace</summary><div class="rolpr-tools"><div class="rolpr-jump-row"><select id="rolpr-jump" aria-label="Choose a RO’Lyfe destination"><option value="">Choose a destination…</option><optgroup label="Property research"><option value="' + PROPERTY_URL + '#map">Property map</option><option value="' + PROPERTY_URL + '#intake">Property intake</option><option value="' + PROPERTY_URL + '#records">Saved property records</option><option value="' + PROPERTY_URL + '#underwriting">Deal analysis</option><option value="' + PROPERTY_URL + '#auction-operations">Auction &amp; deal tools</option></optgroup><optgroup label="Business &amp; funding"><option value="' + FUNDING_URL + '">Funding &amp; execution hub</option><option value="https://form.jotform.com/252063354378055">Secure funding intake</option><option value="https://form.jotform.com/253154859148062">Quick Docs upload</option><option value="' + DOCS_URL + '">Contract &amp; document hub</option></optgroup><optgroup label="Other RO’Lyfe engines"><option value="' + ACQUISITION_URL + '">Acquisition engine</option><option value="' + AUCTION_URL + '">Auction Capital Machine</option><option value="' + RELOCATION_URL + '">Relocation Intelligence</option><option value="' + CLOSERS_URL + '">Closers OS</option><option value="' + BUYER_URL + '">Buyer Network</option><option value="' + VISION_URL + '">Vision Hub</option><option value="' + COMMAND_URL + '">Command Center</option></optgroup></select><button type="button" class="rolpr-btn primary" id="rolpr-jump-go">Go</button></div></div></details>');
+  dock.insertAdjacentHTML("beforeend", '<details class="rolpr-content"><summary class="rolpr-summary">Quick Access Directory · Jump to a workspace</summary><div class="rolpr-tools"><div class="rolpr-jump-row"><select id="rolpr-jump" aria-label="Choose a RO’Lyfe destination"><option value="">Choose a destination…</option><optgroup label="Property research"><option value="' + PROPERTY_URL + '#map">Property map</option><option value="' + PROPERTY_URL + '#intake">Property intake</option><option value="' + PROPERTY_URL + '#records">Saved property records</option><option value="' + PROPERTY_URL + '#underwriting">Deal analysis</option><option value="' + PROPERTY_URL + '#auction-operations">Auction &amp; deal tools</option></optgroup><optgroup label="Business &amp; funding"><option value="' + FUNDING_URL + '">Funding &amp; execution hub</option><option value="https://form.jotform.com/252063354378055">Secure funding intake</option><option value="https://richman-rootoflyfe.zohobookings.com/4699692000000050014">Book Strategy Session</option><option value="https://form.jotform.com/253154859148062">Quick Docs upload</option><option value="' + DOCS_URL + '">Contract &amp; document hub</option></optgroup><optgroup label="Other RO’Lyfe engines"><option value="' + ACQUISITION_URL + '">Acquisition engine</option><option value="' + AUCTION_URL + '">Auction Capital Machine</option><option value="' + RELOCATION_URL + '">Relocation Intelligence</option><option value="' + CLOSERS_URL + '">Closers OS</option><option value="' + BUYER_URL + '">Buyer Network</option><option value="' + VISION_URL + '">Vision Hub</option><option value="' + COMMAND_URL + '">Command Center</option></optgroup></select><button type="button" class="rolpr-btn primary" id="rolpr-jump-go">Go</button></div></div></details>');
   dock.querySelector("#rolpr-jump-go").addEventListener("click", function () {
     var destination=dock.querySelector("#rolpr-jump").value;
     if(destination) window.location.href=destination;
