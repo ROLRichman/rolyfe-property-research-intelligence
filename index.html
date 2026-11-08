@@ -343,7 +343,7 @@ body.rol-theme-2,body.rol-theme-3,body.rol-theme-4,body.rol-theme-5{background:l
           <div class="field"><label for="parcel">Parcel / APN</label><input id="parcel" name="parcel" placeholder="Parcel identification number"></div>
           <div id="regridResult" class="regrid-result" role="status" aria-live="polite">Regrid lookup has not been run.</div>
           <div class="field"><label for="county">County</label><input id="county" name="county" placeholder="County"></div>
-          <div class="field"><label for="state">State</label><select id="state" name="state"><option value="">Select state</option><option>PA</option><option>NJ</option><option>NY</option><option>DE</option><option>MD</option><option>Other</option></select></div>
+          <div class="field"><label for="state">State</label><select id="state" name="state"><option value="">Select state</option><option>PA</option><option>NJ</option><option>NY</option><option>DE</option><option>MD</option><option>Other</option></select></div><div class="field"><label for="zipCode">ZIP code</label><input id="zipCode" name="zipCode" inputmode="numeric" autocomplete="postal-code" maxlength="10" placeholder="19104"></div>
           <div class="field"><label for="propertyType">Property type</label><select id="propertyType" name="propertyType"><option>Unknown — verify</option><option>Single-family</option><option>Multi-family</option><option>Condo / townhouse</option><option>Commercial</option><option>Mixed-use</option><option>Vacant land</option><option>Manufactured</option><option>Other</option></select></div>
           <div class="field"><label for="saleType">Lead / sale type</label><select id="saleType" name="saleType"><option>Off-market lead</option><option>Tax sale</option><option>Sheriff sale</option><option>Foreclosure / REO</option><option>Bank-owned</option><option>Online auction</option><option>Vacant land lead</option><option>MLS listing</option><option>Other</option></select></div>
           <div class="field"><label for="sourceUrl">Primary listing / sale URL</label><input id="sourceUrl" name="sourceUrl" type="url" placeholder="https://..."></div>
@@ -1145,7 +1145,7 @@ function renderRecords(){
   if(!records.length){list.innerHTML='<div class="callout">No property records saved yet. Add a lead in Property Intake to get started.</div>';return}
   list.innerHTML=records.map(r=>`<article class="check-item" style="display:block">
     <div style="display:flex;gap:10px;justify-content:space-between;align-items:flex-start;flex-wrap:wrap">
-      <div><strong>${escapeHtml(r.address || "Unnamed property")}</strong><div class="small">${escapeHtml([r.county,r.state,r.parcel].filter(Boolean).join(" · "))}</div></div>
+      <div><strong>${escapeHtml(r.address || "Unnamed property")}</strong><div class="small">${escapeHtml([r.county,r.state,r.zipCode,r.parcel].filter(Boolean).join(" · "))}</div></div>
       <span class="badge">${escapeHtml(r.status || "New lead")}</span>
     </div>
     <div class="small" style="margin-top:8px">${escapeHtml(r.saleType || "")} · ${escapeHtml(r.propertyType || "")} · Updated ${escapeHtml((r.updatedAt||"").slice(0,10))}</div>
@@ -1177,7 +1177,7 @@ $("exportRecords").addEventListener("click",()=>{
 });
 function csvCell(v){return '"'+String(v??"").replace(/"/g,'""')+'"'}
 $("exportTable").addEventListener("click",()=>{
-  const keys=["address","parcel","county","state","propertyType","saleType","sourceUrl","researchDate","saleDate","status","notes","updatedAt"];
+  const keys=["address","parcel","county","state","zipCode","propertyType","saleType","sourceUrl","researchDate","saleDate","status","notes","updatedAt"];
   const csv=[keys,...records.map(r=>keys.map(k=>r[k]||""))].map(row=>row.map(csvCell).join(",")).join("\r\n");
   download("rolyfe-property-records.csv",csv,"text/csv;charset=utf-8");
   $("recordsStatus").textContent="CSV export started.";
@@ -1295,7 +1295,7 @@ finally{send.disabled=false;send.textContent="Send";messages.scrollTop=messages.
 
 (function(){
  const form=document.getElementById("fundingSnapshotForm");
- document.getElementById("downloadResearchSnapshot")?.addEventListener("click",()=>{const ids=["address","latitude","longitude","parcel","county","state","propertyType","saleType","sourceUrl","researchDate","saleDate","status","notes","arv","purchase","rehab","closing","holding","sellingPct","contingencyPct","targetProfit","arvConfidence"];const property={};ids.forEach(id=>{const el=document.getElementById(id);if(el)property[id]=el.value;});const checks={};document.querySelectorAll("[data-check]").forEach(el=>checks[el.dataset.check]=el.checked);const payload={createdAt:new Date().toISOString(),property,checklist:checks,notice:"Preliminary research snapshot. Verify all facts and assumptions with primary sources."};const blob=new Blob([JSON.stringify(payload,null,2)],{type:"application/json"});const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download="rolyfe-property-research-snapshot.json";a.click();URL.revokeObjectURL(url);});
+ document.getElementById("downloadResearchSnapshot")?.addEventListener("click",()=>{const ids=["address","latitude","longitude","parcel","county","state","zipCode","propertyType","saleType","sourceUrl","researchDate","saleDate","status","notes","arv","purchase","rehab","closing","holding","sellingPct","contingencyPct","targetProfit","arvConfidence"];const property={};ids.forEach(id=>{const el=document.getElementById(id);if(el)property[id]=el.value;});const checks={};document.querySelectorAll("[data-check]").forEach(el=>checks[el.dataset.check]=el.checked);const payload={createdAt:new Date().toISOString(),property,checklist:checks,notice:"Preliminary research snapshot. Verify all facts and assumptions with primary sources."};const blob=new Blob([JSON.stringify(payload,null,2)],{type:"application/json"});const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download="rolyfe-property-research-snapshot.json";a.click();URL.revokeObjectURL(url);});
  if(!form)return;
  const fields=["qCredit","qIndustry","qTime","qSales","qProduct","qState","qWebsite"];
  function snapshot(){const out={createdAt:new Date().toISOString(),answers:{}};fields.forEach(id=>out.answers[id.replace(/^q/,"")]=document.getElementById(id).value.trim());return out;}
@@ -1496,6 +1496,6 @@ document.querySelectorAll("[data-tax-sample]").forEach(button=>button.addEventLi
   document.getElementById("enableDeviceCompass").addEventListener("click",enable);
   document.getElementById("findWeatherMidpoint").addEventListener("click",midpoint);
 })();
-</script><script src="https://rolrichman.github.io/rolyfe-property-research-intelligence/shared/property-research-dock.js"></script>
+</script><script src="https://rolrichman.github.io/rolyfe-property-research-intelligence/shared/property-research-dock.js?v=county-zip-20261108"></script><script src="https://rolrichman.github.io/rolyfe-property-research-intelligence/shared/area-intelligence.js?v=county-zip-20261108"></script>
 </body>
 </html>
