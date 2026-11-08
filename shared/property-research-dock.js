@@ -31,7 +31,7 @@
   function readSavedRecords() {
     try {
       var value = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
-      return Array.isArray(value) ? value.filter(function (r) { return r && typeof r === "object" && r.address; }) : [];
+      return Array.isArray(value) ? value.filter(function (r) { var a=String(r && r.address || "").toLowerCase().replace(/[.,]/g,"").replace(/\s+/g," ").trim(); return r && typeof r === "object" && r.address && a !== "4619 n 5th"; }) : [];
     } catch (_) { return []; }
   }
   function displayAddress(record) {
@@ -67,7 +67,7 @@
 
   var style = document.createElement("style");
   style.textContent =
-    ".rolpr-dock{display:block;width:100%;max-width:100%;min-width:0;margin:14px 0 18px;padding:0;border:1px solid #315268;border-radius:18px;overflow:hidden;background:linear-gradient(135deg,#0b1b28,#102b3b);color:#f0f7fc;font-family:Arial,Helvetica,sans-serif;box-shadow:0 8px 24px rgba(0,0,0,.12);overflow-wrap:anywhere}.rolpr-dock *{box-sizing:border-box;min-width:0;max-width:100%}.rolpr-shell-summary{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:13px 15px;cursor:pointer;list-style:none;color:#dffaff;font-size:12px;font-weight:900;line-height:1.5;letter-spacing:.02em}.rolpr-shell-summary::-webkit-details-marker{display:none}.rolpr-shell-summary:after{content:"＋";font-size:20px;color:#75e8f0;flex:0 0 auto}.rolpr-dock[open]>.rolpr-shell-summary:after{content:"−"}.rolpr-shell-body{min-width:0;max-width:100%;overflow:hidden;border-top:1px solid #29495c}" +
+    ".rolpr-dock{display:block;width:100%;max-width:100%;min-width:0;margin:14px 0 18px;padding:0;border:1px solid #315268;border-radius:18px;overflow:hidden;background:linear-gradient(135deg,#0b1b28,#102b3b);color:#f0f7fc;font-family:Arial,Helvetica,sans-serif;box-shadow:0 8px 24px rgba(0,0,0,.12);overflow-wrap:anywhere}.rolpr-dock *{box-sizing:border-box;min-width:0;max-width:100%}.rolpr-shell-summary{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:13px 15px;cursor:pointer;list-style:none;color:#dffaff;font-size:12px;font-weight:900;line-height:1.5;letter-spacing:.02em}.rolpr-shell-summary::-webkit-details-marker{display:none}.rolpr-shell-summary:after{content:'＋';font-size:20px;color:#75e8f0;flex:0 0 auto}.rolpr-dock[open]>.rolpr-shell-summary:after{content:'−'}.rolpr-shell-body{min-width:0;max-width:100%;overflow:hidden;border-top:1px solid #29495c}" +
     ".rolpr-dock *{box-sizing:border-box}.rolpr-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:14px 16px;border-bottom:1px solid #29495c}" +
     ".rolpr-kicker{font-size:10px;letter-spacing:.15em;font-weight:800;color:#77e8f1;text-transform:uppercase}.rolpr-title{font-size:17px;font-weight:900;margin:4px 0;color:#f4fbff}.rolpr-subtitle{font-size:12px;line-height:1.5;color:#afc4d3}" +
     ".rolpr-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.rolpr-btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:38px;border:1px solid #46677b;border-radius:10px;padding:9px 12px;background:#122c3e;color:#f5fbff!important;text-decoration:none!important;font-size:12px;font-weight:800;cursor:pointer}" +
@@ -85,6 +85,11 @@
     "@media(max-width:780px){#rolyfeResearchDock .rolpr-sourcegrid{grid-template-columns:repeat(2,minmax(0,1fr))}}" +
     "@media(max-width:600px){#rolyfeResearchDock{margin:10px 0 14px;border-radius:14px}#rolyfeResearchDock .rolpr-head{display:grid;grid-template-columns:minmax(0,1fr);gap:10px;padding:12px}#rolyfeResearchDock .rolpr-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));width:100%;gap:7px}#rolyfeResearchDock .rolpr-actions .rolpr-btn{width:100%;min-width:0;padding:9px 7px;text-align:center}#rolyfeResearchDock .rolpr-searchrow{display:grid;grid-template-columns:minmax(0,1fr);width:100%;gap:8px}#rolyfeResearchDock .rolpr-searchrow input,#rolyfeResearchDock .rolpr-searchrow select,#rolyfeResearchDock .rolpr-searchrow .rolpr-btn{grid-column:auto;width:100%;min-width:0}#rolyfeResearchDock .rolpr-journey{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;padding:0 12px 12px}#rolyfeResearchDock .rolpr-journey .rolpr-btn{width:100%;min-width:0;padding:9px 7px;text-align:center}#rolyfeResearchDock .rolpr-tools{padding:0 12px 12px}#rolyfeResearchDock .rolpr-foot{padding:10px 12px}}" +
     "@media(max-width:360px){#rolyfeResearchDock .rolpr-sourcegrid,#rolyfeResearchDock .rolpr-journey{grid-template-columns:minmax(0,1fr)}#rolyfeResearchDock .rolpr-shell-summary{padding:10px;font-size:10px}}";
+  style.textContent +=
+    ".rolpr-jump-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:center}.rolpr-jump-row select{width:100%;min-width:0;min-height:42px;border:1px solid #36586c;border-radius:10px;padding:10px 12px;background:#061521;color:#eff8ff;font-size:13px}" +
+    ".rol-ai-rail-trigger{width:40px;height:40px;display:flex;align-items:center;justify-content:center;border:1px solid #66e6ed;border-radius:12px;background:#12394b;color:#f4feff;font-size:17px;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.25)}.rol-ai-inline-trigger{width:auto!important;min-width:0;padding:8px 11px!important;margin:0 8px!important;border:1px solid #66e6ed!important;border-radius:10px!important;background:#12394b!important;color:#f4feff!important;font-size:11px!important;box-shadow:none!important}.rol-ai-fab{position:fixed;left:14px;bottom:16px;z-index:100000;border:1px solid #66e6ed;border-radius:999px;padding:11px 15px;background:linear-gradient(135deg,#0c3444,#163c58);color:#f4feff;font:800 12px Arial,sans-serif;box-shadow:0 8px 24px rgba(0,0,0,.38);cursor:pointer}" +
+    ".rol-ai-panel{display:none;position:fixed;left:12px;bottom:72px;z-index:100001;width:min(430px,calc(100vw - 24px));height:min(72vh,680px);min-height:380px;border:1px solid #58dce6;border-radius:16px;overflow:hidden;background:#071521;box-shadow:0 18px 48px rgba(0,0,0,.5)}.rol-ai-panel.open{display:flex;flex-direction:column}.rol-ai-panel-head{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px 12px;background:#102d40;color:#eaffff;font:800 12px Arial,sans-serif}.rol-ai-panel-head button{border:0;border-radius:8px;padding:6px 10px;background:#24495c;color:#fff;font-size:18px;cursor:pointer}.rol-ai-panel iframe{display:block;width:100%;height:100%;min-height:0;flex:1;border:0;background:#fff}.rol-ai-panel-foot{padding:7px 10px;background:#0d2332;font:11px Arial,sans-serif;color:#b7d2df}.rol-ai-panel-foot a{color:#9cecf2;text-decoration:none}" +
+    "@media(max-width:600px){.rol-ai-fab{left:10px;bottom:12px;padding:10px 12px}.rol-ai-panel{left:8px;bottom:64px;width:calc(100vw - 16px);height:76vh;min-height:340px}}";
   document.head.appendChild(style);
 
   var isPrimary = location.pathname.indexOf("rolyfe-property-research-intelligence") !== -1;
@@ -148,6 +153,48 @@
   if (header && header.parentNode) header.insertAdjacentElement("afterend", dock);
   else document.body.insertAdjacentElement("afterbegin", dock);
 
+  var aiPanel=document.createElement("section");
+  aiPanel.id="rolyfeUniversalAI";
+  aiPanel.className="rol-ai-panel";
+  aiPanel.setAttribute("aria-label","RO’Lyfe Universal AI assistant");
+  aiPanel.innerHTML='<div class="rol-ai-panel-head"><span>🤖 RO’Lyfe Universal AI · Powered by Jamal</span><button type="button" id="rol-ai-close" aria-label="Close AI assistant">×</button></div><iframe title="RO’Lyfe Universal AI powered by Jamal" allow="geolocation; microphone; camera; fullscreen" src="about:blank" loading="lazy" data-src="https://agent.jotform.com/019bdd1fe57172838101dccf3612b1e9e787?embedMode=iframe&autofocus=0&background=1&shadow=1"></iframe><div class="rol-ai-panel-foot">Stay on this page while you ask about the current RO’Lyfe workflow · <a href="https://agent.jotform.com/019bdd1fe57172838101dccf3612b1e9e787" target="_blank" rel="noopener noreferrer">Open full assistant</a></div>';
+  document.body.appendChild(aiPanel);
+  var aiTrigger=document.querySelector(".float-ai");
+  var existingAgentPanelHeader=document.querySelector("#rolAgentPanel .rol-agent-head");
+  var auctionAgentTools=document.querySelector("#aiPanel .ai-panel-tools");
+  var relocationRail=document.querySelector(".utility-rail");
+  if(!aiTrigger && existingAgentPanelHeader){
+    aiTrigger=document.createElement("button");
+    aiTrigger.type="button";aiTrigger.className="button rol-ai-inline-trigger";aiTrigger.textContent="🤖 Universal AI";
+    existingAgentPanelHeader.insertBefore(aiTrigger,existingAgentPanelHeader.querySelector("#rolAgentClose"));
+  }else if(!aiTrigger && auctionAgentTools){
+    aiTrigger=document.createElement("button");
+    aiTrigger.type="button";aiTrigger.className="rol-ai-inline-trigger";aiTrigger.textContent="🤖 Universal AI";
+    auctionAgentTools.insertBefore(aiTrigger,auctionAgentTools.querySelector(".ai-close"));
+  }else if(!aiTrigger && relocationRail){
+    aiTrigger=document.createElement("button");
+    aiTrigger.type="button";aiTrigger.className="rol-ai-rail-trigger";aiTrigger.textContent="🤖";
+    aiTrigger.title="Open RO’Lyfe Universal AI";aiTrigger.setAttribute("aria-label","Open RO’Lyfe Universal AI");
+    relocationRail.appendChild(aiTrigger);
+  }else if(!aiTrigger){
+    aiTrigger=document.createElement("button");
+    aiTrigger.type="button";aiTrigger.className="rol-ai-fab";aiTrigger.textContent="🤖 Universal AI";
+    document.body.appendChild(aiTrigger);
+  }
+  aiTrigger.setAttribute("aria-label","Open RO’Lyfe Universal AI powered by Jamal");
+  aiTrigger.setAttribute("aria-expanded","false");
+  function toggleUniversalAI(force){
+    var open=typeof force==="boolean"?force:!aiPanel.classList.contains("open");
+    aiPanel.classList.toggle("open",open);
+    if(open){var frame=aiPanel.querySelector("iframe");if(frame&&frame.getAttribute("src")==="about:blank")frame.src=frame.dataset.src+"&parentURL="+encodeURIComponent(window.location.href);}
+    aiTrigger.setAttribute("aria-expanded",String(open));
+  }
+  aiTrigger.addEventListener("click",function(event){
+    event.preventDefault();event.stopImmediatePropagation();toggleUniversalAI();
+  },true);
+  aiPanel.querySelector("#rol-ai-close").addEventListener("click",function(){toggleUniversalAI(false);});
+  window.rolyfeOpenUniversalAI=function(){toggleUniversalAI(true);aiPanel.scrollIntoView({behavior:"smooth",block:"nearest"});};
+
   function addressValue() {
     return String(dock.querySelector("#rolpr-address").value || "").trim();
   }
@@ -184,6 +231,11 @@
     if (this.value === "") return;
     var record = saved[Number(this.value)];
     if (record) dock.querySelector("#rolpr-address").value = displayAddress(record);
+  });
+  dock.insertAdjacentHTML("beforeend", '<details class="rolpr-content"><summary class="rolpr-summary">Quick Access Directory · Jump to a workspace</summary><div class="rolpr-tools"><div class="rolpr-jump-row"><select id="rolpr-jump" aria-label="Choose a RO’Lyfe destination"><option value="">Choose a destination…</option><optgroup label="Property research"><option value="' + PROPERTY_URL + '#map">Property map</option><option value="' + PROPERTY_URL + '#intake">Property intake</option><option value="' + PROPERTY_URL + '#records">Saved property records</option><option value="' + PROPERTY_URL + '#underwriting">Deal analysis</option><option value="' + PROPERTY_URL + '#auction-operations">Auction &amp; deal tools</option></optgroup><optgroup label="Business &amp; funding"><option value="' + FUNDING_URL + '">Funding &amp; execution hub</option><option value="https://form.jotform.com/252063354378055">Secure funding intake</option><option value="https://richman-rootoflyfe.zohobookings.com/4699692000000050014">Book Strategy Session</option><option value="https://form.jotform.com/253154859148062">Quick Docs upload</option><option value="' + DOCS_URL + '">Contract &amp; document hub</option></optgroup><optgroup label="Other RO’Lyfe engines"><option value="' + ACQUISITION_URL + '">Acquisition engine</option><option value="' + AUCTION_URL + '">Auction Capital Machine</option><option value="' + RELOCATION_URL + '">Relocation Intelligence</option><option value="' + CLOSERS_URL + '">Closers OS</option><option value="' + BUYER_URL + '">Buyer Network</option><option value="' + VISION_URL + '">Vision Hub</option><option value="' + COMMAND_URL + '">Command Center</option></optgroup></select><button type="button" class="rolpr-btn primary" id="rolpr-jump-go">Go</button></div></div></details>');
+  dock.querySelector("#rolpr-jump-go").addEventListener("click", function () {
+    var destination=dock.querySelector("#rolpr-jump").value;
+    if(destination) window.location.href=destination;
   });
   dock.querySelector("#rolpr-search-all").addEventListener("click", function () {
     var query = addressValue();
