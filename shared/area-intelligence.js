@@ -170,7 +170,11 @@
     } catch (_) {}
     return null;
   }
-  function openMapFallback() {
+  function openMapFallback(showWatchlist) {
+    if (showWatchlist) {
+      window.location.href = PROPERTY_URL + "?watchlist=1#map";
+      return;
+    }
     window.location.href = mapUrl();
   }
   function clearAreaLayer(map) {
@@ -392,7 +396,7 @@
   async function mapWatchlist() {
     if (!watchAreas.length) { status("Save a county or ZIP to My Target Areas first.", true); return; }
     var map = getMap();
-    if (!map || !window.L) { openMapFallback(); return; }
+    if (!map || !window.L) { openMapFallback(true); return; }
     activeMap = map;
     clearAreaLayer(map);
     var group = window.L.featureGroup().addTo(map);
@@ -543,6 +547,15 @@
 
   async function applyUrlArea() {
     var params = new URLSearchParams(window.location.search);
+    if (params.get("watchlist") === "1") {
+      var watchTries = 0;
+      var watchTimer = window.setInterval(function () {
+        watchTries++;
+        if (getMap()) { window.clearInterval(watchTimer); mapWatchlist(); }
+        else if (watchTries >= 20) { window.clearInterval(watchTimer); status("Open My Target Areas and map the watchlist when the map is ready.", false); }
+      }, 250);
+      return;
+    }
     if (params.get("area") !== "1") return;
     var abbr = params.get("state") || "", stateRow = stateByAbbr[abbr.toUpperCase()];
     var code = stateRow ? stateRow[0] : "";
