@@ -296,16 +296,16 @@
   async function mapArea(options) {
     var map = getMap();
     if (!map || !window.L) { openMapFallback(); return false; }
-    activeMap = map;
-    status("Preparing map area…", false);
-    clearAreaLayer(map);
-    var group = window.L.featureGroup().addTo(map);
-    activeAreaLayer = group;
     var bounds = null, county = selectedCounty(), code = selectedStateCode(), zip = selectedZip(), place = selectedPlace();
     if (!(options && options.geoid) && !zip && !(options && options.zip) && !place && !(options && options.place)) {
       status("An area code is not a mapped boundary. Choose a city, county or ZIP first, then map that precise search area.", true);
       return false;
     }
+    activeMap = map;
+    status("Preparing map area…", false);
+    clearAreaLayer(map);
+    var group = window.L.featureGroup().addTo(map);
+    activeAreaLayer = group;
     var geoid = options && options.geoid || (county && county.geoid) || "";
     var label = options && options.label || (county ? county.name + ", " + stateName(code) : "");
     var geojson = null;
@@ -474,7 +474,7 @@
   async function researchAreaCode() {
     var areaCode = selectedAreaCode();
     if (!/^[2-9]\d{2}$/.test(areaCode)) {
-      status("Enter a valid three-digit North American area code, such as 215 or 267.", true);
+      status("Enter a three-digit North American area-code format, such as 215 or 267.", true);
       return;
     }
     var context = [selectedPlace(), selectedCounty() && selectedCounty().name, stateName(selectedStateCode())].filter(Boolean).join(" ");
