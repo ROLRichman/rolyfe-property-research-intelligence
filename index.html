@@ -339,7 +339,7 @@ body.rol-theme-2,body.rol-theme-3,body.rol-theme-4,body.rol-theme-5{background:l
         <input type="hidden" id="latitude" name="latitude" value=""><input type="hidden" id="longitude" name="longitude" value="">
         <div class="row-fields">
           <div class="field"><label for="address">Property address *</label><input id="address" name="address" required placeholder="Street, city, state, ZIP"><div class="actions"><a class="button" href="https://epayss.phila-records.com/web" target="_blank" rel="noopener noreferrer">🔎 Search Philadelphia Deeds ↗</a><a class="button" href="https://property.phila.gov/" target="_blank" rel="noopener noreferrer">🏛️ Search Property Records ↗</a></div><p class="small">Philadelphia deed records are searched through the City Department of Records’ Philadox portal. Recorded documents generally appear after processing; confirm the grantor, grantee, deed date and document ID against the official record.</p></div>
-          <div class="field regrid-action-field"><label>Parcel intelligence · Regrid</label><button type="button" id="regridLookup" class="button primary">🧭 Look up parcel</button><span class="small">Address-based parcel attributes from your connected Regrid Edge Function.</span></div>
+          <div class="field regrid-action-field"><label>Parcel intelligence · Regrid</label><button type="button" id="regridLookup" class="button primary">🧭 Look up parcel</button><label class="small" for="autoRegridLookup"><input type="checkbox" id="autoRegridLookup" checked> Auto-run once when the completed address field is left</label><span class="small">One lookup per address change. You can still run or retry it manually.</span></div>
           <div class="field"><label for="parcel">Parcel / APN</label><input id="parcel" name="parcel" placeholder="Parcel identification number"></div>
           <div id="regridResult" class="regrid-result" role="status" aria-live="polite">Regrid lookup has not been run.</div>
           <div class="field"><label for="county">County</label><input id="county" name="county" placeholder="County"></div>
@@ -1239,6 +1239,18 @@ button.addEventListener("click",async()=>{
   if(typeof window.rolyfeFocusPropertyMap==="function"&&data.latitude!==null&&data.longitude!==null)window.rolyfeFocusPropertyMap(data.latitude,data.longitude);
  }catch(error){host.textContent="Regrid lookup could not complete: "+(error&&error.message?error.message:"network or provider error")+". If the response says Regrid is not configured, the REGRID_API_KEY secret must be added to the Supabase Edge Function. This button does not run automatically.";
  }finally{button.disabled=false;button.textContent="🧭 Look up parcel";}
+});
+const addressInput=document.getElementById("address"),autoLookup=document.getElementById("autoRegridLookup");
+let lastLookupAddress="";
+button.addEventListener("click",()=>{lastLookupAddress=addressInput?.value.trim()||"";},true);
+addressInput?.addEventListener("input",()=>{if(addressInput.value.trim()!==lastLookupAddress)lastLookupAddress="";});
+addressInput?.addEventListener("blur",event=>{
+ const value=addressInput.value.trim();
+ if(event.relatedTarget===button)return;
+ if(autoLookup?.checked&&value.length>=8&&value!==lastLookupAddress){
+  lastLookupAddress=value;
+  button.click();
+ }
 });
 })();
 </script>
