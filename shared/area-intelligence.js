@@ -473,19 +473,19 @@
   }
   async function researchAreaCode() {
     var areaCode = selectedAreaCode();
-    if (!/^[2-9]\d{2}$/.test(areaCode)) {
-      status("Enter a three-digit North American area-code format, such as 215 or 267.", true);
+    if (!/^[2-9]\d{2}$/.test(areaCode) || /^\d11$/.test(areaCode)) {
+      status("Enter a valid three-digit NPA format, such as 215 or 267. N11 service codes are not area codes.", true);
       return;
     }
     var context = [selectedPlace(), selectedCounty() && selectedCounty().name, stateName(selectedStateCode())].filter(Boolean).join(" ");
-    var q = "NANPA area code " + areaCode + " geographic area cities counties" + (context ? " " + context : "") + " official";
+    var q = "NANPA NPA " + areaCode + " assigned status geographic or non-geographic service area overlay maps" + (context ? " " + context : "") + " official";
     window.open("https://www.google.com/search?q=" + encodeURIComponent(q), "_blank", "noopener,noreferrer");
-    status("Opened an area-code research query for " + areaCode + ". Area codes may overlap and are not exact postal or county boundaries; confirm the specific city or ZIP before mapping homes.", false);
+    status("Opened an NPA research query for " + areaCode + ". Some NPAs are non-geographic, and overlays may share a region. Confirm the city or ZIP before mapping property locations.", false);
   }
   function searchProviders() {
     var query = areaQuery(), areaCode = selectedAreaCode();
     if (!query) { status("Enter a city/address or choose a state, county or ZIP first. An area code alone is too broad to locate homes.", true); return; }
-    if (areaCode) query += ", geographic telephone area code " + areaCode + " region (verify exact cities before treating as a property boundary)";
+    if (areaCode) query += ", telephone NPA " + areaCode + " service region (verify exact locality; overlays may share geography)";
     var old = dock.querySelector("#rolpr-address");
     if (old) old.value = query;
     var url = "https://www.google.com/search?q=" + encodeURIComponent('"' + query + '" homes for sale listings properties Zillow Redfin Realtor Homes.com auction');
@@ -534,7 +534,7 @@
     '</div>' +
     '<div class="rolpr-watch-row"><div class="rolpr-watch-label">My Target Areas · your search hot spots</div><select id="rolpr-watchlist" disabled><option value="">No target areas saved yet</option></select><button type="button" class="rolpr-btn primary" id="rolpr-watch-map" disabled>Map watchlist</button><button type="button" class="rolpr-btn" id="rolpr-watch-remove" disabled>Remove</button></div>' +
     '<div id="rolpr-area-status" class="rolpr-area-status" role="status" aria-live="polite">Loading the 2026 U.S. Census county directory for Pennsylvania… ZIP search uses approximate geocoding; saved areas stay in this browser profile.</div>' +
-    '<p class="rolpr-area-note">Area codes describe broad telephone numbering regions. Overlays can cover the same area; an area code is not an exact home-search, county or ZIP boundary. Research it first, then choose a city, county or ZIP for precise mapping.</p>' +
+    '<p class="rolpr-area-note">Area codes identify Numbering Plan Areas (NPAs); some NPAs are non-geographic, and overlays can place multiple codes over the same area. They are not exact home-search, county or ZIP boundaries. <a href="https://www.nanpa.com/" target="_blank" rel="noopener noreferrer">Official NANPA reference ↗</a> · <a href="https://puc.beta.pa.gov/telecommunications/area-codes/" target="_blank" rel="noopener noreferrer">Pennsylvania PUC area-code maps ↗</a>. Choose a city, county or ZIP for precise property mapping.</p>' +
     '<p class="rolpr-area-note">County outlines: U.S. Census Bureau TIGERweb 2026 legal-boundary layer. ZIP lookup: OpenStreetMap Nominatim approximate search point—not an official USPS delivery boundary. “Hot areas” here means areas you save to your own watchlist; RO’Lyfe does not label markets hot without verified market data.</p>';
   var head = dock.querySelector(".rolpr-head");
   if (head) head.insertAdjacentElement("afterend", area);
