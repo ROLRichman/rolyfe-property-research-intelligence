@@ -86,6 +86,16 @@ hr{border:0;border-top:1px solid var(--line);margin:18px 0}
 .map-nearby-results ul{margin:7px 0 0;padding-left:19px;display:grid;gap:5px}
 .map-nearby-results button{margin-left:6px;border:1px solid #31516b;border-radius:7px;background:#102a3d;color:#dff6ff;padding:4px 7px;font-size:9px}
 .map-weather-source{margin:10px 0 0;color:#8ea4b8;font-size:9px;line-height:1.45}
+.map-nearby-fold{margin-top:12px;border:1px solid var(--line);border-radius:11px;background:#0b1d2a;overflow:hidden}
+.map-nearby-fold>summary{list-style:none;cursor:pointer;padding:12px 14px;color:#e8faff;font-size:12px;font-weight:900}
+.map-nearby-fold>summary::-webkit-details-marker{display:none}
+.map-nearby-fold>summary:after{content:"＋";float:right;color:var(--cyan);font-size:17px}
+.map-nearby-fold[open]>summary:after{content:"−"}
+.map-nearby-fold>summary span{display:block;margin-top:4px;color:var(--muted);font-size:10px;font-weight:500}
+.map-nearby-body{padding:0 12px 12px;border-top:1px solid var(--line)}
+.map-nearby-body .map-nearby-tools{margin-top:0;padding-top:12px;border-top:0}
+#propertyMap{display:block;position:relative;min-height:360px;overflow:hidden}
+
 @media(max-width:800px){.map-weather-grid{grid-template-columns:1fr}.map-nearby-tools{grid-template-columns:1fr 1fr}.map-nearby-tools>div{grid-column:1/-1}.map-nearby-tools button{width:100%}}
 @media(min-width:801px) and (max-width:1100px){.map-weather-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.map-weather-card:last-child{grid-column:1/-1}}
 
@@ -296,13 +306,23 @@ body.rol-theme-2,body.rol-theme-3,body.rol-theme-4,body.rol-theme-5{background:l
         <article class="map-weather-card"><label for="weatherLocation2">📍 Point B → Location 2</label><select id="weatherLocation2" aria-label="Choose weather location two"></select><button type="button" data-weather-load="2">Load weather</button><div class="map-weather-result" id="weatherResult2" aria-live="polite">Waiting for a location.</div></article>
         <article class="map-weather-card"><label for="weatherLocation3">📍 Point C → Location 3</label><select id="weatherLocation3" aria-label="Choose weather location three"></select><button type="button" data-weather-load="3">Load weather</button><div class="map-weather-result" id="weatherResult3" aria-live="polite">Waiting for a location.</div></article>
       </div>
-      <div class="map-nearby-tools">
-        <div><strong>🍽 Nearby places</strong><p>Search OpenStreetMap places around one of the three weather locations.</p></div>
-        <label>Search around<select id="nearbyWeatherSlot"><option value="1">Point A · Location 1</option><option value="2">Point B · Location 2</option><option value="3">Point C · Location 3</option></select></label>
-        <label>Category<select id="nearbyPlaceCategory"><option value="all">All useful places</option><option value="food">Restaurants &amp; cafés</option><option value="grocery">Grocery stores</option><option value="medical">Medical &amp; pharmacies</option><option value="banks">Banks &amp; ATMs</option><option value="schools">Schools</option><option value="fuel">Fuel stations</option></select></label>
-        <button type="button" id="findNearbyPlaces" class="map-weather-refresh">Find nearby places</button>
-      </div>
-      <div id="nearbyPlacesResults" class="map-nearby-results" aria-live="polite">Choose a loaded location and tap Find nearby places.</div>
+      <details class="map-nearby-fold">
+        <summary>🍽 Nearby Places &amp; Categories <span>Search within about 5 km of a selected weather location</span></summary>
+        <div class="map-nearby-body">
+          <div class="map-nearby-tools">
+            <div><strong>Nearby places</strong><p>Choose a location and a category to find useful places from OpenStreetMap.</p></div>
+            <label>Search around<select id="nearbyWeatherSlot"><option value="1">Point A · Location 1</option><option value="2">Point B · Location 2</option><option value="3">Point C · Location 3</option></select></label>
+            <label>Category<select id="nearbyPlaceCategory">
+              <option value="all">All useful places</option>
+              <optgroup label="Food &amp; daily essentials"><option value="food">Restaurants, cafés &amp; takeout</option><option value="grocery">Grocery &amp; convenience stores</option><option value="fuel">Fuel &amp; EV charging</option></optgroup>
+              <optgroup label="Health &amp; finance"><option value="medical">Hospitals, clinics &amp; pharmacies</option><option value="banks">Banks &amp; ATMs</option></optgroup>
+              <optgroup label="Education &amp; community"><option value="schools">Schools, colleges &amp; universities</option><option value="parks">Parks, playgrounds &amp; recreation</option><option value="transit">Transit &amp; rail stations</option><option value="services">Post offices, libraries, police &amp; parking</option></optgroup>
+            </select></label>
+            <button type="button" id="findNearbyPlaces" class="map-weather-refresh">Find nearby places</button>
+          </div>
+          <div id="nearbyPlacesResults" class="map-nearby-results" aria-live="polite">Choose a loaded location and tap Find nearby places.</div>
+        </div>
+      </details>
       <p class="map-weather-source">Weather: Open-Meteo · Map and nearby place data: OpenStreetMap. U.S. list includes 50 states plus Washington, DC and Puerto Rico (52 jurisdictions, not 52 states). State selections use a representative city; these are not statewide weather averages. Nearby place results depend on OpenStreetMap coverage and Overpass availability.</p>
     </section>
     <div class="map-wrap"><div id="propertyMap" role="application" aria-label="Interactive map showing saved property research locations"></div></div>
@@ -318,7 +338,7 @@ body.rol-theme-2,body.rol-theme-3,body.rol-theme-4,body.rol-theme-5{background:l
       <form id="propertyForm">
         <input type="hidden" id="latitude" name="latitude" value=""><input type="hidden" id="longitude" name="longitude" value="">
         <div class="row-fields">
-          <div class="field"><label for="address">Property address *</label><input id="address" name="address" required placeholder="Street, city, state, ZIP"></div>
+          <div class="field"><label for="address">Property address *</label><input id="address" name="address" required placeholder="Street, city, state, ZIP"><div class="actions"><a class="button" href="https://epayss.phila-records.com/web" target="_blank" rel="noopener noreferrer">🔎 Search Philadelphia Deeds ↗</a><a class="button" href="https://property.phila.gov/" target="_blank" rel="noopener noreferrer">🏛️ Search Property Records ↗</a></div><p class="small">Philadelphia deed records are searched through the City Department of Records’ Philadox portal. Recorded documents generally appear after processing; confirm the grantor, grantee, deed date and document ID against the official record.</p></div>
           <div class="field regrid-action-field"><label>Parcel intelligence · Regrid</label><button type="button" id="regridLookup" class="button primary">🧭 Look up parcel</button><span class="small">Address-based parcel attributes from your connected Regrid Edge Function.</span></div>
           <div class="field"><label for="parcel">Parcel / APN</label><input id="parcel" name="parcel" placeholder="Parcel identification number"></div>
           <div id="regridResult" class="regrid-result" role="status" aria-live="polite">Regrid lookup has not been run.</div>
@@ -597,7 +617,8 @@ body.rol-theme-2,body.rol-theme-3,body.rol-theme-4,body.rol-theme-5{background:l
   <p class="small">Formula: gross proceeds minus verified senior claims and costs. Actual surplus distribution, priority, deadlines, claimant standing, probate/heirship, assignments and filing procedures depend on court records and applicable law. Never promise recovery or collect an upfront fee based solely on this estimate.</p>
   <div class="actions"><a class="button" href="https://www.phila.gov/services/property-lots-housing/property-taxes/" target="_blank" rel="noopener noreferrer">Philadelphia Property Tax Records ↗</a><a class="button" href="https://www.pacourts.us/" target="_blank" rel="noopener noreferrer">Pennsylvania Courts ↗</a></div>
  </div>
-</section>\n<section class="section" id="ecosystem">
+</section>
+<section class="section" id="ecosystem">
   <details class="section-fold"><summary class="section-head fold-summary"><div><div class="eyebrow">Connected RO’Lyfe tools</div><h2>🌐 Related Engines &amp; Directory</h2><span class="small">Open the directory of connected property, funding, relocation and execution platforms.</span></div></summary><div class="fold-body"><div class="funding-link-grid">
     <article class="section-card"><h3>🧭 Relocation Intelligence</h3><p>Location, climate, risk, incentives and relocation planning.</p><a class="button" href="https://rolrichman.github.io/rolyfe-relocation-intelligence/" target="_blank" rel="noopener noreferrer">Open Relocation Engine ↗</a></article>
     <article class="section-card"><h3>🏗️ Acquisition Engine</h3><p>Lead intake, deal screening and acquisition workflow.</p><a class="button" href="https://rolrichman.github.io/rolyfe-acquisition-engine/" target="_blank" rel="noopener noreferrer">Open Acquisition Engine ↗</a></article>
@@ -674,6 +695,18 @@ function saveRecords(){
   try { localStorage.setItem(STORE_KEY, JSON.stringify(records)); return true; }
   catch(e){ $("recordsStatus").textContent = "Could not save locally. Export your data or check browser storage settings."; return false; }
 }
+function removeKnownDemoRecord(){
+  const normalizeAddress=value=>String(value||"").toLowerCase().replace(/[.,]/g,"").replace(/\s+/g," ").trim();
+  const demoAddress="4619 n 5th";
+  const before=records.length;
+  records=records.filter(record=>normalizeAddress(record.address)!==demoAddress);
+  if(records.length!==before){
+    saveRecords();
+    const status=$("recordsStatus");
+    if(status)status.textContent="Removed the sample 4619 N 5th record. All other saved records were preserved.";
+  }
+}
+
 function money(n){
   return new Intl.NumberFormat("en-US",{style:"currency",currency:"USD",maximumFractionDigits:0}).format(Number.isFinite(n)?n:0);
 }
@@ -774,13 +807,16 @@ async function findNearbyPlaces(){
   if(!result){host.textContent="Load weather for Location "+slot+" first, then search nearby places.";return;}
   const category=$("nearbyPlaceCategory")?.value||"all";
   const filters={
-    all:'node(around:5000,LAT,LON)[amenity~"restaurant|cafe|fast_food|hospital|clinic|pharmacy|bank|atm|school|fuel"];way(around:5000,LAT,LON)[amenity~"restaurant|cafe|fast_food|hospital|clinic|pharmacy|bank|atm|school|fuel"];node(around:5000,LAT,LON)[shop~"supermarket|convenience"];way(around:5000,LAT,LON)[shop~"supermarket|convenience"];',
-    food:'node(around:5000,LAT,LON)[amenity~"restaurant|cafe|fast_food"];way(around:5000,LAT,LON)[amenity~"restaurant|cafe|fast_food"];',
-    grocery:'node(around:5000,LAT,LON)[shop~"supermarket|convenience"];way(around:5000,LAT,LON)[shop~"supermarket|convenience"];',
-    medical:'node(around:5000,LAT,LON)[amenity~"hospital|clinic|pharmacy"];way(around:5000,LAT,LON)[amenity~"hospital|clinic|pharmacy"];',
+    all:'node(around:5000,LAT,LON)[amenity~"restaurant|cafe|fast_food|hospital|clinic|doctors|dentist|pharmacy|bank|atm|school|college|university|fuel|charging_station|post_office|library|police|parking|bus_station|ferry_terminal"];way(around:5000,LAT,LON)[amenity~"restaurant|cafe|fast_food|hospital|clinic|doctors|dentist|pharmacy|bank|atm|school|college|university|fuel|charging_station|post_office|library|police|parking|bus_station|ferry_terminal"];node(around:5000,LAT,LON)[shop~"supermarket|convenience|greengrocer"];way(around:5000,LAT,LON)[shop~"supermarket|convenience|greengrocer"];node(around:5000,LAT,LON)[leisure~"park|playground|sports_centre"];way(around:5000,LAT,LON)[leisure~"park|playground|sports_centre"];',
+    food:'node(around:5000,LAT,LON)[amenity~"restaurant|cafe|fast_food|food_court"];way(around:5000,LAT,LON)[amenity~"restaurant|cafe|fast_food|food_court"];',
+    grocery:'node(around:5000,LAT,LON)[shop~"supermarket|convenience|greengrocer"];way(around:5000,LAT,LON)[shop~"supermarket|convenience|greengrocer"];',
+    medical:'node(around:5000,LAT,LON)[amenity~"hospital|clinic|doctors|dentist|pharmacy"];way(around:5000,LAT,LON)[amenity~"hospital|clinic|doctors|dentist|pharmacy"];',
     banks:'node(around:5000,LAT,LON)[amenity~"bank|atm"];way(around:5000,LAT,LON)[amenity~"bank|atm"];',
-    schools:'node(around:5000,LAT,LON)[amenity=school];way(around:5000,LAT,LON)[amenity=school];',
-    fuel:'node(around:5000,LAT,LON)[amenity=fuel];way(around:5000,LAT,LON)[amenity=fuel];'
+    schools:'node(around:5000,LAT,LON)[amenity~"school|college|university|kindergarten"];way(around:5000,LAT,LON)[amenity~"school|college|university|kindergarten"];',
+    fuel:'node(around:5000,LAT,LON)[amenity~"fuel|charging_station"];way(around:5000,LAT,LON)[amenity~"fuel|charging_station"];',
+    parks:'node(around:5000,LAT,LON)[leisure~"park|playground|sports_centre"];way(around:5000,LAT,LON)[leisure~"park|playground|sports_centre"];',
+    transit:'node(around:5000,LAT,LON)[public_transport~"station|stop_position"];way(around:5000,LAT,LON)[public_transport~"station|platform"];node(around:5000,LAT,LON)[railway=station];way(around:5000,LAT,LON)[railway=station];node(around:5000,LAT,LON)[amenity~"bus_station|ferry_terminal"];way(around:5000,LAT,LON)[amenity~"bus_station|ferry_terminal"];',
+    services:'node(around:5000,LAT,LON)[amenity~"post_office|library|police|parking"];way(around:5000,LAT,LON)[amenity~"post_office|library|police|parking"];'
   };
   host.textContent="Searching OpenStreetMap within about 5 km of "+result.name+"…";
   const filter=(filters[category]||filters.all).replaceAll("LAT",String(result.lat)).replaceAll("LON",String(result.lon));
@@ -798,7 +834,11 @@ async function findNearbyPlaces(){
       return {name:tags.name||tags.brand||tags.operator||"Unnamed place",kind:tags.amenity||tags.shop||tags.tourism||"Place",lat,lon,distance:haversineMiles(result.lat,result.lon,lat,lon)};
     }).filter(Boolean).sort((a,b)=>a.distance-b.distance).slice(0,15);
     nearbyLayer?.clearLayers();
-    if(propertyMap&&nearbyLayer)items.forEach(item=>L.marker([item.lat,item.lon]).bindPopup("<strong>"+escapeHtml(item.name)+"</strong><br>"+escapeHtml(item.kind)).addTo(nearbyLayer));
+    if(propertyMap&&nearbyLayer){
+      items.forEach(item=>L.marker([item.lat,item.lon]).bindPopup("<strong>"+escapeHtml(item.name)+"</strong><br>"+escapeHtml(item.kind)).addTo(nearbyLayer));
+      if(items.length===1)propertyMap.setView([items[0].lat,items[0].lon],15,{animate:false});
+      else if(items.length>1){const bounds=L.latLngBounds(items.map(item=>[item.lat,item.lon]));propertyMap.fitBounds(bounds.pad(0.18),{maxZoom:15});}
+    }
     host.textContent="";
     if(!items.length){host.textContent="No nearby places matched this category in the available OpenStreetMap data. Try another category or a larger town.";return;}
     const summary=document.createElement("strong");summary.textContent=items.length+" nearby places found · "+result.name+" · OpenStreetMap";host.appendChild(summary);
@@ -840,29 +880,56 @@ function initMapHeightControl(){
 function initPropertyMap(){
   if(!document.getElementById("propertyMap")) return;
   if(!window.L){
-    $("mapStatus").textContent="Map library did not load. Check your connection and refresh the page.";
+    $("mapStatus").textContent="Loading the backup map library…";
+    if(!window.__rolyfeLeafletFallbackLoading){
+      window.__rolyfeLeafletFallbackLoading=true;
+      const css=document.createElement("link");css.rel="stylesheet";css.href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css";document.head.appendChild(css);
+      const script=document.createElement("script");script.src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js";
+      script.onload=()=>{window.__rolyfeLeafletFallbackLoading=false;if(window.L)initPropertyMap();else $("mapStatus").textContent="Map library unavailable. Refresh and try again.";};
+      script.onerror=()=>{$("mapStatus").textContent="Map library unavailable from both CDNs. Check your connection and refresh.";};
+      document.head.appendChild(script);
+    }
     return;
   }
-  propertyMap=L.map("propertyMap",{scrollWheelZoom:false,zoomControl:false,touchZoom:true,doubleClickZoom:true,zoomSnap:0.5,zoomDelta:0.5}).setView([39.9526,-75.1636],10);
-  L.control.zoom({position:"topright"}).addTo(propertyMap);
-  propertyTileLayer=L.tileLayer(MAP_TILE_URL,{
-    maxZoom:19,
-    attribution:'&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap contributors</a>'
-  }).addTo(propertyMap);
-  propertyLayer=L.featureGroup().addTo(propertyMap);
-  weatherLayer=L.layerGroup().addTo(propertyMap);
-  nearbyLayer=L.layerGroup().addTo(propertyMap);
-  $("refreshMap").addEventListener("click",refreshPropertyMap);
-  $("fitAllMapped").addEventListener("click",fitMappedProperties);
-  $("recenterMap").addEventListener("click",()=>{
-    if(!propertyMap)return;
-    propertyMap.invalidateSize({pan:false});
-    window.requestAnimationFrame(()=>{propertyMap.invalidateSize({pan:false});propertyMap.setView([39.9526,-75.1636],11,{animate:false});});
-    $("mapStatus").textContent="Centered on downtown Philadelphia (39.9526, -75.1636), zoom level 11. This is a fixed reference point, not your device location.";
-  });
-  renderMapMarkers();
-  $("mapRefreshed").textContent="Loaded "+new Date().toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"});
-  window.setTimeout(()=>propertyMap && propertyMap.invalidateSize(),150);
+  try{
+    propertyMap=L.map("propertyMap",{scrollWheelZoom:false,zoomControl:false,touchZoom:true,doubleClickZoom:true,zoomSnap:0.5,zoomDelta:0.5}).setView([39.9526,-75.1636],10);
+    window.propertyMap=propertyMap;
+    L.control.zoom({position:"topright"}).addTo(propertyMap);
+    propertyTileLayer=L.tileLayer(MAP_TILE_URL,{
+      maxZoom:19,
+      attribution:'&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap contributors</a>'
+    }).addTo(propertyMap);
+    let tileErrors=0,tileFallbackUsed=false;
+    propertyTileLayer.on("tileerror",()=>{
+      tileErrors++;
+      if(tileErrors>=3&&!tileFallbackUsed){
+        tileFallbackUsed=true;
+        propertyMap.removeLayer(propertyTileLayer);
+        propertyTileLayer=L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",{
+          subdomains:"abcd",maxZoom:20,
+          attribution:'&copy; OpenStreetMap contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
+        }).addTo(propertyMap);
+        $("mapStatus").textContent="Switched to the backup map tile service. Map pins and nearby-place results remain available.";
+      }
+    });
+    propertyLayer=L.featureGroup().addTo(propertyMap);
+    weatherLayer=L.layerGroup().addTo(propertyMap);
+    nearbyLayer=L.layerGroup().addTo(propertyMap);
+    $("refreshMap").addEventListener("click",refreshPropertyMap);
+    $("fitAllMapped").addEventListener("click",fitMappedProperties);
+    $("recenterMap").addEventListener("click",()=>{
+      if(!propertyMap)return;
+      propertyMap.invalidateSize({pan:false});
+      window.requestAnimationFrame(()=>{propertyMap.invalidateSize({pan:false});propertyMap.setView([39.9526,-75.1636],11,{animate:false});});
+      $("mapStatus").textContent="Centered on downtown Philadelphia (39.9526, -75.1636), zoom level 11. This is a fixed reference point, not your device location.";
+    });
+    renderMapMarkers();
+    $("mapRefreshed").textContent="Loaded "+new Date().toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"});
+    [150,500,1100].forEach(delay=>window.setTimeout(()=>propertyMap&&propertyMap.invalidateSize({pan:false}),delay));
+    propertyMap.whenReady(()=>propertyMap.invalidateSize({pan:false}));
+  }catch(error){
+    $("mapStatus").textContent="Map could not initialize: "+(error&&error.message?error.message:"unknown map error")+". Refresh the page and try again.";
+  }
 }
 function hasCoordinates(record){
   return record && record.latitude!=="" && record.longitude!=="" &&
@@ -1129,6 +1196,7 @@ $("importFile").addEventListener("change",async function(){
   }catch(err){$("recordsStatus").textContent="Import failed: "+err.message}
   this.value="";
 });
+removeKnownDemoRecord();
 initMapHeightControl();
 initPropertyMap();
 initLocationWeather();
@@ -1147,7 +1215,7 @@ renderMapMarkers();
 const button=document.getElementById("regridLookup"),host=document.getElementById("regridResult");
 if(!button||!host)return;
 const SUPABASE_URL="https://nzduinxmsmmdbonefifi.supabase.co";
-const SUPABASE_ANON="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJuemR1aW54bXNtbWRib25lZmlmaSIsInJvbGUiOiJhbm9uIiwiaWF0IjoxNzkzMjQyOTYzLCJleHAiOjIxMDg4MTg5NjN9.N-2jV4a6wU9315lkVCvhDn7tJJ4ryzDHBeItSRztEh8";
+const SUPABASE_ANON="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im56ZHVpbnhtc21tZGJvbmVmaWZpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTMyNDI5NjMsImV4cCI6MjEwODgxODk2M30.N-2jV4a6wU9315lkVCvhDn7tJJ4ryzDHBeItSRztEh8";
 const safe=value=>String(value===null||value===undefined||value===""?"—":value).replace(/[&<>"']/g,ch=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]));
 const money=value=>value===null||value===undefined||value===""?"—":Number.isFinite(Number(value))?new Intl.NumberFormat("en-US",{style:"currency",currency:"USD",maximumFractionDigits:0}).format(Number(value)):safe(value);
 button.addEventListener("click",async()=>{
