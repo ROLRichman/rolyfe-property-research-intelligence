@@ -67,7 +67,7 @@
 
   var style = document.createElement("style");
   style.textContent =
-    ".rolpr-dock{margin:14px 0 18px;padding:0;border:1px solid #315268;border-radius:18px;overflow:hidden;background:linear-gradient(135deg,#0b1b28,#102b3b);color:#f0f7fc;font-family:Arial,Helvetica,sans-serif;box-shadow:0 8px 24px rgba(0,0,0,.12)}" +
+    ".rolpr-dock{display:block;width:100%;max-width:100%;min-width:0;margin:14px 0 18px;padding:0;border:1px solid #315268;border-radius:18px;overflow:hidden;background:linear-gradient(135deg,#0b1b28,#102b3b);color:#f0f7fc;font-family:Arial,Helvetica,sans-serif;box-shadow:0 8px 24px rgba(0,0,0,.12);overflow-wrap:anywhere}.rolpr-dock *{box-sizing:border-box;min-width:0;max-width:100%}.rolpr-shell-summary{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:13px 15px;cursor:pointer;list-style:none;color:#dffaff;font-size:12px;font-weight:900;line-height:1.5;letter-spacing:.02em}.rolpr-shell-summary::-webkit-details-marker{display:none}.rolpr-shell-summary:after{content:"＋";font-size:20px;color:#75e8f0;flex:0 0 auto}.rolpr-dock[open]>.rolpr-shell-summary:after{content:"−"}.rolpr-shell-body{min-width:0;max-width:100%;overflow:hidden;border-top:1px solid #29495c}" +
     ".rolpr-dock *{box-sizing:border-box}.rolpr-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:14px 16px;border-bottom:1px solid #29495c}" +
     ".rolpr-kicker{font-size:10px;letter-spacing:.15em;font-weight:800;color:#77e8f1;text-transform:uppercase}.rolpr-title{font-size:17px;font-weight:900;margin:4px 0;color:#f4fbff}.rolpr-subtitle{font-size:12px;line-height:1.5;color:#afc4d3}" +
     ".rolpr-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.rolpr-btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:38px;border:1px solid #46677b;border-radius:10px;padding:9px 12px;background:#122c3e;color:#f5fbff!important;text-decoration:none!important;font-size:12px;font-weight:800;cursor:pointer}" +
@@ -75,8 +75,8 @@
     ".rolpr-tools{padding:0 16px 16px}.rolpr-searchrow{display:grid;grid-template-columns:minmax(0,1fr) minmax(170px,.55fr) auto;gap:9px;margin-bottom:12px}.rolpr-searchrow input,.rolpr-searchrow select{width:100%;min-width:0;min-height:42px;border:1px solid #36586c;border-radius:10px;padding:10px 12px;background:#061521;color:#eff8ff;font-size:13px}" +
     ".rolpr-group{margin-top:12px}.rolpr-group h4{margin:0 0 7px;color:#b5e9ee;font-size:11px;letter-spacing:.08em;text-transform:uppercase}.rolpr-sourcegrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px}.rolpr-source{display:flex;align-items:center;justify-content:flex-start;min-height:38px;padding:9px 10px;border:1px solid #29495c;border-radius:10px;background:#0c2231;color:#f3f9fe;text-decoration:none!important;font-size:12px;font-weight:750;line-height:1.25}.rolpr-source:hover{border-color:#75e8f0;color:#bffbff}" +
     ".rolpr-foot{border-top:1px solid #29495c;padding:11px 16px;color:#9eb6c7;font-size:11px;line-height:1.55}.rolpr-foot a{color:#92eff5}.rolpr-journey{display:flex;gap:7px;flex-wrap:wrap;padding:0 16px 12px}" +
-    "@media(max-width:780px){.rolpr-sourcegrid{grid-template-columns:repeat(2,minmax(0,1fr))}.rolpr-searchrow{grid-template-columns:1fr 1fr}.rolpr-searchrow input{grid-column:1/-1}.rolpr-searchrow .rolpr-btn{width:100%}.rolpr-head{align-items:flex-start}}" +
-    "@media(max-width:420px){.rolpr-sourcegrid{grid-template-columns:1fr 1fr}.rolpr-title{font-size:15px}.rolpr-actions{width:100%}.rolpr-actions .rolpr-btn{flex:1}.rolpr-searchrow{grid-template-columns:1fr}.rolpr-searchrow input{grid-column:auto}}";
+    "@media(max-width:780px){.rolpr-sourcegrid{grid-template-columns:repeat(2,minmax(0,1fr))}.rolpr-searchrow{grid-template-columns:1fr 1fr}.rolpr-searchrow input{grid-column:1/-1}.rolpr-searchrow .rolpr-btn{width:100%}.rolpr-head{align-items:flex-start}.rolpr-head>div:first-child{min-width:0;max-width:100%}.rolpr-subtitle{overflow-wrap:anywhere}}" +
+    "@media(max-width:420px){.rolpr-sourcegrid{grid-template-columns:1fr 1fr}.rolpr-title{font-size:15px}.rolpr-actions{width:100%}.rolpr-actions .rolpr-btn{flex:1}.rolpr-searchrow{grid-template-columns:1fr}.rolpr-searchrow input{grid-column:auto}.rolpr-shell-summary{font-size:11px;padding:11px 12px}.rolpr-head{padding:12px}.rolpr-tools{padding:0 12px 12px}.rolpr-foot{padding:10px 12px}}";
   document.head.appendChild(style);
 
   var isPrimary = location.pathname.indexOf("rolyfe-property-research-intelligence") !== -1;
@@ -88,7 +88,7 @@
     options += '<option value="' + i + '">' + escapeHtml(displayAddress(r) || "Saved property " + (i + 1)) + '</option>';
   });
 
-  var dock = document.createElement("section");
+  var dock = document.createElement("details");
   dock.id = "rolyfeResearchDock";
   dock.className = "rolpr-dock";
   dock.setAttribute("aria-label", "Shared RO'Lyfe property research tools");
@@ -126,6 +126,15 @@
     '<a class="rolpr-btn" href="' + SEVEN_FIGURES_URL + '">7 Figures Credit ↗</a><a class="rolpr-btn" href="' + NCC_URL + '">National Corporate Credit ↗</a>' +
     '<a class="rolpr-btn" href="' + DDT_URL + '">DDT Wealth ↗</a></div>' +
     '<div class="rolpr-foot">Source buttons open a provider or an address-targeted web search; they do not scrape or import listing, ownership, tax-lien, or comparable-sale data. Verify material facts against primary records. Records use browser local storage on the rolrichman.github.io origin, so they do not sync to another browser/device and should not contain sensitive personal or financial information. For Philadelphia, start with the <a href="https://property.phila.gov/" target="_blank" rel="noopener noreferrer">official Property App</a>. For tax sales, verify the official county sale notice and terms before bidding. The iContainers shortcut opens your provider site; automated quotes require separate authorized API access.</div></details>';
+
+  var shellSummary = document.createElement("summary");
+  shellSummary.className = "rolpr-shell-summary";
+  shellSummary.textContent = "Shared research workspace · Find → Verify → Underwrite → Fund · Open / close";
+  var shellBody = document.createElement("div");
+  shellBody.className = "rolpr-shell-body";
+  while (dock.firstChild) shellBody.appendChild(dock.firstChild);
+  dock.appendChild(shellSummary);
+  dock.appendChild(shellBody);
 
   var header = document.querySelector("header");
   if (header && header.parentNode) header.insertAdjacentElement("afterend", dock);
