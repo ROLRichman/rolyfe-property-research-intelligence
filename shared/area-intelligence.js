@@ -141,6 +141,7 @@
     }
     if (document.getElementById("propertyState")) {
       setField("county", countyName);
+      setField("propertyZip", zip);
       setField("propertyState", abbr);
       setField("address", place || zip || label);
       status("Area details copied into the Auction property fields. Confirm the exact property address and parcel before bidding.", false);
