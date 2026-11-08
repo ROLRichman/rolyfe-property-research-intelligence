@@ -67,7 +67,7 @@
 
   var style = document.createElement("style");
   style.textContent =
-    ".rolpr-dock{display:block;width:100%;max-width:100%;min-width:0;margin:14px 0 18px;padding:0;border:1px solid #315268;border-radius:18px;overflow:hidden;background:linear-gradient(135deg,#0b1b28,#102b3b);color:#f0f7fc;font-family:Arial,Helvetica,sans-serif;box-shadow:0 8px 24px rgba(0,0,0,.12);overflow-wrap:anywhere}.rolpr-dock *{box-sizing:border-box;min-width:0;max-width:100%}.rolpr-shell-summary{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:13px 15px;cursor:pointer;list-style:none;color:#dffaff;font-size:12px;font-weight:900;line-height:1.5;letter-spacing:.02em}.rolpr-shell-summary::-webkit-details-marker{display:none}.rolpr-shell-summary:after{content:"＋";font-size:20px;color:#75e8f0;flex:0 0 auto}.rolpr-dock[open]>.rolpr-shell-summary:after{content:"−"}.rolpr-shell-body{min-width:0;max-width:100%;overflow:hidden;border-top:1px solid #29495c}" +
+    ".rolpr-dock{display:block;width:100%;max-width:100%;min-width:0;margin:14px 0 18px;padding:0;border:1px solid #315268;border-radius:18px;overflow:hidden;background:linear-gradient(135deg,#0b1b28,#102b3b);color:#f0f7fc;font-family:Arial,Helvetica,sans-serif;box-shadow:0 8px 24px rgba(0,0,0,.12);overflow-wrap:anywhere}.rolpr-dock *{box-sizing:border-box;min-width:0;max-width:100%}.rolpr-shell-summary{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:13px 15px;cursor:pointer;list-style:none;color:#dffaff;font-size:12px;font-weight:900;line-height:1.5;letter-spacing:.02em}.rolpr-shell-summary::-webkit-details-marker{display:none}.rolpr-shell-summary:after{content:'＋';font-size:20px;color:#75e8f0;flex:0 0 auto}.rolpr-dock[open]>.rolpr-shell-summary:after{content:'−'}.rolpr-shell-body{min-width:0;max-width:100%;overflow:hidden;border-top:1px solid #29495c}" +
     ".rolpr-dock *{box-sizing:border-box}.rolpr-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:14px 16px;border-bottom:1px solid #29495c}" +
     ".rolpr-kicker{font-size:10px;letter-spacing:.15em;font-weight:800;color:#77e8f1;text-transform:uppercase}.rolpr-title{font-size:17px;font-weight:900;margin:4px 0;color:#f4fbff}.rolpr-subtitle{font-size:12px;line-height:1.5;color:#afc4d3}" +
     ".rolpr-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.rolpr-btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:38px;border:1px solid #46677b;border-radius:10px;padding:9px 12px;background:#122c3e;color:#f5fbff!important;text-decoration:none!important;font-size:12px;font-weight:800;cursor:pointer}" +
@@ -157,7 +157,7 @@
   aiPanel.id="rolyfeUniversalAI";
   aiPanel.className="rol-ai-panel";
   aiPanel.setAttribute("aria-label","RO’Lyfe Universal AI assistant");
-  aiPanel.innerHTML='<div class="rol-ai-panel-head"><span>🤖 RO’Lyfe Universal AI · Powered by Jamal</span><button type="button" id="rol-ai-close" aria-label="Close AI assistant">×</button></div><iframe title="RO’Lyfe Universal AI powered by Jamal" allow="geolocation; microphone; camera; fullscreen" src="https://agent.jotform.com/019bdd1fe57172838101dccf3612b1e9e787?embedMode=iframe&autofocus=0&background=1&shadow=1"></iframe><div class="rol-ai-panel-foot">Stay on this page while you ask about the current RO’Lyfe workflow · <a href="https://agent.jotform.com/019bdd1fe57172838101dccf3612b1e9e787" target="_blank" rel="noopener noreferrer">Open full assistant</a></div>';
+  aiPanel.innerHTML='<div class="rol-ai-panel-head"><span>🤖 RO’Lyfe Universal AI · Powered by Jamal</span><button type="button" id="rol-ai-close" aria-label="Close AI assistant">×</button></div><iframe title="RO’Lyfe Universal AI powered by Jamal" allow="geolocation; microphone; camera; fullscreen" src="about:blank" loading="lazy" data-src="https://agent.jotform.com/019bdd1fe57172838101dccf3612b1e9e787?embedMode=iframe&autofocus=0&background=1&shadow=1"></iframe><div class="rol-ai-panel-foot">Stay on this page while you ask about the current RO’Lyfe workflow · <a href="https://agent.jotform.com/019bdd1fe57172838101dccf3612b1e9e787" target="_blank" rel="noopener noreferrer">Open full assistant</a></div>';
   document.body.appendChild(aiPanel);
   var aiTrigger=document.querySelector(".float-ai");
   var existingAgentPanelHeader=document.querySelector("#rolAgentPanel .rol-agent-head");
@@ -175,6 +175,7 @@
   function toggleUniversalAI(force){
     var open=typeof force==="boolean"?force:!aiPanel.classList.contains("open");
     aiPanel.classList.toggle("open",open);
+    if(open){var frame=aiPanel.querySelector("iframe");if(frame&&frame.getAttribute("src")==="about:blank")frame.src=frame.dataset.src;}
     aiTrigger.setAttribute("aria-expanded",String(open));
   }
   aiTrigger.addEventListener("click",function(event){
