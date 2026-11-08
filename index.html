@@ -501,6 +501,7 @@ body.rol-theme-2,body.rol-theme-3,body.rol-theme-4,body.rol-theme-5{background:l
   <div class="section-head"><div><div class="eyebrow">Step 2</div><h2>Conservative Deal Calculator</h2></div><span class="badge">Editable estimates</span></div>
   <div class="grid">
     <div class="section-card span-8">
+      <div class="callout">Input guide: <strong>ARV</strong> is your evidence-backed expected value after repairs. <strong>Purchase / bid</strong> is the amount you expect to pay. <strong>Rehab</strong> is the repair budget. <strong>Closing / auction costs</strong> include transaction fees and buyer premiums. <strong>Holding costs</strong> cover taxes, insurance, utilities and carrying expenses while you own it. <strong>Selling costs</strong> estimate exit expenses as a percentage of resale price. <strong>Contingency</strong> adds a reserve for unexpected rehab costs. <strong>Target profit</strong> is the minimum profit you want to preserve. <strong>ARV confidence</strong> describes how well the estimate is supported by comparable sales.</div>
       <div class="row-fields">
         <div class="field"><label for="arv">Estimated after-repair value ($)</label><input id="arv" type="number" min="0" step="1000" value="250000"></div>
         <div class="field"><label for="purchase">Purchase price / bid ($)</label><input id="purchase" type="number" min="0" step="500" value="100000"></div>
@@ -534,6 +535,7 @@ body.rol-theme-2,body.rol-theme-3,body.rol-theme-4,body.rol-theme-5{background:l
 <section class="section" id="tax-yield">
  <div class="section-head"><div><div class="eyebrow">Step 4 · Preliminary return screen</div><h2>Tax Lien / Redemption Yield</h2><p class="small">Simple annualized estimate for preliminary screening only; state statutes and certificate terms control actual returns.</p></div><span class="badge">Editable estimate</span></div>
  <div class="tax-yield-card">
+  <div class="callout">Input guide: <strong>Investment / lien amount</strong> is the principal you expect to invest. <strong>Annual interest rate</strong> is the rate used in this simplified estimate. <strong>Months held</strong> is the assumed time until redemption or repayment. <strong>Costs / fees</strong> are your estimated eligible out-of-pocket expenses. The result uses simple interest and does not replace jurisdiction-specific tax-sale rules.</div>
   <div class="row-fields">
    <div class="field"><label for="tyAmount">Investment / lien amount ($)</label><input id="tyAmount" type="number" min="0" step="100" value="5000"></div>
    <div class="field"><label for="tyRate">Annual interest rate (%)</label><input id="tyRate" type="number" min="0" step=".1" value="12"></div>
