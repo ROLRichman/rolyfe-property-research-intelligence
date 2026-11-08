@@ -416,7 +416,7 @@ body.rol-theme-2,body.rol-theme-3,body.rol-theme-4,body.rol-theme-5{background:l
         <div class="field"><label for="qState">State *</label><select id="qState" required><option value="">Choose state</option><option>Alabama</option><option>Alaska</option><option>Arizona</option><option>Arkansas</option><option>California</option><option>Colorado</option><option>Connecticut</option><option>Delaware</option><option>Florida</option><option>Georgia</option><option>Hawaii</option><option>Idaho</option><option>Illinois</option><option>Indiana</option><option>Iowa</option><option>Kansas</option><option>Kentucky</option><option>Louisiana</option><option>Maine</option><option>Maryland</option><option>Massachusetts</option><option>Michigan</option><option>Minnesota</option><option>Mississippi</option><option>Missouri</option><option>Montana</option><option>Nebraska</option><option>Nevada</option><option>New Hampshire</option><option>New Jersey</option><option>New Mexico</option><option>New York</option><option>North Carolina</option><option>North Dakota</option><option>Ohio</option><option>Oklahoma</option><option>Oregon</option><option>Pennsylvania</option><option>Rhode Island</option><option>South Carolina</option><option>South Dakota</option><option>Tennessee</option><option>Texas</option><option>Utah</option><option>Vermont</option><option>Virginia</option><option>Washington</option><option>West Virginia</option><option>Wisconsin</option><option>Wyoming</option><option>District of Columbia</option></select></div>
         <div class="field"><label for="qWebsite">Do you have a Website? *</label><select id="qWebsite" required><option value="">Choose</option><option>Yes</option><option>No</option><option>In progress</option></select></div>
       </div>
-      <div class="qualification-actions"><button class="primary" type="submit">Create My Funding Snapshot</button><button type="button" id="emailFundingSnapshot">Email Snapshot to RO’Lyfe</button></div>
+      <div class="qualification-actions"><button class="primary" type="submit">Create My Funding Snapshot</button><button type="button" id="emailFundingSnapshot">Email Snapshot to RO’Lyfe</button><a class="button" href="mailto:richman@rootoflyfe.com">richman@rootoflyfe.com</a></div>
       <p id="qualificationStatus" class="status" aria-live="polite"></p>
     </form>
     <div class="actions">
@@ -550,7 +550,7 @@ body.rol-theme-2,body.rol-theme-3,body.rol-theme-4,body.rol-theme-5{background:l
 </section>
 <section class="section" id="auction-operations">
   <div class="section-head"><div><div class="eyebrow">Acquisition execution</div><h2>🏗️ Auction &amp; Deal Tools</h2><p class="small">Non-trading property modules from Auction Capital Machine: deal analysis, contractors, rehab, tax liens, tax-yield research and additional property calculators.</p></div><a class="button" href="https://rolrichman.github.io/ro-lyfe-auction-capital-machine/?embed=property" target="_blank" rel="noopener noreferrer">Open Deal Tools Separately ↗</a></div>
-  <div class="section-card embedded-engine-card"><iframe id="auctionPropertyEngineFrame" title="RO’Lyfe Auction Capital Machine property and deal tools, trading excluded" loading="lazy" src="https://rolrichman.github.io/ro-lyfe-auction-capital-machine/?embed=property" referrerpolicy="strict-origin-when-cross-origin"></iframe></div>
+  <details class="section-fold"><summary class="section-head fold-summary"><div><div class="eyebrow">Open when needed</div><h3>🏗️ Expand Auction &amp; Deal Tools</h3><span class="small">The complete embedded property workspace stays here; collapse it to reclaim screen space.</span></div></summary><div class="fold-body"><div class="section-card embedded-engine-card"><iframe id="auctionPropertyEngineFrame" title="RO’Lyfe Auction Capital Machine property and deal tools, trading excluded" loading="lazy" src="https://rolrichman.github.io/ro-lyfe-auction-capital-machine/?embed=property" referrerpolicy="strict-origin-when-cross-origin"></iframe></div></div></details>
   <p class="small">The embedded workspace excludes the trading chart, scanner and market-only panels. Your main property map, intake, saved records, due-diligence checklist and underwriting remain on this page.</p>
 </section>
 
@@ -580,7 +580,7 @@ body.rol-theme-2,body.rol-theme-3,body.rol-theme-4,body.rol-theme-5{background:l
 <section class="section" id="overage-calculator">
  <div class="section-head"><div><div class="eyebrow">Surplus proceeds · preliminary screen</div><h2>💵 RO’Lyfe Overage Calculator</h2><p class="small">Estimate possible surplus after a sale. This is a screening worksheet, not a legal determination that funds exist or that a person is entitled to claim them.</p></div><span class="badge">Working calculator</span></div>
  <div class="section-card">
-  <div class="overage-grid">
+  <div class="callout">How to read these inputs: <strong>Gross proceeds</strong> are the sale amount before deductions. <strong>Secured debt</strong> is the verified payoff for mortgages or other secured claims. <strong>Taxes and liens</strong> are verified tax, municipal or lien balances. <strong>Sale/court costs</strong> are documented transaction and administration expenses. <strong>Other senior claims</strong> are additional claims with priority that must be verified. <strong>Claimant share</strong> is only a hypothetical percentage for illustrating a possible distribution—not a legal entitlement.</div><div class="overage-grid">
    <div class="field"><label for="ovSale">Gross sale / auction proceeds ($)</label><input id="ovSale" type="number" min="0" step="100" value="250000"></div>
    <div class="field"><label for="ovDebt">Secured debt / payoff ($)</label><input id="ovDebt" type="number" min="0" step="100" value="150000"></div>
    <div class="field"><label for="ovTaxes">Taxes, municipal claims &amp; liens ($)</label><input id="ovTaxes" type="number" min="0" step="100" value="12000"></div>
@@ -626,6 +626,8 @@ body.rol-theme-2,body.rol-theme-3,body.rol-theme-4,body.rol-theme-5{background:l
 
 
 </main>
+
+<section class="section" id="calling-card-video"><div class="section-head"><div><div class="eyebrow">RO’Lyfe introduction</div><h2>🎥 Meet the RO’Lyfe workflow</h2><p class="small">The same introduction video is used across the real-estate and business-funding experience.</p></div></div><div class="section-card"><div class="video"><iframe src="https://www.youtube.com/embed/iAlUx755K2s" title="RO’Lyfe introduction video" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div></div></section>
 
 <footer>
   <strong>RO’Lyfe Property Research Intelligence™</strong><br>
@@ -1208,6 +1210,7 @@ finally{send.disabled=false;send.textContent="Send";messages.scrollTop=messages.
 
 (function(){
  const form=document.getElementById("fundingSnapshotForm");
+ document.getElementById("downloadResearchSnapshot")?.addEventListener("click",()=>{const ids=["address","parcel","county","state","propertyType","saleType","sourceUrl","researchDate","deadline","status","notes","arv","purchasePrice","rehabBudget","closingCosts","holdingCosts","sellingCosts","targetProfit"];const property={};ids.forEach(id=>{const el=document.getElementById(id);if(el)property[id]=el.value;});const checks={};document.querySelectorAll("[data-check]").forEach(el=>checks[el.dataset.check]=el.checked);const payload={createdAt:new Date().toISOString(),property,checklist:checks,notice:"Preliminary research snapshot. Verify all facts and assumptions with primary sources."};const blob=new Blob([JSON.stringify(payload,null,2)],{type:"application/json"});const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download="rolyfe-property-research-snapshot.json";a.click();URL.revokeObjectURL(url);});
  if(!form)return;
  const fields=["qCredit","qIndustry","qTime","qSales","qProduct","qState","qWebsite"];
  function snapshot(){const out={createdAt:new Date().toISOString(),answers:{}};fields.forEach(id=>out.answers[id.replace(/^q/,"")]=document.getElementById(id).value.trim());return out;}
