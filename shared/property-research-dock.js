@@ -65,16 +65,16 @@
     { id: "phila", label: "Philadelphia Property App", group: "Location & parcel", domain: null, direct: "https://property.phila.gov/" },
     { id: "fema", label: "FEMA flood maps", group: "Location & parcel", domain: "msc.fema.gov", direct: "https://msc.fema.gov/portal/search" },
     { id: "icontainers", label: "iContainers freight quotes", group: "Freight & logistics", domain: "icontainers.com", direct: "https://my.icontainers.com/sign-in" },
-    { id: "kiavi-broker", label: "Kiavi Broker Program", group: "Capital & funding", domain: "kiavi.com", direct: "https://www.kiavi.com/collateral/broker-program" },
-    { id: "private-money-exchange", label: "Private Money Exchange", group: "Capital & funding", domain: "privatemoneyexchange.com", direct: "https://privatemoneyexchange.com/aff-page/richman/" },
-    { id: "cogo-capital", label: "COGO Capital", group: "Capital & funding", domain: "cogocapital.com", direct: "https://www.cogocapital.com/" },
-    { id: "ncc", label: "National Corporate Credit", group: "Capital & funding", domain: "nationalcorporatecredit.com", direct: "https://nationalcorporatecredit.com/" },
-    { id: "ncc-calendar", label: "NCC Strategy Call", group: "Capital & funding", domain: "calendly.com", direct: "https://calendly.com/richardguzman" },
-    { id: "my-partner", label: "MyPartner Business Financing", group: "Capital & funding", domain: "mypartner.io", direct: "https://go.mypartner.io/business-financing/?ref=001Qk00000MkqgTIAR" },
-    { id: "americas-funding-experts", label: "Americas Funding Experts", group: "Capital & funding", domain: "americasfundingexperts.com", direct: "https://my.americasfundingexperts.com/?id=1820217000190862001" },
-    { id: "seven-figures-credit", label: "7 Figures Credit", group: "Capital & funding", domain: "7figurescredit.com", direct: "https://www.7figurescredit.com/?a_aid=ROLFunding" },
-    { id: "rolyfe-funding-hub", label: "RO’Lyfe Funding & Execution Hub", group: "Capital & funding", domain: "rolrichman.github.io", direct: "https://rolrichman.github.io/rolyfe-funding/" },
-    { id: "rolyfe-business-funding-center", label: "RO’Lyfe Business Funding Resource Center", group: "Capital & funding", domain: "rolrichman.github.io", direct: BUSINESS_FUNDING_RESOURCE_URL }
+    { id: "kiavi-broker", label: "Kiavi Broker Program", group: "Real Estate Capital", domain: "kiavi.com", direct: "https://www.kiavi.com/collateral/broker-program" },
+    { id: "private-money-exchange", label: "Private Money Exchange", group: "Real Estate Capital", domain: "privatemoneyexchange.com", direct: "https://privatemoneyexchange.com/aff-page/richman/" },
+    { id: "cogo-capital", label: "COGO Capital", group: "Business Funding & Credit", domain: "cogocapital.com", direct: "https://www.cogocapital.com/" },
+    { id: "ncc", label: "NCC — Partner Inquiry (Confirm Fit)", group: "Capital Partner Research", domain: "nationalcorporatecredit.com", direct: "https://nationalcorporatecredit.com/" },
+    { id: "ncc-calendar", label: "NCC Strategy Call — Partner Discussion", group: "Capital Partner Research", domain: "calendly.com", direct: "https://calendly.com/richardguzman" },
+    { id: "my-partner", label: "MyPartner Business Financing", group: "Business Funding & Credit", domain: "mypartner.io", direct: "https://go.mypartner.io/business-financing/?ref=001Qk00000MkqgTIAR" },
+    { id: "americas-funding-experts", label: "Americas Funding Experts", group: "Business Funding & Credit", domain: "americasfundingexperts.com", direct: "https://my.americasfundingexperts.com/?id=1820217000190862001" },
+    { id: "seven-figures-credit", label: "7 Figures Credit", group: "Business Funding & Credit", domain: "7figurescredit.com", direct: "https://www.7figurescredit.com/?a_aid=ROLFunding" },
+    { id: "rolyfe-funding-hub", label: "RO’Lyfe Funding & Execution Hub", group: "RO’Lyfe Internal Tools", domain: "rolrichman.github.io", direct: "https://rolrichman.github.io/rolyfe-funding/" },
+    { id: "rolyfe-business-funding-center", label: "RO’Lyfe Business Funding Resource Center", group: "RO’Lyfe Internal Tools", domain: "rolrichman.github.io", direct: BUSINESS_FUNDING_RESOURCE_URL }
   ];
 
   var style = document.createElement("style");
@@ -107,7 +107,7 @@
   var isPrimary = location.pathname.indexOf("rolyfe-property-research-intelligence") !== -1;
   var saved = readSavedRecords();
   var firstAddress = saved.length ? displayAddress(saved[0]) : "";
-  var groups = ["Listings & comps", "Auctions & tax sales", "Investor leads", "Location & parcel", "Capital & funding", "Freight & logistics"];
+  var groups = ["Listings & comps", "Auctions & tax sales", "Investor leads", "Location & parcel", "Real Estate Capital", "Capital Partner Research", "Business Funding & Credit", "RO’Lyfe Internal Tools", "Freight & logistics"];
   var options = '<option value="">Select a saved property…</option>';
   saved.forEach(function (r, i) {
     options += '<option value="' + i + '">' + escapeHtml(displayAddress(r) || "Saved property " + (i + 1)) + '</option>';
